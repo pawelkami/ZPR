@@ -35,13 +35,13 @@ $(".col").click(function(){
   if(turn === "player1"){
     $(this).text("O");
     turn = "player2";
-    $(".player1Turn").delay(250).text("");
-    $(".player2Turn").delay(250).text("X");
+    $(".player1Turn").text("").delay(250);
+    $(".player2Turn").text("X").delay(250);
   } else {
     $(this).text("X");
     turn = "player1";
-    $(".player1Turn").delay(250).text("O");
-    $(".player2Turn").delay(250).text("");
+    $(".player1Turn").text("O").delay(250);
+    $(".player2Turn").text("").delay(250);
   }
 
 });

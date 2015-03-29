@@ -177,10 +177,9 @@ body{
   width: 200px;
   height: 200px;
   float: left;
-
   text-align: left;
   font-size: 63px;
-  font-family: fantasy;
+  font-family: helvetica;
   color: white;
   cursor: default;
   -webkit-touch-callout: none;
@@ -197,10 +196,9 @@ body{
   width: 180px;
   height: 200px;
   float: right;
-
   text-align: right;
   font-size: 63px;
-  font-family: fantasy;
+  font-family: helvetica;
   color: white;
   cursor: default;
   -webkit-touch-callout: none;
@@ -217,7 +215,6 @@ body{
   width: 200px;
   height: 200px;
   float: left;
-
   text-align: left;
   font-size: 63px;
   font-family: fantasy;
