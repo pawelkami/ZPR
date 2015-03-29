@@ -125,6 +125,7 @@ body{
 
 .col:nth-child(1){
   border-left: none;
+  margin-left: 3px;
 }
 
 .row:nth-child(1) .col{
