@@ -12,6 +12,15 @@ function new_game(){
   });
 }
 
+//wciśnięcie entera po wprowadzeniu nazwy gracza, powinno dac sam efekt co klikniecie "start"
+//(nie liczac tego, ze przycisk nie zmienia swojego wygladu na "klikniety" - da sie to obejsc,
+//ale to drobnostka, ktora nie chce na razie zabrudzac kodu)
+$("#nickname-textbox").keyup(function (e) {
+    if (e.keyCode == 13) {
+        $("#start-button").trigger("click");
+    }
+});
+
 $("#start-button").click(function() {
   if($("#nickname-textbox").val().length < 1)
     alert("Podaj swoje imie");
