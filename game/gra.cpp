@@ -127,7 +127,7 @@ short Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 	else
 	{
 		xfrom = from_x;
-		yfrom = from_y;
+		yto = to_y;
 	}
 	if ((to_x - x) != (y - from_y))
 	{
@@ -138,7 +138,7 @@ short Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 	else
 	{
 		xto = to_x;
-		yto = to_y;
+		yfrom = from_y;
 	}
 
 	for (int it = 0; it < 5; it++)
