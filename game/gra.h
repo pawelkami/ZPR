@@ -8,7 +8,7 @@ class Game
 public:
 	Game();
 	~Game();
-	bool condition();		/// sprawdzenie warunkow zwyciestwa
+	short condition();		/// sprawdzenie warunkow zwyciestwa
 	void get_point(int a, int b, _sign w);		/// pobranie wspolrzednych nowego kolka lub krzyzyka
 private:
 	int x;		// oba inty reprezentuja wspolrzedne ostatnio dodanego znaku

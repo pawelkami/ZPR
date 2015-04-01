@@ -12,9 +12,9 @@ Game::Game()					/// inicjujemy tablice _null'ami
 
 Game::~Game() { }
 
-bool Game::condition()		/// x, y wspolrzednie, gdzie nowo dodany znak
+short Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 {
-	bool victory;
+	short victory;
 	int temp;
 	int from_x = ((temp = x - 4) > 0 ? temp : 0);		// jesli x - 5 jest ujemne to bedziemy sprawdzac od brzegu tablicy, czyli od 0
 	int to_x = ((temp = x + 4) < 16 ? temp : 15);		// analogicznie dla x - 5
@@ -30,19 +30,19 @@ bool Game::condition()		/// x, y wspolrzednie, gdzie nowo dodany znak
 		from = i;
 		to = ((i+4) <= to_x ? i+4 : to_x);
 
-		victory = true;
+		victory = 2;
 		for (int j = from; j <= to; j++)
 		{
 			if (board[j][y] != which)			// jesli w sprawdzanej piatce trafimy na inny znak niz dodany to niespelnione warunki
 			{
-				victory = false;
+				victory = 0;
 				break;
 			} // if
 		} // for
 
-		if (to == to_x || victory == true) break;
+		if (to == to_x || victory == 2) break;
 	} // for
-	if (victory == true) return victory;
+	if (victory == 2) return victory;
 
 
 	for (int i = from_y; i <= (from_y + 4); i++)		// prosta pozioma
@@ -50,19 +50,19 @@ bool Game::condition()		/// x, y wspolrzednie, gdzie nowo dodany znak
 		from = i;
 		to = ((i + 4) <= to_y ? i + 4 : to_y);
 
-		victory = true;
+		victory = 2;
 		for (int j = from; j <= to; j++)
 		{
 			if (board[x][j] != which)			// jesli w sprawdzanej piatce trafimy na inny znak niz dodany to niespelnione warunki
 			{
-				victory = false;
+				victory = 0;
 				break;
 			} // if
 		} // for
 
-		if (to == to_y || victory == true) break;
+		if (to == to_y || victory == 2) break;
 	} // for
-	if (victory == true) return victory;
+	if (victory == 2) return victory;
 
 	// teraz sprawdzamy warunki zwyciestwa dla przekatnych
 	
@@ -102,19 +102,19 @@ bool Game::condition()		/// x, y wspolrzednie, gdzie nowo dodany znak
 		yfrom += it;
 		if (xfrom + 4 > xto || yfrom + 4 > yto) break;
 
-		victory = true;
+		victory = 2;
 		for (i = xfrom, j = yfrom; i <= (xfrom + 4) && j <= (yfrom + 4); i++, j++)
 		{
 			if (board[i][j] != which)
 			{
-				victory = false;
+				victory = 0;
 				break;
 			} // if
 		} // for
-		if (victory == true) break;
+		if (victory == 2) break;
 	} // for it
 
-	if (victory == true) return victory;
+	if (victory == 2) return victory;
 	
 	// teraz sprawdzamy warunki zwyciestwa po skosie z lewego dolnego rogu do prawego gornego
 
@@ -147,20 +147,37 @@ bool Game::condition()		/// x, y wspolrzednie, gdzie nowo dodany znak
 		yto -= it;
 		if (xfrom + 4 > xto || yto - 4 < yfrom) break;
 
-		victory = true;
+		victory = 2;
 		for (i = xfrom, j = yto; i <= (xfrom + 4) && j >= (yto - 4); i++, j--)
 		{
 			if (board[i][j] != which)
 			{
-				victory = false;
+				victory = 0;
 				break;
 			} // if
 		} // for
-		if (victory == true) break;
+		if (victory == 2) break;
 	} // for it
 
-	if (victory == true) return victory;
+	if (victory == 2) return victory;
 	
+	// sprawdzamy czy nie remis
+
+	victory = 1;
+	for (int i = 0; i < 16; i++)
+	{
+		for (int j = 0; j < 16; j++)
+		{
+			if (board[i][j] == _null)
+			{
+				victory = 0;
+				break;
+			} // if
+		} // for
+		if (victory == 0) break;
+	} // for
+
+
 	return victory;
 }
 

@@ -8,6 +8,7 @@ int main()
 	Game gra;
 	int x, y;
 	int kto;  // 0 - kolko, 1 - krzyzyk
+	short cond;
 
 	for (int i = 0; ; i++)
 	{
@@ -19,7 +20,7 @@ int main()
 			cin >> x >> y;
 			cout << endl;
 			gra.get_point(x, y, circle);
-			if (gra.condition())
+			if ((cond = gra.condition()) != 0)
 			{
 				kto = 0;
 				break;
@@ -31,7 +32,7 @@ int main()
 			cin >> x >> y;
 			cout << endl;
 			gra.get_point(x, y, cross);
-			if (gra.condition())
+			if ((cond = gra.condition()) != 0)
 			{
 				kto = 1;
 				break;
@@ -39,10 +40,19 @@ int main()
 		}
 	}
 
-	cout << "Wygral gracz wstawiajacy ";
-	cout << ((kto == 0) ? "kolko" : "krzyzyk") << endl;
+	if (cond == 2)
+	{
+		cout << "Wygral gracz wstawiajacy ";
+		cout << ((kto == 0) ? "kolko" : "krzyzyk") << endl;
+	}
+	if (cond == 1)
+	{
+		cout << "Gra zakonczona remisem\n";
+	}
+	cout << "Wcisnij 'q' zeby zakonczyc\n";
 
-	cin >> x;
+	char c;
+	while((c = getchar()) != 'q');
 
 	return 0;
 }
