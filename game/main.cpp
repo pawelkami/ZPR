@@ -1,4 +1,4 @@
-#include "gra.h"
+#include "gra.hpp"
 #include <iostream>
 
 using namespace std;
@@ -8,7 +8,7 @@ int main()
 	Game gra;
 	int x, y;
 	int kto;  // 0 - kolko, 1 - krzyzyk
-	short cond;
+	GameResult cond;
 
 	for (int i = 0; ; i++)
 	{
@@ -19,7 +19,7 @@ int main()
 			cout << "Podaj wspolrzedne kolka: ";
 			cin >> x >> y;
 			cout << endl;
-			gra.get_point(x, y, circle);
+			gra.get_point(x, y, CIRCLE);
 			if ((cond = gra.condition()) != 0)
 			{
 				kto = 0;
@@ -31,7 +31,7 @@ int main()
 			cout << "Podaj wspolrzedne krzyzyka: ";
 			cin >> x >> y;
 			cout << endl;
-			gra.get_point(x, y, cross);
+			gra.get_point(x, y, CROSS);
 			if ((cond = gra.condition()) != 0)
 			{
 				kto = 1;
@@ -40,19 +40,18 @@ int main()
 		}
 	}
 
-	if (cond == 2)
+	if (cond == VICTORY)
 	{
 		cout << "Wygral gracz wstawiajacy ";
 		cout << ((kto == 0) ? "kolko" : "krzyzyk") << endl;
 	}
-	if (cond == 1)
+	if (cond == DRAW)
 	{
 		cout << "Gra zakonczona remisem\n";
 	}
 	cout << "Wcisnij 'q' zeby zakonczyc\n";
 
-	char c;
-	while((c = getchar()) != 'q');
+	while(getchar() != 'q');
 
 	return 0;
 }

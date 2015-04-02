@@ -1,94 +1,124 @@
-#include "gra.h"
+#include "gra.hpp"
 
-Game::Game()					/// inicjujemy tablice _null'ami
+Game::Game()					/// inicjujemy tablice EMPTY'ami
 {
 	for (int i = 0; i < 16; i++)
 		for (int j = 0; j < 16; j++)
-			board[i][j] = _null;
-	x = 0;
-	y = 0;
-	which = circle; // nie _null poniewaz gdybym dla pustej planszy wywolal condition to okazaloby sie, ze mamy zwyciestwo
+			board_[i][j] = EMPTY;
+	x_ = 0;
+	y_ = 0;
+	which_ = CIRCLE; // nie EMPTY poniewaz gdybym dla pustej planszy wywolal condition to okazaloby sie, ze mamy zwyciestwo
 }
 
 Game::~Game() { }
 
-short Game::condition()		/// 0 nic, 1 remis, 2 wygrana
+GameResult Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 {
-	short victory;
-	int temp;
-	int from_x = ((temp = x - 4) > 0 ? temp : 0);		// jesli x - 5 jest ujemne to bedziemy sprawdzac od brzegu tablicy, czyli od 0
-	int to_x = ((temp = x + 4) < 16 ? temp : 15);		// analogicznie dla x - 5
+	GameResult result = STILL_PLAYING;
+	//najpierw sprawdzamy czy w prostej pionowej lub poziomej mamy spelniony warunek zwyciestwa
 
-	int from_y = ((temp = y - 4) > 0 ? temp : 0);
-	int to_y = ((temp = y + 4) < 16 ? temp : 15);
+	if(checkVertically() == VICTORY
+		|| checkHorizontally() == VICTORY
+		|| checkLeftDownRightUpper() == VICTORY
+		|| checkLeftUpperRightDown() == VICTORY)
+		return VICTORY;
+
+	// sprawdzamy czy nie remis
+
+	result = checkDraw();
+
+	return result;
+}
+
+GameResult Game::checkVertically()
+{
+	int from_x = (x_ - 4 > 0 ? x_ - 4 : 0);		// jesli x_ - 5 jest ujemne to bedziemy sprawdzac od brzegu tablicy, czyli od 0
+	int to_x = (x_ + 4 < 16 ? x_ + 4 : 15);		// analogicznie dla x_ - 5
 
 	int from, to;
-	//najpierw sprawdzamy czy w prostej pionowej lub poziomej mamy spelniony warunek zwyciestwa
+	GameResult result;
 
 	for (int i = from_x; i <= (from_x + 4); i++)			// prosta pionowa
 	{
 		from = i;
 		to = ((i+4) <= to_x ? i+4 : to_x);
 
-		victory = 2;
+		result = VICTORY;
 		for (int j = from; j <= to; j++)
 		{
-			if (board[j][y] != which)			// jesli w sprawdzanej piatce trafimy na inny znak niz dodany to niespelnione warunki
+			if (board_[j][y_] != which_)			// jesli w sprawdzanej piatce trafimy na inny znak niz dodany to niespelnione warunki
 			{
-				victory = 0;
+				result = STILL_PLAYING;
 				break;
 			} // if
 		} // for
 
-		if (to == to_x || victory == 2) break;
+		if (to == to_x || result == VICTORY) break;
 	} // for
-	if (victory == 2) return victory;
 
+	return result;
+}
+
+GameResult Game::checkHorizontally()
+{
+	GameResult result;
+	int from_y = (y_ - 4 > 0 ? y_ - 4 : 0);
+	int to_y = (y_ + 4 < 16 ? y_ + 4 : 15);
+
+	int from, to;
 
 	for (int i = from_y; i <= (from_y + 4); i++)		// prosta pozioma
 	{
 		from = i;
 		to = ((i + 4) <= to_y ? i + 4 : to_y);
 
-		victory = 2;
+		result = VICTORY;
 		for (int j = from; j <= to; j++)
 		{
-			if (board[x][j] != which)			// jesli w sprawdzanej piatce trafimy na inny znak niz dodany to niespelnione warunki
+			if (board_[x_][j] != which_)			// jesli w sprawdzanej piatce trafimy na inny znak niz dodany to niespelnione warunki
 			{
-				victory = 0;
+				result = STILL_PLAYING;
 				break;
 			} // if
 		} // for
 
-		if (to == to_y || victory == 2) break;
+		if (to == to_y || result == VICTORY) break;
 	} // for
-	if (victory == 2) return victory;
 
-	// teraz sprawdzamy warunki zwyciestwa dla przekatnych
-	
+	return result;
+}
+
+GameResult Game::checkLeftUpperRightDown()
+{
+	GameResult result = STILL_PLAYING;
 	int xfrom, yfrom, xto, yto;
 	int i, j;
 
+	int from_x = (x_ - 4 > 0 ? x_ - 4 : 0);
+	int to_x = (x_ + 4 < 16 ? x_ + 4 : 15);
+	int from_y = (y_ - 4 > 0 ? y_ - 4 : 0);
+	int to_y = (y_ + 4 < 16 ? y_ + 4 : 15);
+
 	// wspolrzedne skrajne dla nieregularnych przypadkow w rogach i przy krawedziach planszy
-	
+
 	// wpierw od lewego gornego rogu do prawego dolnego
 
-	if ((x - from_x) != (y - from_y))
+	if ((x_ - from_x) != (y_ - from_y))
 	{
-		int dif = ((x - from_x) < (y - from_y) ? (x - from_x) : (y - from_y) );
-		xfrom = x - dif;
-		yfrom = y - dif;
+		int dif = ((x_ - from_x) < (y_ - from_y) ? (x_ - from_x) : (y_ - from_y) );
+		xfrom = x_ - dif;
+		yfrom = y_ - dif;
 	}
 	else
 	{
 		xfrom = from_x;
 		yfrom = from_y;
 	}
-	if ((to_x - x) != (to_y - y))
+	if ((to_x - x_) != (to_y - y_))
 	{
-		int dif = ((to_x - x) < (to_y - y) ? (to_x - x) : (to_y - y));
-		xto = x + dif;
-		yto = y + dif;
+		int dif = ((to_x - x_) < (to_y - y_) ? (to_x - x_) : (to_y - y_));
+		xto = x_ + dif;
+		yto = y_ + dif;
 	}
 	else
 	{
@@ -102,38 +132,51 @@ short Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 		yfrom += it;
 		if (xfrom + 4 > xto || yfrom + 4 > yto) break;
 
-		victory = 2;
+		result = VICTORY;
 		for (i = xfrom, j = yfrom; i <= (xfrom + 4) && j <= (yfrom + 4); i++, j++)
 		{
-			if (board[i][j] != which)
+			if (board_[i][j] != which_)
 			{
-				victory = 0;
+				result = STILL_PLAYING;
 				break;
 			} // if
 		} // for
-		if (victory == 2) break;
+		if (result == VICTORY) break;
 	} // for it
 
-	if (victory == 2) return victory;
-	
-	// teraz sprawdzamy warunki zwyciestwa po skosie z lewego dolnego rogu do prawego gornego
+	return result;
+}
 
-	if ((x - from_x) != (to_y - y))
+/**
+	Metoda sprawdzajaca warunek zwyciestwa po skosie od lewego dolnego rogu do prawego gornego.
+*/
+GameResult Game::checkLeftDownRightUpper()
+{
+	GameResult result = STILL_PLAYING;
+	int xfrom, yfrom, xto, yto;
+
+	int from_x = (x_ - 4 > 0 ? x_ - 4 : 0);
+	int to_x = (x_ + 4 < 16 ? x_ + 4 : 15);
+
+	int from_y = (y_ - 4 > 0 ? y_ - 4 : 0);
+	int to_y = (y_ + 4 < 16 ? y_ + 4 : 15);
+
+	if ((x_ - from_x) != (to_y - y_))
 	{
-		int dif = ((x - from_x) < (to_y - y) ? (x - from_x) : (to_y - y));
-		xfrom = x - dif;
-		yto = y + dif;
+		int dif = ((x_ - from_x) < (to_y - y_) ? (x_ - from_x) : (to_y - y_));
+		xfrom = x_ - dif;
+		yto = y_ + dif;
 	}
 	else
 	{
 		xfrom = from_x;
 		yto = to_y;
 	}
-	if ((to_x - x) != (y - from_y))
+	if ((to_x - x_) != (y_ - from_y))
 	{
-		int dif = ((to_x - x) < (y - from_y) ? (to_x - x) : (y - from_y));
-		xto = x + dif;
-		yfrom = y - dif;
+		int dif = ((to_x - x_) < (y_ - from_y) ? (to_x - x_) : (y_ - from_y));
+		xto = x_ + dif;
+		yfrom = y_ - dif;
 	}
 	else
 	{
@@ -147,44 +190,45 @@ short Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 		yto -= it;
 		if (xfrom + 4 > xto || yto - 4 < yfrom) break;
 
-		victory = 2;
-		for (i = xfrom, j = yto; i <= (xfrom + 4) && j >= (yto - 4); i++, j--)
+		result = VICTORY;
+		for (int i = xfrom, j = yto; i <= (xfrom + 4) && j >= (yto - 4); i++, j--)
 		{
-			if (board[i][j] != which)
+			if (board_[i][j] != which_)
 			{
-				victory = 0;
+				result = STILL_PLAYING;
 				break;
 			} // if
 		} // for
-		if (victory == 2) break;
+		if (result == VICTORY) break;
 	} // for it
 
-	if (victory == 2) return victory;
-	
-	// sprawdzamy czy nie remis
+	return result;
+}
 
-	victory = 1;
+GameResult Game::checkDraw()
+{
+	GameResult result = DRAW;
+
 	for (int i = 0; i < 16; i++)
 	{
 		for (int j = 0; j < 16; j++)
 		{
-			if (board[i][j] == _null)
+			if (board_[i][j] == EMPTY)
 			{
-				victory = 0;
+				result = STILL_PLAYING;
 				break;
 			} // if
 		} // for
-		if (victory == 0) break;
+		if (result == STILL_PLAYING) break;
 	} // for
 
-
-	return victory;
+	return result;
 }
 
-void Game::get_point(int a, int b, _sign w)
+void Game::get_point(int a, int b, Sign w)
 {
-	x = a;
-	y = b;
-	which = w;
-	board[x][y] = w;
+	x_ = a;
+	y_ = b;
+	which_ = w;
+	board_[x_][y_] = w;
 }
