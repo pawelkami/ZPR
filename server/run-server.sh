@@ -2,7 +2,7 @@
 
 if [ "$#" -gt 1 ]
 then
-	echo "Usage: ./run-server.sh option"
+	echo "Usage: ./run-server.sh [option]"
 	exit 1 
 fi
 

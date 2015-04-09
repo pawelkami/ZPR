@@ -1,8 +1,12 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include <cstdlib>
+#include <iostream>
+
 enum Sign {EMPTY, CROSS, CIRCLE};  /// _null = 0, cross = 1, circle = 2
 enum GameResult { STILL_PLAYING, DRAW, VICTORY };
+std::string getPlayerName();
 
 class Game
 {

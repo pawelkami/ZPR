@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include <boost/python.hpp>
 
 Game::Game()					/// inicjujemy tablice EMPTY'ami
 {
@@ -231,4 +232,25 @@ void Game::get_point(int a, int b, Sign w)
 	y_ = b;
 	which_ = w;
 	board_[x_][y_] = w;
+}
+
+std::string getPlayerName()
+{
+	return "Player C++";
+}
+
+BOOST_PYTHON_MODULE(cppGame)
+{
+	boost::python::enum_<GameResult>("GameResult")
+		.value( "STILL_PLAYING", STILL_PLAYING )
+		.value( "DRAW", DRAW )
+		.value( "VICTORY", VICTORY )
+		;
+
+	boost::python::class_<Game>("Game")
+		.def( "condition", &Game::condition )
+		.def( "get_point", &Game::get_point )
+		;
+
+	boost::python::def( "getPlayerName", getPlayerName );
 }

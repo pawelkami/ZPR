@@ -1,6 +1,6 @@
 var turn = "";
 var player1 = { nickname: "" };
-var player2 = { nickname: "PLAYER TWO" };
+var player2 = { nickname: "" };
 var gameStarted = false;
 
 $(".player1Turn").text("O");  // pierwszemu graczowi przypisujemy kolko
@@ -30,7 +30,8 @@ $("#start-button").click(function() {
     gameStarted = true;
     turn = "player1";
     $(".player1Text").text(player1.nickname);
-    $(".player2Text").text(player2.nickname);
+    playerName();
+    //$(".player2Text").text(player2.nickname);
     $(".player1Turn").fadeIn(200);
     $(".player2Turn").fadeOut(200);
   }
@@ -60,3 +61,23 @@ $(".col").click(function(){
   }
 
 });
+
+
+callAjaxGet = function(destination, outputDestination)
+{
+  $.ajax({
+    type: "GET",
+    dataType: "text",
+    cache: false,
+    url: destination,
+    success: function(data) {
+      $(outputDestination).replaceWith(data);
+    }
+  });
+}
+
+playerName = function()
+{
+  callAjaxGet("http://" + window.location.host + "/calculation/calc.py", ".player2Text" );
+  return true;
+}
