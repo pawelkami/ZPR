@@ -1,4 +1,4 @@
-#include "gra.hpp"
+#include "Game.hpp"
 
 Game::Game()					/// inicjujemy tablice EMPTY'ami
 {

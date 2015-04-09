@@ -1,5 +1,5 @@
-#ifndef GRA_HPP
-#define GRA_HPP
+#ifndef GAME_HPP
+#define GAME_HPP
 
 enum Sign {EMPTY, CROSS, CIRCLE};  /// _null = 0, cross = 1, circle = 2
 enum GameResult { STILL_PLAYING, DRAW, VICTORY };
@@ -26,4 +26,4 @@ private:
 	Sign board_[16][16];	/// reprezentacja planszy
 };
 
-#endif // GRA_H
+#endif // GAME_HPP
