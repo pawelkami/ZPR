@@ -1,5 +1,5 @@
 var turn = "";
-var player1 = { nickname: "" };
+var player1 = { nickname: "", id: -1};
 var player2 = { nickname: "" };
 var gameStarted = false;
 
@@ -31,6 +31,8 @@ $("#start-button").click(function() {
     turn = "player1";
     $(".player1Text").text(player1.nickname);
     playerName();
+
+    getPlayerID();
     //$(".player2Text").text(player2.nickname);
     $(".player1Turn").fadeIn(200);
     $(".player2Turn").fadeOut(200);
@@ -51,6 +53,7 @@ $(".col").click(function(){
   if(turn === "player1"){
     $(this).text("O");
     turn = "player2";
+    postMove(row, col);
     $(".player1Turn").fadeOut(200);
     $(".player2Turn").fadeIn(200);
   } else {
@@ -59,8 +62,26 @@ $(".col").click(function(){
     $(".player1Turn").fadeIn(200);
     $(".player2Turn").fadeOut(200);
   }
-
 });
+
+getPlayerID = function() {
+    $.ajax({
+    type: "GET",
+    url: "http://" + window.location.host + "/controller/getid.py",
+    success: function(data) {
+      //dodaje id do zmiennej player1, ale nie wiem czy nie lepiej uzyc ciasteczek
+      player1.id = data;
+    }
+  });
+}
+
+postMove = function(row, col) {
+  $.ajax({
+    type: "POST",
+    data: {x: col, y: row, id: player1.id},
+    url: "http://" + window.location.host + "/controller/move.py",
+  });
+}
 
 
 callAjaxGet = function(destination, outputDestination)
