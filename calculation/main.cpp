@@ -5,7 +5,6 @@ using namespace std;
 
 int main()
 {
-	Game gra;
 	int x, y;
 	int kto;  // 0 - kolko, 1 - krzyzyk
 	GameResult cond;
@@ -19,8 +18,8 @@ int main()
 			cout << "Podaj wspolrzedne kolka: ";
 			cin >> x >> y;
 			cout << endl;
-			gra.get_point(x, y, CIRCLE);
-			if ((cond = gra.condition()) != 0)
+			Game::getInstance()->get_point(x, y, CIRCLE);
+			if ((cond = Game::getInstance()->condition()) != 0)
 			{
 				kto = 0;
 				break;
@@ -31,8 +30,8 @@ int main()
 			cout << "Podaj wspolrzedne krzyzyka: ";
 			cin >> x >> y;
 			cout << endl;
-			gra.get_point(x, y, CROSS);
-			if ((cond = gra.condition()) != 0)
+			Game::getInstance()->get_point(x, y, CROSS);
+			if ((cond = Game::getInstance()->condition()) != 0)
 			{
 				kto = 1;
 				break;

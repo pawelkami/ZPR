@@ -1,6 +1,18 @@
 #include "Game.hpp"
 #include <boost/python.hpp>
 
+PGame Game::pInstance = nullptr;
+
+PGame Game::getInstance()
+{
+	if(!pInstance)
+	{
+		pInstance = PGame(new Game());
+	}
+	
+	return pInstance;
+}
+
 Game::Game()					/// inicjujemy tablice EMPTY'ami
 {
 	for (int i = 0; i < 16; i++)
@@ -247,7 +259,9 @@ BOOST_PYTHON_MODULE(cppGame)
 		.value( "VICTORY", VICTORY )
 		;
 
-	boost::python::class_<Game>("Game")
+	boost::python::class_<Game, std::shared_ptr<Game>, boost::noncopyable>("Game", boost::python::no_init)
+		.def( "getInstance", &Game::getInstance )
+		.staticmethod("getInstance")
 		.def( "condition", &Game::condition )
 		.def( "get_point", &Game::get_point )
 		;
