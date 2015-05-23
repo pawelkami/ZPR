@@ -1,5 +1,4 @@
 #include "Game.hpp"
-#include <boost/python.hpp>
 
 PGame Game::pInstance = nullptr;
 
@@ -9,15 +8,16 @@ PGame Game::getInstance()
 	{
 		pInstance = PGame(new Game());
 	}
-	
+
 	return pInstance;
 }
 
 Game::Game()					/// inicjujemy tablice EMPTY'ami
 {
-	for (int i = 0; i < 16; i++)
-		for (int j = 0; j < 16; j++)
-			board_[i][j] = EMPTY;
+	for (int i = 0; i < BOARD_SIZE; i++)
+			board_[i].fill(NONE);
+
+	//board_.fill(NONE);
 	x_ = 0;
 	y_ = 0;
 	which_ = CIRCLE; // nie EMPTY poniewaz gdybym dla pustej planszy wywolal condition to okazaloby sie, ze mamy zwyciestwo
@@ -46,7 +46,7 @@ GameResult Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 GameResult Game::checkVertically()
 {
 	int from_x = (x_ - 4 > 0 ? x_ - 4 : 0);		// jesli x_ - 5 jest ujemne to bedziemy sprawdzac od brzegu tablicy, czyli od 0
-	int to_x = (x_ + 4 < 16 ? x_ + 4 : 15);		// analogicznie dla x_ - 5
+	int to_x = (x_ + 4 < BOARD_SIZE ? x_ + 4 : BOARD_SIZE - 1);		// analogicznie dla x_ - 5
 
 	int from, to;
 	GameResult result;
@@ -76,7 +76,7 @@ GameResult Game::checkHorizontally()
 {
 	GameResult result;
 	int from_y = (y_ - 4 > 0 ? y_ - 4 : 0);
-	int to_y = (y_ + 4 < 16 ? y_ + 4 : 15);
+	int to_y = (y_ + 4 < BOARD_SIZE ? y_ + 4 : BOARD_SIZE - 1);
 
 	int from, to;
 
@@ -108,9 +108,9 @@ GameResult Game::checkLeftUpperRightDown()
 	int i, j;
 
 	int from_x = (x_ - 4 > 0 ? x_ - 4 : 0);
-	int to_x = (x_ + 4 < 16 ? x_ + 4 : 15);
+	int to_x = (x_ + 4 < BOARD_SIZE ? x_ + 4 : BOARD_SIZE - 1);
 	int from_y = (y_ - 4 > 0 ? y_ - 4 : 0);
-	int to_y = (y_ + 4 < 16 ? y_ + 4 : 15);
+	int to_y = (y_ + 4 < BOARD_SIZE ? y_ + 4 : BOARD_SIZE - 1);
 
 	// wspolrzedne skrajne dla nieregularnych przypadkow w rogach i przy krawedziach planszy
 
@@ -169,10 +169,10 @@ GameResult Game::checkLeftDownRightUpper()
 	int xfrom, yfrom, xto, yto;
 
 	int from_x = (x_ - 4 > 0 ? x_ - 4 : 0);
-	int to_x = (x_ + 4 < 16 ? x_ + 4 : 15);
+	int to_x = (x_ + 4 < BOARD_SIZE ? x_ + 4 : BOARD_SIZE - 1);
 
 	int from_y = (y_ - 4 > 0 ? y_ - 4 : 0);
-	int to_y = (y_ + 4 < 16 ? y_ + 4 : 15);
+	int to_y = (y_ + 4 < BOARD_SIZE ? y_ + 4 : BOARD_SIZE - 1);
 
 	if ((x_ - from_x) != (to_y - y_))
 	{
@@ -222,11 +222,11 @@ GameResult Game::checkDraw()
 {
 	GameResult result = DRAW;
 
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < BOARD_SIZE; i++)
 	{
-		for (int j = 0; j < 16; j++)
+		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (board_[i][j] == EMPTY)
+			if (board_[i][j] == NONE)
 			{
 				result = STILL_PLAYING;
 				break;
@@ -246,25 +246,18 @@ void Game::get_point(int a, int b, Sign w)
 	board_[x_][y_] = w;
 }
 
+Board Game::getBoard()
+{
+	return board_;
+}
+
+void Game::setBoard(Board board)
+{
+	board_ = board;
+}
+
+
 std::string getPlayerName()
 {
 	return "Player C++";
-}
-
-BOOST_PYTHON_MODULE(cppGame)
-{
-	boost::python::enum_<GameResult>("GameResult")
-		.value( "STILL_PLAYING", STILL_PLAYING )
-		.value( "DRAW", DRAW )
-		.value( "VICTORY", VICTORY )
-		;
-
-	boost::python::class_<Game, std::shared_ptr<Game>, boost::noncopyable>("Game", boost::python::no_init)
-		.def( "getInstance", &Game::getInstance )
-		.staticmethod("getInstance")
-		.def( "condition", &Game::condition )
-		.def( "get_point", &Game::get_point )
-		;
-
-	boost::python::def( "getPlayerName", getPlayerName );
 }

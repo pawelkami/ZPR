@@ -6,3 +6,5 @@
 *.so
 *.os
 .sconsign.dblite
+start
+test
