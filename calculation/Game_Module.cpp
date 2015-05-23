@@ -14,6 +14,7 @@ BOOST_PYTHON_MODULE(cppGame)
 		.staticmethod("getInstance")
 		.def( "condition", &Game::condition )
 		.def( "get_point", &Game::get_point )
+		.def( "getBoard", &Game::getBoard )
 		;
 
 	boost::python::def( "getPlayerName", getPlayerName );

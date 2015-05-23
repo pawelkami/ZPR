@@ -44,7 +44,7 @@ public:
 	~Game();
 	GameResult condition();		/// sprawdzenie warunkow zwyciestwa
 	void get_point(int a, int b, Sign w);		/// pobranie wspolrzednych nowego kolka lub krzyzyka
-	inline Board getBoard();
+	inline Board getBoard() { return board_; };
 	void setBoard(Board board);
 
 };

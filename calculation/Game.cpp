@@ -246,11 +246,6 @@ void Game::get_point(int a, int b, Sign w)
 	board_[x_][y_] = w;
 }
 
-Board Game::getBoard()
-{
-	return board_;
-}
-
 void Game::setBoard(Board board)
 {
 	board_ = board;
