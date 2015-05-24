@@ -14,10 +14,12 @@ PGame Game::getInstance()
 
 Game::Game()					/// inicjujemy tablice EMPTY'ami
 {
-	for (int i = 0; i < BOARD_SIZE; i++)
-			board_[i].fill(NONE);
-
-	//board_.fill(NONE);
+	for (int i = 0; i < BOARD_SIZE; ++i)
+	{
+		board_.push_back( std::vector<std::string>() );
+		for (int j = 0; j < BOARD_SIZE; ++j)
+			board_[i].push_back(NONE);
+	}
 	x_ = 0;
 	y_ = 0;
 	which_ = CIRCLE; // nie EMPTY poniewaz gdybym dla pustej planszy wywolal condition to okazaloby sie, ze mamy zwyciestwo

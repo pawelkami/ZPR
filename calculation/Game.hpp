@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <memory>
-#include <array>
+#include <vector>
 
 //enum Sign {EMPTY, CROSS, CIRCLE};  /// _null = 0, cross = 1, circle = 2
 enum GameResult { STILL_PLAYING, DRAW, VICTORY };
@@ -19,7 +19,7 @@ class Game;
 typedef std::shared_ptr<Game> PGame;
 typedef std::string Sign;
 
-typedef std::array<std::array<std::string, BOARD_SIZE>, BOARD_SIZE> Board;
+typedef std::vector<std::vector<std::string> > Board;
 
 class Game
 {
