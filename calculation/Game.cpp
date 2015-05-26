@@ -253,6 +253,22 @@ void Game::setBoard(Board board)
 	board_ = board;
 }
 
+void Game::setBoard(Sign sign)
+{
+	for(auto board : board_)
+	{
+		for(auto field : board)
+		{
+			field = sign;
+		}
+	}
+}
+
+void Game::resetGame()
+{
+	setBoard(NONE);
+}
+
 
 std::string getPlayerName()
 {

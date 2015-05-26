@@ -20,6 +20,7 @@ BOOST_PYTHON_MODULE(cppGame)
 		.def( "condition", &Game::condition )
 		.def( "get_point", &Game::get_point )
 		.def( "getBoard", &Game::getBoard )
+		.def( "resetGame", &Game::resetGame )
 		;
 
 	boost::python::def( "getPlayerName", getPlayerName );

@@ -45,8 +45,9 @@ public:
 	GameResult condition();		/// sprawdzenie warunkow zwyciestwa
 	void get_point(int a, int b, Sign w);		/// pobranie wspolrzednych nowego kolka lub krzyzyka
 	inline Board getBoard() { return board_; };
-	void setBoard(Board board);
-
+	void setBoard(Board board);	// ustawienie planszy na podaną w argumencie
+	void setBoard(Sign);		// wypełnienie planszy danym znakiem
+	void resetGame();
 };
 
 #endif // GAME_HPP
