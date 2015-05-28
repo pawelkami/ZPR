@@ -4,6 +4,10 @@
 
 BOOST_PYTHON_MODULE(cppGame)
 {
+	boost::python::class_<std::vector<std::string> >("StringVec")
+		.def(boost::python::vector_indexing_suite<std::vector<std::string> >())
+		;
+
 	boost::python::class_<std::vector <std::vector<std::string> > >("StringMatrix")
 		.def(boost::python::vector_indexing_suite<std::vector <std::vector<std::string> > >())
 		;
@@ -21,7 +25,9 @@ BOOST_PYTHON_MODULE(cppGame)
 		.def( "get_point", &Game::get_point )
 		.def( "getBoard", &Game::getBoard )
 		.def( "resetGame", &Game::resetGame )
+		.def( "getSign", &Game::getSign )
+		.def( "displayBoard", &Game::displayBoard )
+		.def( "setPlayerName", &Game::setPlayerName, boost::python::args("name") )
+		.def( "getPlayerName", &Game::getPlayerName, boost::python::args("number") )
 		;
-
-	boost::python::def( "getPlayerName", getPlayerName );
 }

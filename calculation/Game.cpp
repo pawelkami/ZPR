@@ -14,6 +14,7 @@ PGame Game::getInstance()
 
 Game::Game()					/// inicjujemy tablice EMPTY'ami
 {
+	counter = 0;
 	for (int i = 0; i < BOARD_SIZE; ++i)
 	{
 		board_.push_back( std::vector<std::string>() );
@@ -255,11 +256,11 @@ void Game::setBoard(Board board)
 
 void Game::setBoard(Sign sign)
 {
-	for(auto board : board_)
+	for(auto& row : board_)
 	{
-		for(auto field : board)
+		for(auto& col : board)
 		{
-			field = sign;
+			col = sign;
 		}
 	}
 }
@@ -267,10 +268,55 @@ void Game::setBoard(Sign sign)
 void Game::resetGame()
 {
 	setBoard(NONE);
+	counter = 0;
 }
 
-
-std::string getPlayerName()
+Sign Game::getSign()
 {
-	return "Player C++";
+	if(counter == 0)
+	{
+		counter++;
+		return CIRCLE;
+	}
+	else if (counter == 1)
+	{
+		counter++;
+		return CROSS;
+	}
+	return NONE;
+}
+
+void Game::displayBoard()
+{
+	std::cout << counter << std::endl;
+	for(auto row : board_)
+	{
+		for(auto col : row)
+		{
+			if( col == NONE )
+				std::cout << "_";
+			else
+				std::cout << col;
+		}
+		std::cout << std::endl;
+	}
+}
+
+void Game::setPlayerName(std::string name)
+{
+	std::cout << name << std::endl;
+	if (counter == 1)
+	{
+		name1 = name;
+	}
+	else if (counter == 2)
+	{
+		name2 = name;
+	}
+}
+
+std::string Game::getPlayerName(int i)
+{
+	std::cout << "name1: " << name1 << " name2: " << name2 << std::endl;
+	return ( i == 1 ? name1 : name2 );
 }

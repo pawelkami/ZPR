@@ -8,7 +8,6 @@
 
 //enum Sign {EMPTY, CROSS, CIRCLE};  /// _null = 0, cross = 1, circle = 2
 enum GameResult { STILL_PLAYING, DRAW, VICTORY };
-std::string getPlayerName();
 
 #define BOARD_SIZE 16
 const std::string CROSS = "X";
@@ -34,6 +33,9 @@ private:
 	GameResult checkDraw();
 
 	static PGame pInstance;
+	std::string name1;
+	std::string name2;
+	int counter;
 	int x_;		// oba inty reprezentuja wspolrzedne ostatnio dodanego znaku
 	int y_;
 	Sign which_;	// znak jaki ostatnio wstawiono w miejscu (x, y)
@@ -48,6 +50,10 @@ public:
 	void setBoard(Board board);	// ustawienie planszy na podaną w argumencie
 	void setBoard(Sign);		// wypełnienie planszy danym znakiem
 	void resetGame();
+	Sign getSign();
+	void displayBoard();
+	void setPlayerName(std::string name);
+	std::string getPlayerName(int i);
 };
 
 #endif // GAME_HPP
