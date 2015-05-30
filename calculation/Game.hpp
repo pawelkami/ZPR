@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <mutex>
 
 //enum Sign {EMPTY, CROSS, CIRCLE};  /// _null = 0, cross = 1, circle = 2
 enum GameResult { STILL_PLAYING, DRAW, VICTORY };
@@ -17,6 +18,7 @@ const std::string NONE = "";
 class Game;
 typedef std::shared_ptr<Game> PGame;
 typedef std::string Sign;
+class LastMove;
 
 typedef std::vector<std::vector<std::string> > Board;
 
@@ -33,19 +35,20 @@ private:
 	GameResult checkDraw();
 
 	static PGame pInstance;
-	std::string name1;
-	std::string name2;
-	int counter;
+	std::string oPlayerName;	// w przyszłości można to zmienić na obiekty zawierające jeszcze np. id i liczbę zwyciestw
+	std::string xPlayerName;
+	int activePlayers;
 	int x_;		// oba inty reprezentuja wspolrzedne ostatnio dodanego znaku
 	int y_;
 	Sign which_;	// znak jaki ostatnio wstawiono w miejscu (x, y)
 	Board board_;	// reprezentacja planszy
+	std::mutex mtx;
 
 public:
 	static PGame getInstance();
 	~Game();
 	GameResult condition();		/// sprawdzenie warunkow zwyciestwa
-	void get_point(int a, int b, Sign w);		/// pobranie wspolrzednych nowego kolka lub krzyzyka
+	void setPoint(int a, int b, Sign w);		/// zapisanie wspolrzednych nowego kolka lub krzyzyka
 	inline Board getBoard() { return board_; };
 	void setBoard(Board board);	// ustawienie planszy na podaną w argumencie
 	void setBoard(Sign);		// wypełnienie planszy danym znakiem
@@ -54,6 +57,22 @@ public:
 	void displayBoard();
 	void setPlayerName(std::string name);
 	std::string getPlayerName(int i);
+	LastMove getLastMove();
+};
+
+class LastMove
+{
+public:
+	int x;
+	int y;
+	std::string sign;
+	LastMove()
+	{
+		x = 0;
+		y = 0;
+		sign = NONE;
+	}
+	LastMove(int xx, int yy, std::string s) : x(xx), y(yy), sign(s) {}
 };
 
 #endif // GAME_HPP

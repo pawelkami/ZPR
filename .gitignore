@@ -5,6 +5,16 @@
 *~
 *.so
 *.os
+*.pyc
 .sconsign.dblite
 start
 test
+/errors
+/databases
+/cron
+/sessions
+/uploads
+*.bak
+*.log
+/models
+

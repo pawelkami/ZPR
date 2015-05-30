@@ -1,0 +1,468 @@
+{{extend 'layout.html'}}
+
+{{block header}}
+<div id="container">
+
+    <div class="player1">
+      <div class="player1Text"></div>
+      <div class="player1Turn"></div>
+    </div>
+
+    <div class="player2">
+      <div class="player2Text"></div>
+      <div class="player2Turn"></div>
+    </div>
+
+
+
+    <div id="game">
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+
+
+    </div>
+  </div>
+  <div id="nickname-form">Choose your nickname<br>
+    <input id="nickname-textbox" type="text"><br>
+    <button id="start-button" type="button">Start</button>
+  </div>
+  <script type="text/javascript">
+  $(".col").click(function(){
+    if(!gameStarted || turn !== player1.sign)
+         return;
+    var row = $(this).parent().index();
+    var col = $(this).index();
+
+    if($(this).text().length === 1){
+      alert("To miejsce jest juz zajete, prosze wykonac ruch gdzie indziej.");
+      return;
+    }
+
+    $.ajax({
+      type: "POST",
+      async: false,
+      data: {x: col, y: row, sign: player1.sign},
+      url: "{{=url_move}}"
+    });
+
+
+    $(this).text(player1.sign);
+    turn = player2.sign;
+    $(".player1Turn").fadeTo(200, 0);
+    $(".player2Turn").fadeTo(200, 1);
+
+    getOpponentsMove();
+  });
+
+    $("#start-button").click(function() {
+      if($("#nickname-textbox").val().length < 1)
+        alert("Podaj swoje imie");
+      else {
+        player1.nickname = ($("#nickname-textbox")).val();
+        $(".player1Text").text(player1.nickname);
+
+        $.ajax({
+          type: "POST",
+          async: false, //musimy być pewni, że do serwera najpierw zostanie dodane imię,
+                        //a dopiero potem zaczniemy pobierać znak, którym mamy grać
+          data: {name: player1.nickname},
+          url: "{{=url_setName}}"
+        });
+
+        $.ajax({
+          type: "GET",
+          async: false,
+          url: "{{=url_getSign}}",
+          success: function( out_data ) {
+            out_data = $.parseJSON(out_data);
+            player1.sign = out_data.sign;
+            if(out_data.sign === "O") {
+              player2.sign = "X";
+            } else {
+              player2.sign = "O";
+            }
+          }
+        });
+
+        startWaitingAnimation();
+        getOpponentsName();
+        $('#nickname-form').delay(150).fadeOut(400);
+
+
+        $(".player1Turn").text(player1.sign);
+        $(".player2Turn").text(player2.sign);
+
+        if(turn === player2.sign)
+          getOpponentsMove();
+      }
+    });
+
+  getOpponentsName = function() {
+    $.ajax({
+      type: "POST",
+      url: "{{=url_getName}}",
+      data: {sign : player1.sign},
+      success: function( out_data ) {
+        out_data = $.parseJSON(out_data);
+        if( out_data.playerName === "" ){
+          setTimeout(getOpponentsName, 2000);
+        } else {
+          player2.nickname = out_data.playerName;
+          stopWaitningAnimation();
+          gameStarted = true;
+          if(player1.sign !== turn)
+            $(".player1Turn").fadeTo(200, 0);
+          else
+            $(".player2Turn").fadeTo(200, 0);
+        }
+      },
+      error: function(){
+        setTimeout(getOpponentsName, 2000);
+      }
+    });
+  };
+  getOpponentsMove = function() {
+    $.ajax({
+      type: "GET",
+      url: "{{=url_getMove}}",
+      success: function( out_data ) {
+        out_data = $.parseJSON(out_data);
+        if(out_data.sign === player2.sign) {
+          $("#game").children().each(function() {
+
+            if($(this).index() === out_data.y)
+            $(this).children().each(function() {
+              if($(this).index() === out_data.x)
+              $(this).text(player2.sign);
+            });
+          });
+          turn = player1.sign;
+          $(".player1Turn").fadeTo(200, 1);
+          $(".player2Turn").fadeTo(200, 0);
+        }
+        else setTimeout(getOpponentsMove, 2000);
+      },
+      error: function() {
+        setTimeout(getOpponentsMove, 2000);
+      }
+    });
+  }
+  </script>
+
+{{end}}

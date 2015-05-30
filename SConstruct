@@ -34,7 +34,7 @@ else:
 #build C++ library
 cpplib = env.SharedLibrary( target = 'cppGame', source = ['calculation/Game.cpp', 'calculation/Game_Module.cpp'])
 if(platform.system() == "Linux"):
-   target = 'calculation/cppGame.so'
+   target = 'modules/cppGame.so'
 elif(platform.system() == "Windows"):
-   target = 'calculation/cppGame.pyd'
+   target = 'modules/cppGame.pyd'
 env.Command(target, cpplib, copyLibBuilder )

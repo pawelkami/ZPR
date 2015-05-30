@@ -12,9 +12,9 @@ PGame Game::getInstance()
 	return pInstance;
 }
 
-Game::Game()					/// inicjujemy tablice EMPTY'ami
+Game::Game() : mtx()					/// inicjujemy tablice EMPTY'ami
 {
-	counter = 0;
+	activePlayers = 0;
 	for (int i = 0; i < BOARD_SIZE; ++i)
 	{
 		board_.push_back( std::vector<std::string>() );
@@ -23,13 +23,15 @@ Game::Game()					/// inicjujemy tablice EMPTY'ami
 	}
 	x_ = 0;
 	y_ = 0;
-	which_ = CIRCLE; // nie EMPTY poniewaz gdybym dla pustej planszy wywolal condition to okazaloby sie, ze mamy zwyciestwo
+	which_ = NONE;
 }
 
 Game::~Game() { }
 
 GameResult Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 {
+	if(which_ == NONE)
+		return STILL_PLAYING;
 	GameResult result = STILL_PLAYING;
 	//najpierw sprawdzamy czy w prostej pionowej lub poziomej mamy spelniony warunek zwyciestwa
 
@@ -241,8 +243,9 @@ GameResult Game::checkDraw()
 	return result;
 }
 
-void Game::get_point(int a, int b, Sign w)
+void Game::setPoint(int a, int b, Sign w)
 {
+	std::lock_guard<std::mutex> lock(mtx);
 	x_ = a;
 	y_ = b;
 	which_ = w;
@@ -251,44 +254,33 @@ void Game::get_point(int a, int b, Sign w)
 
 void Game::setBoard(Board board)
 {
+	std::lock_guard<std::mutex> lock(mtx);
 	board_ = board;
 }
 
 void Game::setBoard(Sign sign)
 {
-	for(auto& row : board_)
+	std::lock_guard<std::mutex> lock(mtx);
+	for(auto& board : board_)
 	{
-		for(auto& col : board)
+		for(auto& field : board)
 		{
-			col = sign;
+			field = sign;
 		}
 	}
 }
 
 void Game::resetGame()
 {
+	std::lock_guard<std::mutex> lock(mtx);
 	setBoard(NONE);
-	counter = 0;
+	activePlayers = 0;
 }
 
-Sign Game::getSign()
-{
-	if(counter == 0)
-	{
-		counter++;
-		return CIRCLE;
-	}
-	else if (counter == 1)
-	{
-		counter++;
-		return CROSS;
-	}
-	return NONE;
-}
 
 void Game::displayBoard()
 {
-	std::cout << counter << std::endl;
+	std::cout << activePlayers << std::endl;
 	for(auto row : board_)
 	{
 		for(auto col : row)
@@ -304,19 +296,39 @@ void Game::displayBoard()
 
 void Game::setPlayerName(std::string name)
 {
-	std::cout << name << std::endl;
-	if (counter == 1)
+	std::lock_guard<std::mutex> lock(mtx);
+	activePlayers++;
+	if (activePlayers == 1)
 	{
-		name1 = name;
+		oPlayerName = name;
 	}
-	else if (counter == 2)
+	else if (activePlayers == 2)
 	{
-		name2 = name;
+		xPlayerName = name;
 	}
 }
 
-std::string Game::getPlayerName(int i)
+Sign Game::getSign()
 {
-	std::cout << "name1: " << name1 << " name2: " << name2 << std::endl;
-	return ( i == 1 ? name1 : name2 );
+	if(activePlayers == 1)
+	{
+		return CIRCLE;
+	}
+	else if (activePlayers == 2)
+	{
+		return CROSS;
+	}
+	return NONE;
+}
+
+std::string Game::getPlayerName(int number)
+{
+	std::string name = ( number == 1 ? oPlayerName : xPlayerName );
+	return name;
+}
+
+LastMove Game::getLastMove()
+{
+	std::lock_guard<std::mutex> lock(mtx);
+	return LastMove(x_, y_, which_);
 }
