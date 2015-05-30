@@ -72,14 +72,7 @@ def move():
     game_state = Game.getInstance().condition()
 
     status = getGameState()
-    # if game_state == GameResult.VICTORY :
-    #     status = "VICTORY"
-    # elif game_state == GameResult.DRAW :
-    #     status = "DRAW"
-    # else :
-    #     status = "STILL_PLAYING"
-
-    # Game.getInstance().displayBoard()
+    
     return json.dumps({'status': status})
 
 
@@ -102,7 +95,7 @@ def getMove():
 
 
 def getGameState():
-        game_state = Game.getInstance().condition()
+        game_state = Game.getInstance().getState()
 
         if game_state == GameResult.VICTORY :
             return "VICTORY"

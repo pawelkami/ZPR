@@ -21,9 +21,11 @@ Game::Game() : mtx()					/// inicjujemy tablice EMPTY'ami
 		for (int j = 0; j < BOARD_SIZE; ++j)
 			board_[i].push_back(NONE);
 	}
-	x_ = 0;
-	y_ = 0;
+	x_ = -1;
+	y_ = -1;
 	which_ = NONE;
+	setReseted(true);
+	state_ = STILL_PLAYING;
 }
 
 Game::~Game() { }
@@ -31,7 +33,7 @@ Game::~Game() { }
 GameResult Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 {
 	if(which_ == NONE)
-		return STILL_PLAYING;
+		return state_ = STILL_PLAYING;
 	GameResult result = STILL_PLAYING;
 	//najpierw sprawdzamy czy w prostej pionowej lub poziomej mamy spelniony warunek zwyciestwa
 
@@ -39,13 +41,13 @@ GameResult Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 		|| checkHorizontally() == VICTORY
 		|| checkLeftDownRightUpper() == VICTORY
 		|| checkLeftUpperRightDown() == VICTORY)
-		return VICTORY;
+		return state_ = VICTORY;
 
 	// sprawdzamy czy nie remis
 
 	result = checkDraw();
 
-	return result;
+	return state_ = result;
 }
 
 GameResult Game::checkVertically()
@@ -246,6 +248,7 @@ GameResult Game::checkDraw()
 void Game::setPoint(int a, int b, Sign w)
 {
 	std::lock_guard<std::mutex> lock(mtx);
+	setReseted(false);
 	x_ = a;
 	y_ = b;
 	which_ = w;
@@ -272,7 +275,13 @@ void Game::setBoard(Sign sign)
 
 void Game::resetGame()
 {
-	//std::lock_guard<std::mutex> lock(mtx);
+	std::lock_guard<std::mutex> lock(mtx);
+
+	if( getReseted() == true )
+		return;
+
+	setReseted(true);
+	state_ = STILL_PLAYING;
 	setBoard(NONE);
 	x_ = -1;
 	y_ = -1;
@@ -311,7 +320,7 @@ void Game::setPlayerName(std::string name)
 	}
 }
 
-Sign Game::getSign()
+Sign Game::getSign() const
 {
 	if(activePlayers == 1)
 	{

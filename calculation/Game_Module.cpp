@@ -36,5 +36,6 @@ BOOST_PYTHON_MODULE(cppGame)
 		.def( "setPlayerName", &Game::setPlayerName, boost::python::args("name") )
 		.def( "getPlayerName", &Game::getPlayerName, boost::python::args("number") )
 		.def( "getLastMove", &Game::getLastMove )
+		.def( "getState", &Game::getState )
 		;
 }

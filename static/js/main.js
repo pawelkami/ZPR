@@ -1,6 +1,6 @@
 var turn = "O";
-var player1 = { nickname: "", id: -1, sign: ""};
-var player2 = { nickname: "", sign: "" };
+var player1 = { nickname: "", sign: "", points: 0};
+var player2 = { nickname: "", sign: "", points: 0};
 var gameStarted = false;
 var status = "";
 
@@ -59,7 +59,7 @@ startWaitingAnimation = function() {
   }, 2000);
 }
 
-stopWaitningAnimation = function() {
+stopWaitingAnimation = function() {
   clearInterval(timer);
   $(".player2Text").stop().fadeTo(0, 1).text(player2.nickname);
 }

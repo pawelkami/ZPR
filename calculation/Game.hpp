@@ -33,6 +33,7 @@ private:
 	GameResult checkLeftDownRightUpper();
 	GameResult checkLeftUpperRightDown();
 	GameResult checkDraw();
+	inline void setReseted(bool flag) { reseted_ = flag; };
 
 	static PGame pInstance;
 	std::string oPlayerName;	// w przyszłości można to zmienić na obiekty zawierające jeszcze np. id i liczbę zwyciestw
@@ -42,6 +43,8 @@ private:
 	int y_;
 	Sign which_;	// znak jaki ostatnio wstawiono w miejscu (x, y)
 	Board board_;	// reprezentacja planszy
+	bool reseted_;	// flaga mowiaca czy gra jest zresetowana, true - zrestartowana, false - nie
+	GameResult state_;	// aktualny stan gry
 	std::mutex mtx;
 
 public:
@@ -49,15 +52,17 @@ public:
 	~Game();
 	GameResult condition();		/// sprawdzenie warunkow zwyciestwa
 	void setPoint(int a, int b, Sign w);		/// zapisanie wspolrzednych nowego kolka lub krzyzyka
-	inline Board getBoard() { return board_; };
+	inline Board getBoard() const { return board_; };
 	void setBoard(Board board);	// ustawienie planszy na podaną w argumencie
 	void setBoard(Sign);		// wypełnienie planszy danym znakiem
 	void resetGame();
-	Sign getSign();
+	Sign getSign() const;
 	void displayBoard();
 	void setPlayerName(std::string name);
 	std::string getPlayerName(int i);
 	LastMove getLastMove();
+	inline bool getReseted() const { return reseted_; };
+	inline GameResult getState() const { return state_; };
 };
 
 class LastMove

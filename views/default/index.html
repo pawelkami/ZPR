@@ -5,11 +5,13 @@
 
     <div class="player1">
       <div class="player1Text"></div>
+      <div class="player1Points"></div>
       <div class="player1Turn"></div>
     </div>
 
     <div class="player2">
       <div class="player2Text"></div>
+      <div class="player2Points"></div>
       <div class="player2Turn"></div>
     </div>
 
@@ -372,7 +374,7 @@
       url: "{{=url_move}}"
     }).done(function( out_data ){
       out_data = $.parseJSON(out_data);
-      setStatus( out_data.status, player1.nickname);
+      setStatus( out_data.status, player1);
 
       if( out_data.status === "STILL_PLAYING"){
         getOpponentsMove();
@@ -420,6 +422,9 @@
 
         $(".player1Turn").text(player1.sign);
         $(".player2Turn").text(player2.sign);
+        $(".player1Points").text(player1.points.toString());
+        $(".player2Points").text(player2.points.toString());
+
 
         if(turn === player2.sign){
           getOpponentsMove();
@@ -432,21 +437,27 @@
       new_game();
       turn = "O";
       if(player1.sign === "X"){
+        $(".player1Turn").fadeTo(200, 0);
+        $(".player2Turn").fadeTo(200, 1);
         getOpponentsMove();
+      } else {
+        $(".player1Turn").fadeTo(200, 1);
+        $(".player2Turn").fadeTo(200, 0);
       }
 
     });
 
     new_game = function() {
-      $.ajax({
-        type: "POST",
-        url: "{{=url_reset}}",
-        success: function() {
-          $(".col").map(function() {
-            $(this).text("");
-          });
-        }
-      })
+        $(".col").map(function() {
+          $(this).text("");
+        });
+      if(player1.sign === "O"){   // zeby tylko jeden gracz zresetowal gre
+        $.ajax({
+          type: "POST",
+          url: "{{=url_reset}}",
+          async: false,
+          })
+      }
     };
 
   getOpponentsName = function() {
@@ -465,7 +476,7 @@
           setTimeout(getOpponentsName, 2000);
         } else {
           player2.nickname = out_data.playerName;
-          stopWaitningAnimation();
+          stopWaitingAnimation();
           gameStarted = true;
           if(player1.sign !== turn)
             $(".player1Turn").fadeTo(200, 0);
@@ -489,18 +500,18 @@
           $("#game").children().each(function() {
 
             if($(this).index() === out_data.y)
-            $(this).children().each(function() {
-              if($(this).index() === out_data.x)
-              $(this).text(player2.sign);
+              $(this).children().each(function() {
+                if($(this).index() === out_data.x)
+                  $(this).text(player2.sign);
             });
           });
 
-          setStatus( out_data.status, player2.nickname );   //ustawia okienko wygranej jesli taka nastapi
+          setStatus( out_data.status, player2 );   //ustawia okienko wygranej jesli taka nastapi
 
           if( out_data.status === "STILL_PLAYING" ){
-            turn = player1.sign;
-            $(".player1Turn").fadeTo(200, 1);
-            $(".player2Turn").fadeTo(200, 0);
+             turn = player1.sign;
+             $(".player1Turn").fadeTo(200, 1);
+             $(".player2Turn").fadeTo(200, 0);
           }
         }
         else setTimeout(getOpponentsMove, 2000);
@@ -511,13 +522,24 @@
     });
   }
 
-  setStatus = function(status, name) {  // funkcja ustawia okienko statusu gry, wlacza sie gdy jest wygrana lub remis
+  setStatus = function(status, player) {  // funkcja ustawia okienko statusu gry, wlacza sie gdy jest wygrana lub remis
     if( status === "VICTORY" ){
-      $('#result-text').text(name + " WIN");
-      $('#game-result-form').fadeTo(200, 0.8);
+      $('#result-text').text(player.nickname + " WIN");
+      $('#game-result-form').fadeTo(200, 0.9);
+      player.points++;
+      if(player.sign === player1.sign){
+        $('.player1Points').text(player.points.toString());
+      } else {
+        $('.player2Points').text(player.points.toString());
+      }
     } else if( status === "DRAW" ) {
       $('#result-text').text("DRAW");
-      $('#game-result-form').fadeTo(200, 0.8);
+      $('#game-result-form').fadeTo(200, 0.9);
+      player1.points++;
+      player2.points++;
+      $('.player1Points').text(player1.points.toString());
+      $('.player2Points').text(player2.points.toString());
+
     } else {
       $(".player1Turn").fadeTo(200, 0);
       $(".player2Turn").fadeTo(200, 1);
