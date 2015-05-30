@@ -272,9 +272,12 @@ void Game::setBoard(Sign sign)
 
 void Game::resetGame()
 {
-	std::lock_guard<std::mutex> lock(mtx);
+	//std::lock_guard<std::mutex> lock(mtx);
 	setBoard(NONE);
-	activePlayers = 0;
+	x_ = -1;
+	y_ = -1;
+	which_ = "";
+	//activePlayers = 0;
 }
 
 

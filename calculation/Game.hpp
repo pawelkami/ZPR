@@ -18,7 +18,7 @@ const std::string NONE = "";
 class Game;
 typedef std::shared_ptr<Game> PGame;
 typedef std::string Sign;
-struct LastMove;
+class LastMove;
 
 typedef std::vector<std::vector<std::string> > Board;
 
@@ -60,8 +60,9 @@ public:
 	LastMove getLastMove();
 };
 
-struct LastMove
+class LastMove
 {
+public:
 	int x;
 	int y;
 	Sign sign;

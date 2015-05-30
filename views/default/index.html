@@ -342,10 +342,19 @@
     <input id="nickname-textbox" type="text"><br>
     <button id="start-button" type="button">Start</button>
   </div>
+  <div id="game-result-form">
+    <div id="result-text"></div>
+    <button id="new-game-button" type="button">Play again!</button>
+  </div>
   <script type="text/javascript">
+
+  $('#game-result-form').hide();
+
   $(".col").click(function(){
-    if(!gameStarted || turn !== player1.sign)
+    if(!gameStarted || turn !== player1.sign){
          return;
+
+    }
     var row = $(this).parent().index();
     var col = $(this).index();
 
@@ -354,20 +363,24 @@
       return;
     }
 
+    $(this).text(player1.sign);
+    turn = player2.sign;
     $.ajax({
       type: "POST",
       async: false,
       data: {x: col, y: row, sign: player1.sign},
       url: "{{=url_move}}"
+    }).done(function( out_data ){
+      out_data = $.parseJSON(out_data);
+      setStatus( out_data.status, player1.nickname);
+
+      if( out_data.status === "STILL_PLAYING"){
+        getOpponentsMove();
+      }
+
     });
 
 
-    $(this).text(player1.sign);
-    turn = player2.sign;
-    $(".player1Turn").fadeTo(200, 0);
-    $(".player2Turn").fadeTo(200, 1);
-
-    getOpponentsMove();
   });
 
     $("#start-button").click(function() {
@@ -408,10 +421,33 @@
         $(".player1Turn").text(player1.sign);
         $(".player2Turn").text(player2.sign);
 
-        if(turn === player2.sign)
+        if(turn === player2.sign){
           getOpponentsMove();
+        }
       }
     });
+
+    $("#new-game-button").click(function() {
+      $('#game-result-form').hide();
+      new_game();
+      turn = "O";
+      if(player1.sign === "X"){
+        getOpponentsMove();
+      }
+
+    });
+
+    new_game = function() {
+      $.ajax({
+        type: "POST",
+        url: "{{=url_reset}}",
+        success: function() {
+          $(".col").map(function() {
+            $(this).text("");
+          });
+        }
+      })
+    };
 
   getOpponentsName = function() {
     $.ajax({
@@ -420,6 +456,11 @@
       data: {sign : player1.sign},
       success: function( out_data ) {
         out_data = $.parseJSON(out_data);
+
+        if(out_data.x === -1 || out_data.y === -1){ // jesli zaczynamy nowa gre to przy pobraniu poczatkowych wartosci jeszcze raz pobierz
+          setTimeout(getOpponentsName, 2000);
+        }
+
         if( out_data.playerName === "" ){
           setTimeout(getOpponentsName, 2000);
         } else {
@@ -437,6 +478,7 @@
       }
     });
   };
+
   getOpponentsMove = function() {
     $.ajax({
       type: "GET",
@@ -452,9 +494,14 @@
               $(this).text(player2.sign);
             });
           });
-          turn = player1.sign;
-          $(".player1Turn").fadeTo(200, 1);
-          $(".player2Turn").fadeTo(200, 0);
+
+          setStatus( out_data.status, player2.nickname );   //ustawia okienko wygranej jesli taka nastapi
+
+          if( out_data.status === "STILL_PLAYING" ){
+            turn = player1.sign;
+            $(".player1Turn").fadeTo(200, 1);
+            $(".player2Turn").fadeTo(200, 0);
+          }
         }
         else setTimeout(getOpponentsMove, 2000);
       },
@@ -462,6 +509,19 @@
         setTimeout(getOpponentsMove, 2000);
       }
     });
+  }
+
+  setStatus = function(status, name) {  // funkcja ustawia okienko statusu gry, wlacza sie gdy jest wygrana lub remis
+    if( status === "VICTORY" ){
+      $('#result-text').text(name + " WIN");
+      $('#game-result-form').fadeTo(200, 0.8);
+    } else if( status === "DRAW" ) {
+      $('#result-text').text("DRAW");
+      $('#game-result-form').fadeTo(200, 0.8);
+    } else {
+      $(".player1Turn").fadeTo(200, 0);
+      $(".player2Turn").fadeTo(200, 1);
+    }
   }
   </script>
 

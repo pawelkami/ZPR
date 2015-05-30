@@ -14,8 +14,6 @@ import json
 def index():
     board_ = Game.getInstance().getBoard()
     return dict(
-        playernamepython = "Hello",
-        board = board_,
         url_move = URL('move'),
         url_reset = URL('reset'),
         url_getSign = URL('getSign'),
@@ -73,12 +71,13 @@ def move():
     Game.getInstance().setPoint(i, j, player_sign)
     game_state = Game.getInstance().condition()
 
-    if game_state == GameResult.VICTORY :
-        status = "VICTORY"
-    elif game_state == GameResult.DRAW :
-        status = "DRAW"
-    else :
-        status = "STILL_PLAYING"
+    status = getGameState()
+    # if game_state == GameResult.VICTORY :
+    #     status = "VICTORY"
+    # elif game_state == GameResult.DRAW :
+    #     status = "DRAW"
+    # else :
+    #     status = "STILL_PLAYING"
 
     # Game.getInstance().displayBoard()
     return json.dumps({'status': status})
@@ -86,6 +85,7 @@ def move():
 
 def setName():
     Game.getInstance().setPlayerName(str(request.post_vars.name))
+
 def getName():
     sign = request.post_vars.sign
     playerName = ""
@@ -97,7 +97,19 @@ def getName():
 
 def getMove():
     lastMove = Game.getInstance().getLastMove()
-    return json.dumps({'x' : lastMove.x, 'y' : lastMove.y, "sign" : lastMove.sign})
+    status = getGameState()
+    return json.dumps({'x' : lastMove.x, 'y' : lastMove.y, "sign" : lastMove.sign, "status" : status})
+
+
+def getGameState():
+        game_state = Game.getInstance().condition()
+
+        if game_state == GameResult.VICTORY :
+            return "VICTORY"
+        elif game_state == GameResult.DRAW :
+            return "DRAW"
+        else :
+            return "STILL_PLAYING"
 
 def reset():
     Game.getInstance().resetGame()

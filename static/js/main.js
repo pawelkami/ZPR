@@ -7,11 +7,6 @@ var status = "";
 $(".player1Turn").text(player1.sign);  // pierwszemu graczowi przypisujemy kolko
 $(".player2Turn").text(player2.sign);  // drugiemu graczowi przypisujemy krzyzyk
 
-function new_game(){
-  $(".col").map(function() {
-    $(this).text("");
-  });
-}
 
 //wciśnięcie entera po wprowadzeniu nazwy gracza, powinno dac sam efekt co klikniecie "start"
 //(nie liczac tego, ze przycisk nie zmienia swojego wygladu na "klikniety" - da sie to obejsc,
