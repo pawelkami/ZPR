@@ -69,7 +69,8 @@ def move():
 
     GameList.getInstance().makeMove(idnum, i, j)
     status = getGameState(idnum)
-    return json.dumps({'status': status})
+    points = GameList.getInstance().getPlayerPoints(idnum)
+    return json.dumps({'status': status, 'points': points})
 
 
 def getName():
@@ -82,7 +83,8 @@ def getMove():
     idnum = int(request.post_vars.id)
     lastMove = GameList.getInstance().getLastMove(idnum)
     status = getGameState(idnum)
-    return json.dumps({'x' : lastMove.x, 'y' : lastMove.y, "sign" : lastMove.sign, "status" : status})
+    points = GameList.getInstance().getOpponentsPoints(idnum)
+    return json.dumps({'x' : lastMove.x, 'y' : lastMove.y, "sign" : lastMove.sign, "status" : status, 'points' : points})
 
 
 def getGameState(idnum):

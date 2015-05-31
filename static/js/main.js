@@ -1,6 +1,6 @@
 var turn = "O";
-var player1 = { nickname: "", sign: "", points: 0};
-var player2 = { nickname: "", sign: "", points: 0};
+var player1 = { nickname: "", sign: ""};
+var player2 = { nickname: "", sign: ""};
 var gameStarted = false;
 var status = "";
 

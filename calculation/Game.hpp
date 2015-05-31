@@ -9,13 +9,15 @@
 #include <shared_mutex>
 //#include <boost/thread/shared_mutex.hpp>
 
-//enum Sign {EMPTY, CROSS, CIRCLE};  /// _null = 0, cross = 1, circle = 2
 enum GameResult { STILL_PLAYING, DRAW, VICTORY };
 
-#define BOARD_SIZE 16
-const std::string CROSS = "X";
-const std::string CIRCLE = "O";
-const std::string NONE = "";
+#define BOARD_SIZE 16			// rozmiar planszy
+
+// zmienne odpowiadające za znaki na planszy
+typedef std::string Sign;
+const Sign CROSS = "X";
+const Sign CIRCLE = "O";
+const Sign NONE = "";
 
 class Player
 {
@@ -24,22 +26,16 @@ public:
 	std::string name;
 	std::string sign;
 	int victories;
-	Player()
-	{
-		id = -1;
-		name = "";
-		sign = NONE;
-		victories = 0;
-	}
+	inline void incrementVictories() { ++victories; };
+	Player() : id(-1), name(""), sign(NONE), victories(0) {}
 	Player(int i, std::string n, std::string s, int v) : id(i), name(n), sign(s), victories(v) {}
 };
 
-typedef std::string Sign;
 typedef std::lock_guard<std::shared_timed_mutex> WriteLock;
 typedef std::shared_lock<std::shared_timed_mutex> ReadLock;
 class Move;
 
-typedef std::vector<std::vector<std::string> > Board;
+typedef std::vector<std::vector<Sign> > Board;
 
 class Game
 {
@@ -52,7 +48,6 @@ private:
 	void setPoint(const int& a, const int& b, const Sign& w);		/// zapisanie wspolrzednych nowego kolka lub krzyzyka
 	inline void setBoard(const Board& board) { board_ = board; };	// ustawienie planszy na podaną w argumencie
 	void setBoard(const Sign&);		// wypełnienie planszy danym znakiem
-	inline void setReseted(bool flag) { reseted_ = flag; };
 
   Player oPlayer;
 	Player xPlayer;
@@ -60,9 +55,9 @@ private:
 	int y_;
 	Sign which_;	// znak jaki ostatnio wstawiono w miejscu (x, y)
 	Board board_;	// reprezentacja planszy
-	mutable bool reseted_; //flaga mowiaca czy gra jest zresetowana, true - zrestartowana, false - nie
+	mutable int reseted_; //flaga mowiaca czy gra jest zresetowana, true - zrestartowana, false - nie
 	mutable bool hasChanged;	// zmienna pomocnicza dla funkcji condition - sprawdza czy trzeba na nowo sprawdzać wynik gry
-	mutable GameResult state_;
+	mutable GameResult state_;		// stan gry ( VICTORY, DRAW, STILL_PLAYING )
 	mutable std::shared_timed_mutex mtx;
 
 public:
@@ -78,8 +73,11 @@ public:
 	                                        /// nie uczestniczy w danej grze, zwracany string jest pusty
   bool hasPlayer(const int& id) const;		/// sprawdza czy w grze uczestniczy gracz o podanym id
 	bool isFull() const;
-	GameResult condition() const;		/// sprawdzenie warunkow zwyciestwa
+	GameResult condition();		/// sprawdzenie warunkow zwyciestwa
 	inline bool getReseted() const { return reseted_; };
+	inline int getPlayerPoints(const int& id) const { return (id == oPlayer.id ? oPlayer.victories : xPlayer.victories); };
+	inline int getOpponentsPoints(const int& id) const { return (id != oPlayer.id ? oPlayer.victories : xPlayer.victories); };
+	inline GameResult getState() const { return state_; };
 };
 
 class Result;
@@ -104,8 +102,10 @@ public:
 	std::string getOpponentsName(const int& id) const;
 	Move getLastMove(const int& id) const;
 	void makeMove(const int& id, const int& x, const int& y);
-	GameResult getResult(const int& id) const;
+	GameResult getResult(const int& id);
 	void resetGame(const int& id);
+	int getPlayerPoints(const int& id) const;
+	int getOpponentsPoints(const int& id) const;
 };
 
 class Move

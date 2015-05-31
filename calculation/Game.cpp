@@ -13,11 +13,12 @@ Game::Game() : oPlayer(), xPlayer(), mtx()					/// inicjujemy tablice EMPTY'ami
 	which_ = NONE;
 	state_ = STILL_PLAYING;
 	hasChanged = false;
+	reseted_ = 0;
 }
 
 Game::~Game() { }
 
-GameResult Game::condition() const		/// 0 nic, 1 remis, 2 wygrana
+GameResult Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 {
 	if(!hasChanged)
 		return state_;
@@ -29,7 +30,10 @@ GameResult Game::condition() const		/// 0 nic, 1 remis, 2 wygrana
 		|| checkHorizontally() == VICTORY
 		|| checkLeftDownRightUpper() == VICTORY
 		|| checkLeftUpperRightDown() == VICTORY)
-			return state_ = VICTORY;
+	{
+		which_ == CIRCLE ? oPlayer.incrementVictories() : xPlayer.incrementVictories();		// zwiekszamy licznik wygranych
+		return state_ = VICTORY;
+	}
 
 	// sprawdzamy czy nie remis
 
@@ -254,10 +258,9 @@ void Game::reset()
 {
 	WriteLock lock(mtx);
 
-	if( getReseted() == true )
+	if( ++reseted_ == 2 )
 		return;
 
-  setReseted(true);
   state_ = STILL_PLAYING;
 	setBoard(NONE);
 	x_ = -1;
@@ -313,10 +316,12 @@ Move Game::getLastMove() const
 void Game::makeMove(const int& id, const int& x, const int& y)
 {
 	WriteLock lock(mtx);
+
 	if(oPlayer.id == id || xPlayer.id == id)
 	{
+		if( reseted_ == 2 )
+			reseted_ = 0;
 		hasChanged = true;
-		setReseted(false);
 		if(oPlayer.id == id)
 			setPoint(x, y, CIRCLE);
 		else
@@ -420,18 +425,19 @@ void GameList::makeMove(const int& id, const int& x, const int& y)
 		if(game.hasPlayer(id))
 		{
 			game.makeMove(id, x ,y);
+			game.condition();
 			break;
 		}
 	}
 }
 
-GameResult GameList::getResult(const int& id) const
+GameResult GameList::getResult(const int& id)
 {
 	ReadLock lock(mtx);
-	for(const Game& game : list)
+	for(Game& game : list)
 	{
 		if(game.hasPlayer(id))
-			return game.condition();
+			return game.getState();
 	}
 	return STILL_PLAYING;
 }
@@ -447,4 +453,26 @@ void GameList::resetGame(const int& id)
 			break;
 		}
 	}
+}
+
+int GameList::getPlayerPoints(const int& id) const
+{
+	ReadLock lock(mtx);
+	for(const Game& game : list)
+	{
+		if(game.hasPlayer(id))
+			return game.getPlayerPoints(id);
+	}
+	return -1;	// w razie braku takiego gracza
+}
+
+int GameList::getOpponentsPoints(const int& id) const
+{
+	ReadLock lock(mtx);
+	for(const Game& game : list)
+	{
+		if(game.hasPlayer(id))
+			return game.getOpponentsPoints(id);
+		}
+		return -1;	// w razie braku takiego gracza
 }

@@ -374,7 +374,7 @@
       url: "{{=url_move}}"
     }).done(function( out_data ){
       out_data = $.parseJSON(out_data);
-      setStatus( out_data.status, player1);
+      setStatus( out_data, player1);
 
       if( out_data.status === "STILL_PLAYING"){
         getOpponentsMove();
@@ -411,11 +411,10 @@
         getOpponentsName();
         $('#nickname-form').delay(150).fadeOut(400);
 
-
+        $('.player1Points').text("0");
+        $('.player2Points').text("0");
         $(".player1Turn").text(player1.sign);
         $(".player2Turn").text(player2.sign);
-        $(".player1Points").text(player1.points.toString());
-        $(".player2Points").text(player2.points.toString());
 
 
         if(turn === player2.sign){
@@ -443,14 +442,14 @@
         $(".col").map(function() {
           $(this).text("");
         });
-      if(player1.sign === "O"){   // zeby tylko jeden gracz zresetowal gre
+      //if(player1.sign === "O"){   // zeby tylko jeden gracz zresetowal gre
         $.ajax({
           type: "POST",
           data: {id: player1.id},
           url: "{{=url_reset}}",
           async: false,
           })
-      }
+    //  }
     };
 
   getOpponentsName = function() {
@@ -500,7 +499,7 @@
             });
           });
 
-          setStatus( out_data.status, player2 );   //ustawia okienko wygranej jesli taka nastapi
+          setStatus( out_data, player2 );   //ustawia okienko wygranej jesli taka nastapi
 
           if( out_data.status === "STILL_PLAYING" ){
              turn = player1.sign;
@@ -516,24 +515,20 @@
     });
   }
 
-  setStatus = function(status, player) {  // funkcja ustawia okienko statusu gry, wlacza sie gdy jest wygrana lub remis
-    if( status === "VICTORY" ){
+  setStatus = function(out_data, player) {  // funkcja ustawia okienko statusu gry, wlacza sie gdy jest wygrana lub remis
+    if( out_data.status === "VICTORY" ){
       $('#result-text').text(player.nickname + " WIN");
       $('#game-result-form').fadeTo(200, 0.9);
-      player.points++;
       if(player.sign === player1.sign){
-        $('.player1Points').text(player.points.toString());
+        $('.player1Points').text(out_data.points);
       } else {
-        $('.player2Points').text(player.points.toString());
+        $('.player2Points').text(out_data.points);
       }
     } else if( status === "DRAW" ) {
       $('#result-text').text("DRAW");
       $('#game-result-form').fadeTo(200, 0.9);
-      player1.points++;
-      player2.points++;
-      $('.player1Points').text(player1.points.toString());
-      $('.player2Points').text(player2.points.toString());
-
+      // $('.player1Points').text(player1.points.toString());
+      // $('.player2Points').text(player2.points.toString());
     } else {
       $(".player1Turn").fadeTo(200, 0);
       $(".player2Turn").fadeTo(200, 1);
