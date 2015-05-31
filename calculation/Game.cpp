@@ -17,7 +17,7 @@ Game::Game() : oPlayer(), xPlayer(), mtx()					/// inicjujemy tablice EMPTY'ami
 
 Game::~Game() { }
 
-GameResult Game::condition()		/// 0 nic, 1 remis, 2 wygrana
+GameResult Game::condition() const		/// 0 nic, 1 remis, 2 wygrana
 {
 	if(!hasChanged)
 		return state_;
@@ -29,16 +29,14 @@ GameResult Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 		|| checkHorizontally() == VICTORY
 		|| checkLeftDownRightUpper() == VICTORY
 		|| checkLeftUpperRightDown() == VICTORY)
-	{
 			return state_ = VICTORY;
-	}
 
 	// sprawdzamy czy nie remis
 
 	return state_ = checkDraw();
 }
 
-GameResult Game::checkVertically()
+GameResult Game::checkVertically() const
 {
 	int from_x = (x_ - 4 > 0 ? x_ - 4 : 0);		// jesli x_ - 5 jest ujemne to bedziemy sprawdzac od brzegu tablicy, czyli od 0
 	int to_x = (x_ + 4 < BOARD_SIZE ? x_ + 4 : BOARD_SIZE - 1);		// analogicznie dla x_ - 5
@@ -67,7 +65,7 @@ GameResult Game::checkVertically()
 	return result;
 }
 
-GameResult Game::checkHorizontally()
+GameResult Game::checkHorizontally() const
 {
 	GameResult result;
 	int from_y = (y_ - 4 > 0 ? y_ - 4 : 0);
@@ -96,7 +94,7 @@ GameResult Game::checkHorizontally()
 	return result;
 }
 
-GameResult Game::checkLeftUpperRightDown()
+GameResult Game::checkLeftUpperRightDown() const
 {
 	GameResult result = STILL_PLAYING;
 	int xfrom, yfrom, xto, yto;
@@ -158,7 +156,7 @@ GameResult Game::checkLeftUpperRightDown()
 /**
 	Metoda sprawdzajaca warunek zwyciestwa po skosie od lewego dolnego rogu do prawego gornego.
 */
-GameResult Game::checkLeftDownRightUpper()
+GameResult Game::checkLeftDownRightUpper() const
 {
 	GameResult result = STILL_PLAYING;
 	int xfrom, yfrom, xto, yto;
@@ -213,7 +211,7 @@ GameResult Game::checkLeftDownRightUpper()
 	return result;
 }
 
-GameResult Game::checkDraw()
+GameResult Game::checkDraw() const
 {
 	GameResult result = DRAW;
 
@@ -277,7 +275,7 @@ void Game::reset()
 }
 
 
-void Game::displayBoard()
+void Game::displayBoard() const
 {
 	for(auto row : board_)
 	{
@@ -313,7 +311,7 @@ Sign Game::addPlayer(int id, std::string name)
 									/// możemy też zamienić to na rzucanie wyjątkiem
 }
 
-Move Game::getLastMove()
+Move Game::getLastMove() const
 {
 	std::lock_guard<std::mutex> lock(mtx);
 	return Move(x_, y_, which_);
@@ -332,7 +330,7 @@ void Game::makeMove(int id, int x, int y)
 	}
 }
 
-std::string Game::getOpponentsName(int id)
+std::string Game::getOpponentsName(int id) const
 {
 	if(oPlayer.id == id)
 		return xPlayer.name;
@@ -342,12 +340,12 @@ std::string Game::getOpponentsName(int id)
 		return "";
 }
 
-bool Game::hasPlayer(int id)
+bool Game::hasPlayer(int id) const
 {
 	return (xPlayer.id == id || oPlayer.id == id);
 }
 
-bool Game::isFull()
+bool Game::isFull() const
 {
 	return xPlayer.id != -1;		/// gra nie jest pełna, jeśli nie ma w niej drugiego gracza
 }
@@ -391,13 +389,13 @@ Sign GameList::addPlayer(int id, std::string name)
 	}
 
 	list.emplace_back();			/// dodanie nowej gry
-	                          /// nie możemu tu tak po prostu użyć push_back, bo mutex nie ma konstruktora kopiującego
+	                          /// nie możemy tu tak po prostu użyć push_back, bo mutex nie ma konstruktora kopiującego
 	return list.back().addPlayer(id, name);
 }
 
-std::string GameList::getOpponentsName(int id)
+std::string GameList::getOpponentsName(int id) const
 {
-	for(Game& game : list)
+	for(const Game& game : list)
 	{
 		if(game.hasPlayer(id))
 			return game.getOpponentsName(id);
@@ -405,9 +403,9 @@ std::string GameList::getOpponentsName(int id)
 	return "";
 }
 
-Move GameList::getLastMove(int id)
+Move GameList::getLastMove(int id) const
 {
-	for(Game& game : list)
+	for(const Game& game : list)
 	{
 		if(game.hasPlayer(id))
 			return game.getLastMove();
@@ -427,9 +425,9 @@ void GameList::makeMove(int id, int x, int y)
 	}
 }
 
-GameResult GameList::getResult(int id)
+GameResult GameList::getResult(int id) const
 {
-	for(Game& game : list)
+	for(const Game& game : list)
 	{
 		if(game.hasPlayer(id))
 			return game.condition();

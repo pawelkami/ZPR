@@ -41,11 +41,11 @@ typedef std::vector<std::vector<std::string> > Board;
 class Game
 {
 private:
-	GameResult checkVertically();
-	GameResult checkHorizontally();
-	GameResult checkLeftDownRightUpper();
-	GameResult checkLeftUpperRightDown();
-	GameResult checkDraw();
+	GameResult checkVertically() const;
+	GameResult checkHorizontally() const;
+	GameResult checkLeftDownRightUpper() const;
+	GameResult checkLeftUpperRightDown() const;
+	GameResult checkDraw() const;
 	void setPoint(int a, int b, Sign w);		/// zapisanie wspolrzednych nowego kolka lub krzyzyka
 	void setBoard(Board board);	// ustawienie planszy na podaną w argumencie
 	void setBoard(Sign);		// wypełnienie planszy danym znakiem
@@ -57,25 +57,25 @@ private:
 	int y_;
 	Sign which_;	// znak jaki ostatnio wstawiono w miejscu (x, y)
 	Board board_;	// reprezentacja planszy
-	bool reseted_; //flaga mowiaca czy gra jest zresetowana, true - zrestartowana, false - nie
-	bool hasChanged;	// zmienna pomocnicza dla funkcji condition - sprawdza czy trzeba na nowo sprawdzać wynik gry
-	GameResult state_;
-	std::mutex mtx;
+	mutable bool reseted_; //flaga mowiaca czy gra jest zresetowana, true - zrestartowana, false - nie
+	mutable bool hasChanged;	// zmienna pomocnicza dla funkcji condition - sprawdza czy trzeba na nowo sprawdzać wynik gry
+	mutable GameResult state_;
+	mutable std::mutex mtx;
 
 public:
 	Game();
 	~Game();
-	inline Board getBoard() { return board_; };
+	inline Board getBoard() const { return board_; };
 	void reset();
-	void displayBoard();     /// funkcja do testowania, na koniec powinniśmy ją usunąć
+	void displayBoard() const;     /// funkcja do testowania, na koniec powinniśmy ją usunąć
 	Sign addPlayer(int id, std::string name);		/// dodaje do gry gracza i zwraca figurę, którą będzie grał
-	Move getLastMove();
+	Move getLastMove() const;
 	void makeMove(int id, int x, int y);
-	std::string getOpponentsName(int id);		/// zwraca imię przeciwnika gracza o podanym id. Jeśli gracz o podanym id
+	std::string getOpponentsName(int id) const;		/// zwraca imię przeciwnika gracza o podanym id. Jeśli gracz o podanym id
 	                                        /// nie uczestniczy w danej grze, zwracany string jest pusty
-  bool hasPlayer(int id);		/// sprawdza czy w grze uczestniczy gracz o podanym id
-	bool isFull();
-	GameResult condition();		/// sprawdzenie warunkow zwyciestwa
+  bool hasPlayer(int id) const;		/// sprawdza czy w grze uczestniczy gracz o podanym id
+	bool isFull() const;
+	GameResult condition() const;		/// sprawdzenie warunkow zwyciestwa
 	inline bool getReseted() const { return reseted_; };
 };
 
@@ -98,10 +98,10 @@ public:
 	static PGameList getInstance();
 	int getNewID();
 	Sign addPlayer(int id, std::string name);
-	std::string getOpponentsName(int id);
-	Move getLastMove(int id);
+	std::string getOpponentsName(int id) const;
+	Move getLastMove(int id) const;
 	void makeMove(int id, int x, int y);
-	GameResult getResult(int id);
+	GameResult getResult(int id) const;
 	void resetGame(int id);
 };
 
