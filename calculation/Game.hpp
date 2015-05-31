@@ -6,7 +6,8 @@
 #include <memory>
 #include <vector>
 #include <list>
-#include <mutex>
+#include <shared_mutex>
+//#include <boost/thread/shared_mutex.hpp>
 
 //enum Sign {EMPTY, CROSS, CIRCLE};  /// _null = 0, cross = 1, circle = 2
 enum GameResult { STILL_PLAYING, DRAW, VICTORY };
@@ -34,6 +35,8 @@ public:
 };
 
 typedef std::string Sign;
+typedef std::lock_guard<std::shared_timed_mutex> WriteLock;
+typedef std::shared_lock<std::shared_timed_mutex> ReadLock;
 class Move;
 
 typedef std::vector<std::vector<std::string> > Board;
@@ -60,7 +63,7 @@ private:
 	mutable bool reseted_; //flaga mowiaca czy gra jest zresetowana, true - zrestartowana, false - nie
 	mutable bool hasChanged;	// zmienna pomocnicza dla funkcji condition - sprawdza czy trzeba na nowo sprawdzać wynik gry
 	mutable GameResult state_;
-	mutable std::mutex mtx;
+	mutable std::shared_timed_mutex mtx;
 
 public:
 	Game();
@@ -88,7 +91,7 @@ class GameList
 {
 private:
 	std::list<Game> list;
-	std::mutex mtx;
+	mutable std::shared_timed_mutex mtx;
 	int firstUnusedID;
 	static PGameList pInstance;
 	GameList();

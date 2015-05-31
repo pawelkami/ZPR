@@ -233,7 +233,6 @@ GameResult Game::checkDraw() const
 
 void Game::setPoint(int a, int b, Sign w)
 {
-	std::lock_guard<std::mutex> lock(mtx);
 	x_ = a;
 	y_ = b;
 	which_ = w;
@@ -242,13 +241,11 @@ void Game::setPoint(int a, int b, Sign w)
 
 void Game::setBoard(Board board)
 {
-	std::lock_guard<std::mutex> lock(mtx);
 	board_ = board;
 }
 
 void Game::setBoard(Sign sign)
 {
-	std::lock_guard<std::mutex> lock(mtx);
 	for(auto& board : board_)
 	{
 		for(auto& field : board)
@@ -260,7 +257,7 @@ void Game::setBoard(Sign sign)
 
 void Game::reset()
 {
-	//std::lock_guard<std::mutex> lock(mtx);        //zablokowało mi serwer
+	WriteLock lock(mtx);
 
 	if( getReseted() == true )
 		return;
@@ -277,6 +274,7 @@ void Game::reset()
 
 void Game::displayBoard() const
 {
+	ReadLock lock(mtx);
 	for(auto row : board_)
 	{
 		for(auto col : row)
@@ -292,7 +290,7 @@ void Game::displayBoard() const
 
 Sign Game::addPlayer(int id, std::string name)
 {
-	std::lock_guard<std::mutex> lock(mtx);
+	WriteLock lock(mtx);
 
 	if (oPlayer.id == -1)
 	{
@@ -313,12 +311,13 @@ Sign Game::addPlayer(int id, std::string name)
 
 Move Game::getLastMove() const
 {
-	std::lock_guard<std::mutex> lock(mtx);
+	ReadLock lock(mtx);
 	return Move(x_, y_, which_);
 }
 
 void Game::makeMove(int id, int x, int y)
 {
+	WriteLock lock(mtx);
 	if(oPlayer.id == id || xPlayer.id == id)
 	{
 		hasChanged = true;
@@ -332,6 +331,7 @@ void Game::makeMove(int id, int x, int y)
 
 std::string Game::getOpponentsName(int id) const
 {
+	ReadLock lock(mtx);
 	if(oPlayer.id == id)
 		return xPlayer.name;
 	else if(xPlayer.id == id)
@@ -342,11 +342,13 @@ std::string Game::getOpponentsName(int id) const
 
 bool Game::hasPlayer(int id) const
 {
+	ReadLock lock(mtx);
 	return (xPlayer.id == id || oPlayer.id == id);
 }
 
 bool Game::isFull() const
 {
+	ReadLock lock(mtx);
 	return xPlayer.id != -1;		/// gra nie jest pełna, jeśli nie ma w niej drugiego gracza
 }
 
@@ -371,7 +373,7 @@ PGameList GameList::getInstance()
 
 int GameList::getNewID()
 {
-	std::lock_guard<std::mutex> lock(mtx);
+	WriteLock lock(mtx);
 	int ret = firstUnusedID;
 	firstUnusedID = (firstUnusedID + 1) % 100000;
 	return ret;
@@ -379,7 +381,7 @@ int GameList::getNewID()
 
 Sign GameList::addPlayer(int id, std::string name)
 {
-	std::lock_guard<std::mutex> lock(mtx);
+	WriteLock lock(mtx);
 	for(Game& game : list)
 	{
 		if(!game.isFull())
@@ -395,6 +397,7 @@ Sign GameList::addPlayer(int id, std::string name)
 
 std::string GameList::getOpponentsName(int id) const
 {
+	ReadLock lock(mtx);
 	for(const Game& game : list)
 	{
 		if(game.hasPlayer(id))
@@ -405,6 +408,7 @@ std::string GameList::getOpponentsName(int id) const
 
 Move GameList::getLastMove(int id) const
 {
+	ReadLock lock(mtx);
 	for(const Game& game : list)
 	{
 		if(game.hasPlayer(id))
@@ -415,6 +419,7 @@ Move GameList::getLastMove(int id) const
 
 void GameList::makeMove(int id, int x, int y)
 {
+	ReadLock lock(mtx);
 	for(Game& game : list)
 	{
 		if(game.hasPlayer(id))
@@ -427,6 +432,7 @@ void GameList::makeMove(int id, int x, int y)
 
 GameResult GameList::getResult(int id) const
 {
+	ReadLock lock(mtx);
 	for(const Game& game : list)
 	{
 		if(game.hasPlayer(id))
@@ -437,6 +443,7 @@ GameResult GameList::getResult(int id) const
 
 void GameList::resetGame(int id)
 {
+	WriteLock lock(mtx);
 	for(Game& game : list)
 	{
 		if(game.hasPlayer(id))
