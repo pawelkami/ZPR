@@ -12,12 +12,10 @@ from cppGame import *
 import json
 
 def index():
-    board_ = Game.getInstance().getBoard()
     return dict(
         url_move = URL('move'),
         url_reset = URL('reset'),
-        url_getSign = URL('getSign'),
-        url_setName = URL('setName'),
+        url_register = URL('register'),
         url_getName = URL('getName'),
         url_getMove = URL('getMove')
     )
@@ -58,45 +56,37 @@ def call():
     """
     return service()
 
-def getSign():
-    sign = Game.getInstance().getSign()
-    return json.dumps({'sign': sign})
-
+def register():
+    idnum = GameList.getInstance().getNewID()
+    name = str(request.post_vars.name)
+    sign = GameList.getInstance().addPlayer(idnum, name)
+    return json.dumps({'id' : idnum, 'sign' : sign})
 
 def move():
     i = int(request.post_vars.x)
     j = int(request.post_vars.y)
-    player_sign = request.post_vars.sign
+    idnum = int(request.post_vars.id)
 
-    Game.getInstance().setPoint(i, j, player_sign)
-    game_state = Game.getInstance().condition()
-
-    status = getGameState()
-    
+    GameList.getInstance().makeMove(idnum, i, j)
+    status = getGameState(idnum)
     return json.dumps({'status': status})
 
 
-def setName():
-    Game.getInstance().setPlayerName(str(request.post_vars.name))
-
 def getName():
-    sign = request.post_vars.sign
+    idnum = int(request.post_vars.id)
     playerName = ""
-    if sign == "O":
-        playerName = Game.getInstance().getPlayerName(2)
-    elif sign == "X":
-        playerName = Game.getInstance().getPlayerName(1)
+    playerName = GameList.getInstance().getOpponentsName(idnum)
     return json.dumps({'playerName' : playerName})
 
 def getMove():
-    lastMove = Game.getInstance().getLastMove()
-    status = getGameState()
+    idnum = int(request.post_vars.id)
+    lastMove = GameList.getInstance().getLastMove(idnum)
+    status = getGameState(idnum)
     return json.dumps({'x' : lastMove.x, 'y' : lastMove.y, "sign" : lastMove.sign, "status" : status})
 
 
-def getGameState():
-        game_state = Game.getInstance().getState()
-
+def getGameState(idnum):
+        game_state = GameList.getInstance().getResult(idnum)
         if game_state == GameResult.VICTORY :
             return "VICTORY"
         elif game_state == GameResult.DRAW :
@@ -105,4 +95,4 @@ def getGameState():
             return "STILL_PLAYING"
 
 def reset():
-    Game.getInstance().resetGame()
+    GameList.getInstance().resetGame(int(request.post_vars.id))

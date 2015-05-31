@@ -1,20 +1,7 @@
 #include "Game.hpp"
 
-PGame Game::pInstance = nullptr;
-
-PGame Game::getInstance()
+Game::Game() : oPlayer(), xPlayer(), mtx()					/// inicjujemy tablice EMPTY'ami
 {
-	if(!pInstance)
-	{
-		pInstance = PGame(new Game());
-	}
-
-	return pInstance;
-}
-
-Game::Game() : mtx()					/// inicjujemy tablice EMPTY'ami
-{
-	activePlayers = 0;
 	for (int i = 0; i < BOARD_SIZE; ++i)
 	{
 		board_.push_back( std::vector<std::string>() );
@@ -24,30 +11,31 @@ Game::Game() : mtx()					/// inicjujemy tablice EMPTY'ami
 	x_ = -1;
 	y_ = -1;
 	which_ = NONE;
-	setReseted(true);
 	state_ = STILL_PLAYING;
+	hasChanged = false;
 }
 
 Game::~Game() { }
 
 GameResult Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 {
+	if(!hasChanged)
+		return state_;
 	if(which_ == NONE)
 		return state_ = STILL_PLAYING;
-	GameResult result = STILL_PLAYING;
-	//najpierw sprawdzamy czy w prostej pionowej lub poziomej mamy spelniony warunek zwyciestwa
 
+	//najpierw sprawdzamy czy w prostej pionowej lub poziomej mamy spelniony warunek zwyciestwa
 	if(checkVertically() == VICTORY
 		|| checkHorizontally() == VICTORY
 		|| checkLeftDownRightUpper() == VICTORY
 		|| checkLeftUpperRightDown() == VICTORY)
-		return state_ = VICTORY;
+	{
+			return state_ = VICTORY;
+	}
 
 	// sprawdzamy czy nie remis
 
-	result = checkDraw();
-
-	return state_ = result;
+	return state_ = checkDraw();
 }
 
 GameResult Game::checkVertically()
@@ -248,7 +236,6 @@ GameResult Game::checkDraw()
 void Game::setPoint(int a, int b, Sign w)
 {
 	std::lock_guard<std::mutex> lock(mtx);
-	setReseted(false);
 	x_ = a;
 	y_ = b;
 	which_ = w;
@@ -273,26 +260,25 @@ void Game::setBoard(Sign sign)
 	}
 }
 
-void Game::resetGame()
+void Game::reset()
 {
-	std::lock_guard<std::mutex> lock(mtx);
+	//std::lock_guard<std::mutex> lock(mtx);        //zablokowało mi serwer
 
 	if( getReseted() == true )
 		return;
 
-	setReseted(true);
-	state_ = STILL_PLAYING;
+  setReseted(true);
+  state_ = STILL_PLAYING;
 	setBoard(NONE);
 	x_ = -1;
-	y_ = -1;
+  y_ = -1;
 	which_ = "";
-	//activePlayers = 0;
+	hasChanged = false;
 }
 
 
 void Game::displayBoard()
 {
-	std::cout << activePlayers << std::endl;
 	for(auto row : board_)
 	{
 		for(auto col : row)
@@ -306,41 +292,159 @@ void Game::displayBoard()
 	}
 }
 
-void Game::setPlayerName(std::string name)
+Sign Game::addPlayer(int id, std::string name)
 {
 	std::lock_guard<std::mutex> lock(mtx);
-	activePlayers++;
-	if (activePlayers == 1)
-	{
-		oPlayerName = name;
-	}
-	else if (activePlayers == 2)
-	{
-		xPlayerName = name;
-	}
-}
 
-Sign Game::getSign() const
-{
-	if(activePlayers == 1)
+	if (oPlayer.id == -1)
 	{
+		oPlayer.id = id;
+		oPlayer.name = name;
 		return CIRCLE;
 	}
-	else if (activePlayers == 2)
+	else if(xPlayer.id == -1)
 	{
+		xPlayer.id = id;
+		xPlayer.name = name;
 		return CROSS;
 	}
-	return NONE;
+	else
+		return NONE;	/// nie brakowało graczy, więc nowy nie został dodany
+									/// możemy też zamienić to na rzucanie wyjątkiem
 }
 
-std::string Game::getPlayerName(int number)
-{
-	std::string name = ( number == 1 ? oPlayerName : xPlayerName );
-	return name;
-}
-
-LastMove Game::getLastMove()
+Move Game::getLastMove()
 {
 	std::lock_guard<std::mutex> lock(mtx);
-	return LastMove(x_, y_, which_);
+	return Move(x_, y_, which_);
+}
+
+void Game::makeMove(int id, int x, int y)
+{
+	if(oPlayer.id == id || xPlayer.id == id)
+	{
+		hasChanged = true;
+		setReseted(false);
+		if(oPlayer.id == id)
+			setPoint(x, y, CIRCLE);
+		else
+			setPoint(x, y, CROSS);
+	}
+}
+
+std::string Game::getOpponentsName(int id)
+{
+	if(oPlayer.id == id)
+		return xPlayer.name;
+	else if(xPlayer.id == id)
+		return oPlayer.name;
+	else
+		return "";
+}
+
+bool Game::hasPlayer(int id)
+{
+	return (xPlayer.id == id || oPlayer.id == id);
+}
+
+bool Game::isFull()
+{
+	return xPlayer.id != -1;		/// gra nie jest pełna, jeśli nie ma w niej drugiego gracza
+}
+
+GameList::GameList() : list(), mtx()
+{
+	firstUnusedID = 0;
+}
+
+GameList::~GameList() {}
+
+PGameList GameList::pInstance = nullptr;
+
+PGameList GameList::getInstance()
+{
+	if(!pInstance)
+	{
+		pInstance = PGameList(new GameList());
+	}
+
+	return pInstance;
+}
+
+int GameList::getNewID()
+{
+	std::lock_guard<std::mutex> lock(mtx);
+	int ret = firstUnusedID;
+	firstUnusedID = (firstUnusedID + 1) % 100000;
+	return ret;
+}
+
+Sign GameList::addPlayer(int id, std::string name)
+{
+	std::lock_guard<std::mutex> lock(mtx);
+	for(Game& game : list)
+	{
+		if(!game.isFull())
+		{
+			return game.addPlayer(id, name);
+		}
+	}
+
+	list.emplace_back();			/// dodanie nowej gry
+	                          /// nie możemu tu tak po prostu użyć push_back, bo mutex nie ma konstruktora kopiującego
+	return list.back().addPlayer(id, name);
+}
+
+std::string GameList::getOpponentsName(int id)
+{
+	for(Game& game : list)
+	{
+		if(game.hasPlayer(id))
+			return game.getOpponentsName(id);
+	}
+	return "";
+}
+
+Move GameList::getLastMove(int id)
+{
+	for(Game& game : list)
+	{
+		if(game.hasPlayer(id))
+			return game.getLastMove();
+	}
+	return Move();
+}
+
+void GameList::makeMove(int id, int x, int y)
+{
+	for(Game& game : list)
+	{
+		if(game.hasPlayer(id))
+		{
+			game.makeMove(id, x ,y);
+			break;
+		}
+	}
+}
+
+GameResult GameList::getResult(int id)
+{
+	for(Game& game : list)
+	{
+		if(game.hasPlayer(id))
+			return game.condition();
+	}
+	return STILL_PLAYING;
+}
+
+void GameList::resetGame(int id)
+{
+	for(Game& game : list)
+	{
+		if(game.hasPlayer(id))
+		{
+			game.reset();
+			break;
+		}
+	}
 }

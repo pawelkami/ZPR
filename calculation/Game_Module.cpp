@@ -12,10 +12,10 @@ BOOST_PYTHON_MODULE(cppGame)
 		.def(boost::python::vector_indexing_suite<std::vector <std::vector<std::string> > >())
 		;
 
-	boost::python::class_<LastMove>("LastMove")
-		.def_readwrite("x", &LastMove::x)
-		.def_readwrite("y", &LastMove::y)
-		.def_readwrite("sign", &LastMove::sign)
+	boost::python::class_<Move>("Move")
+		.def_readwrite("x", &Move::x)
+		.def_readwrite("y", &Move::y)
+		.def_readwrite("sign", &Move::sign)
 		;
 
 	boost::python::enum_<GameResult>("GameResult")
@@ -24,18 +24,15 @@ BOOST_PYTHON_MODULE(cppGame)
 		.value( "VICTORY", VICTORY )
 		;
 
-	boost::python::class_<Game, std::shared_ptr<Game>, boost::noncopyable>("Game", boost::python::no_init)
-		.def( "getInstance", &Game::getInstance )
+	boost::python::class_<GameList, std::shared_ptr<GameList>, boost::noncopyable>("GameList", boost::python::no_init)
+		.def( "getInstance", &GameList::getInstance )
 		.staticmethod("getInstance")
-		.def( "condition", &Game::condition )
-		.def( "setPoint", &Game::setPoint )
-		.def( "getBoard", &Game::getBoard )
-		.def( "resetGame", &Game::resetGame )
-		.def( "getSign", &Game::getSign )
-		.def( "displayBoard", &Game::displayBoard )
-		.def( "setPlayerName", &Game::setPlayerName, boost::python::args("name") )
-		.def( "getPlayerName", &Game::getPlayerName, boost::python::args("number") )
-		.def( "getLastMove", &Game::getLastMove )
-		.def( "getState", &Game::getState )
+		.def( "getNewID", &GameList::getNewID )
+		.def( "getResult", &GameList::getResult, boost::python::args("id") )
+		.def( "makeMove", &GameList::makeMove, boost::python::args("id", "x", "y") )
+		.def( "resetGame", &GameList::resetGame, boost::python::args("id") )
+		.def( "addPlayer", &GameList::addPlayer, boost::python::args("id", "name") )
+		.def( "getOpponentsName", &GameList::getOpponentsName, boost::python::args("id") )
+		.def( "getLastMove", &GameList::getLastMove, boost::python::args("id") )
 		;
 }

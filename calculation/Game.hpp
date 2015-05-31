@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <list>
 #include <mutex>
 
 //enum Sign {EMPTY, CROSS, CIRCLE};  /// _null = 0, cross = 1, circle = 2
@@ -15,69 +16,108 @@ const std::string CROSS = "X";
 const std::string CIRCLE = "O";
 const std::string NONE = "";
 
-class Game;
-typedef std::shared_ptr<Game> PGame;
+class Player
+{
+public:
+	int id;
+	std::string name;
+	std::string sign;
+	int victories;
+	Player()
+	{
+		id = -1;
+		name = "";
+		sign = NONE;
+		victories = 0;
+	}
+	Player(int i, std::string n, std::string s, int v) : id(i), name(n), sign(s), victories(v) {}
+};
+
 typedef std::string Sign;
-class LastMove;
+class Move;
 
 typedef std::vector<std::vector<std::string> > Board;
 
 class Game
 {
 private:
-	Game();
-	Game(const Game&) = delete;
-	void operator=(const Game&) = delete;
 	GameResult checkVertically();
 	GameResult checkHorizontally();
 	GameResult checkLeftDownRightUpper();
 	GameResult checkLeftUpperRightDown();
 	GameResult checkDraw();
+	void setPoint(int a, int b, Sign w);		/// zapisanie wspolrzednych nowego kolka lub krzyzyka
+	void setBoard(Board board);	// ustawienie planszy na podaną w argumencie
+	void setBoard(Sign);		// wypełnienie planszy danym znakiem
 	inline void setReseted(bool flag) { reseted_ = flag; };
 
-	static PGame pInstance;
-	std::string oPlayerName;	// w przyszłości można to zmienić na obiekty zawierające jeszcze np. id i liczbę zwyciestw
-	std::string xPlayerName;
-	int activePlayers;
+  Player oPlayer;
+	Player xPlayer;
 	int x_;		// oba inty reprezentuja wspolrzedne ostatnio dodanego znaku
 	int y_;
 	Sign which_;	// znak jaki ostatnio wstawiono w miejscu (x, y)
 	Board board_;	// reprezentacja planszy
-	bool reseted_;	// flaga mowiaca czy gra jest zresetowana, true - zrestartowana, false - nie
-	GameResult state_;	// aktualny stan gry
+	bool reseted_; //flaga mowiaca czy gra jest zresetowana, true - zrestartowana, false - nie
+	bool hasChanged;	// zmienna pomocnicza dla funkcji condition - sprawdza czy trzeba na nowo sprawdzać wynik gry
+	GameResult state_;
 	std::mutex mtx;
 
 public:
-	static PGame getInstance();
+	Game();
 	~Game();
+	inline Board getBoard() { return board_; };
+	void reset();
+	void displayBoard();     /// funkcja do testowania, na koniec powinniśmy ją usunąć
+	Sign addPlayer(int id, std::string name);		/// dodaje do gry gracza i zwraca figurę, którą będzie grał
+	Move getLastMove();
+	void makeMove(int id, int x, int y);
+	std::string getOpponentsName(int id);		/// zwraca imię przeciwnika gracza o podanym id. Jeśli gracz o podanym id
+	                                        /// nie uczestniczy w danej grze, zwracany string jest pusty
+  bool hasPlayer(int id);		/// sprawdza czy w grze uczestniczy gracz o podanym id
+	bool isFull();
 	GameResult condition();		/// sprawdzenie warunkow zwyciestwa
-	void setPoint(int a, int b, Sign w);		/// zapisanie wspolrzednych nowego kolka lub krzyzyka
-	inline Board getBoard() const { return board_; };
-	void setBoard(Board board);	// ustawienie planszy na podaną w argumencie
-	void setBoard(Sign);		// wypełnienie planszy danym znakiem
-	void resetGame();
-	Sign getSign() const;
-	void displayBoard();
-	void setPlayerName(std::string name);
-	std::string getPlayerName(int i);
-	LastMove getLastMove();
 	inline bool getReseted() const { return reseted_; };
-	inline GameResult getState() const { return state_; };
 };
 
-class LastMove
+class Result;
+
+class GameList;
+typedef std::shared_ptr<GameList> PGameList;
+
+class GameList
+{
+private:
+	std::list<Game> list;
+	std::mutex mtx;
+	int firstUnusedID;
+	static PGameList pInstance;
+	GameList();
+	GameList(const GameList&) = delete;
+public:
+	~GameList();
+	static PGameList getInstance();
+	int getNewID();
+	Sign addPlayer(int id, std::string name);
+	std::string getOpponentsName(int id);
+	Move getLastMove(int id);
+	void makeMove(int id, int x, int y);
+	GameResult getResult(int id);
+	void resetGame(int id);
+};
+
+class Move
 {
 public:
 	int x;
 	int y;
 	Sign sign;
-	LastMove()
+	Move()
 	{
 		x = -1;
 		y = -1;
 		sign = NONE;
 	}
-	LastMove(int xx, int yy, Sign s) : x(xx), y(yy), sign(s) {}
+	Move(int xx, int yy, Sign s) : x(xx), y(yy), sign(s) {}
 };
 
 #endif // GAME_HPP

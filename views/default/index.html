@@ -370,7 +370,7 @@
     $.ajax({
       type: "POST",
       async: false,
-      data: {x: col, y: row, sign: player1.sign},
+      data: {x: col, y: row, id: player1.id},
       url: "{{=url_move}}"
     }).done(function( out_data ){
       out_data = $.parseJSON(out_data);
@@ -379,10 +379,7 @@
       if( out_data.status === "STILL_PLAYING"){
         getOpponentsMove();
       }
-
     });
-
-
   });
 
     $("#start-button").click(function() {
@@ -392,20 +389,15 @@
         player1.nickname = ($("#nickname-textbox")).val();
         $(".player1Text").text(player1.nickname);
 
+        // zapisuje imię gracza na serwerze i zwraca mu jego id oraz znak
         $.ajax({
           type: "POST",
-          async: false, //musimy być pewni, że do serwera najpierw zostanie dodane imię,
-                        //a dopiero potem zaczniemy pobierać znak, którym mamy grać
-          data: {name: player1.nickname},
-          url: "{{=url_setName}}"
-        });
-
-        $.ajax({
-          type: "GET",
           async: false,
-          url: "{{=url_getSign}}",
+          data: {name: player1.nickname},
+          url: "{{=url_register}}",
           success: function( out_data ) {
             out_data = $.parseJSON(out_data);
+            player1.id = out_data.id;
             player1.sign = out_data.sign;
             if(out_data.sign === "O") {
               player2.sign = "X";
@@ -454,6 +446,7 @@
       if(player1.sign === "O"){   // zeby tylko jeden gracz zresetowal gre
         $.ajax({
           type: "POST",
+          data: {id: player1.id},
           url: "{{=url_reset}}",
           async: false,
           })
@@ -464,7 +457,7 @@
     $.ajax({
       type: "POST",
       url: "{{=url_getName}}",
-      data: {sign : player1.sign},
+      data: {id: player1.id},
       success: function( out_data ) {
         out_data = $.parseJSON(out_data);
 
@@ -492,7 +485,8 @@
 
   getOpponentsMove = function() {
     $.ajax({
-      type: "GET",
+      type: "POST",
+      data: {id: player1.id},
       url: "{{=url_getMove}}",
       success: function( out_data ) {
         out_data = $.parseJSON(out_data);
