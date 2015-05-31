@@ -49,9 +49,9 @@ private:
 	GameResult checkLeftDownRightUpper() const;
 	GameResult checkLeftUpperRightDown() const;
 	GameResult checkDraw() const;
-	void setPoint(int a, int b, Sign w);		/// zapisanie wspolrzednych nowego kolka lub krzyzyka
-	void setBoard(Board board);	// ustawienie planszy na podaną w argumencie
-	void setBoard(Sign);		// wypełnienie planszy danym znakiem
+	void setPoint(const int& a, const int& b, const Sign& w);		/// zapisanie wspolrzednych nowego kolka lub krzyzyka
+	inline void setBoard(const Board& board) { board_ = board; };	// ustawienie planszy na podaną w argumencie
+	void setBoard(const Sign&);		// wypełnienie planszy danym znakiem
 	inline void setReseted(bool flag) { reseted_ = flag; };
 
   Player oPlayer;
@@ -71,12 +71,12 @@ public:
 	inline Board getBoard() const { return board_; };
 	void reset();
 	void displayBoard() const;     /// funkcja do testowania, na koniec powinniśmy ją usunąć
-	Sign addPlayer(int id, std::string name);		/// dodaje do gry gracza i zwraca figurę, którą będzie grał
+	Sign addPlayer(const int& id, const std::string& name);		/// dodaje do gry gracza i zwraca figurę, którą będzie grał
 	Move getLastMove() const;
-	void makeMove(int id, int x, int y);
-	std::string getOpponentsName(int id) const;		/// zwraca imię przeciwnika gracza o podanym id. Jeśli gracz o podanym id
+	void makeMove(const int& id, const int& x, const int& y);
+	std::string getOpponentsName(const int& id) const;		/// zwraca imię przeciwnika gracza o podanym id. Jeśli gracz o podanym id
 	                                        /// nie uczestniczy w danej grze, zwracany string jest pusty
-  bool hasPlayer(int id) const;		/// sprawdza czy w grze uczestniczy gracz o podanym id
+  bool hasPlayer(const int& id) const;		/// sprawdza czy w grze uczestniczy gracz o podanym id
 	bool isFull() const;
 	GameResult condition() const;		/// sprawdzenie warunkow zwyciestwa
 	inline bool getReseted() const { return reseted_; };
@@ -100,12 +100,12 @@ public:
 	~GameList();
 	static PGameList getInstance();
 	int getNewID();
-	Sign addPlayer(int id, std::string name);
-	std::string getOpponentsName(int id) const;
-	Move getLastMove(int id) const;
-	void makeMove(int id, int x, int y);
-	GameResult getResult(int id) const;
-	void resetGame(int id);
+	Sign addPlayer(const int& id, const std::string& name);
+	std::string getOpponentsName(const int& id) const;
+	Move getLastMove(const int& id) const;
+	void makeMove(const int& id, const int& x, const int& y);
+	GameResult getResult(const int& id) const;
+	void resetGame(const int& id);
 };
 
 class Move
@@ -114,12 +114,7 @@ public:
 	int x;
 	int y;
 	Sign sign;
-	Move()
-	{
-		x = -1;
-		y = -1;
-		sign = NONE;
-	}
+	Move() : x(-1), y(-1), sign(NONE) {}
 	Move(int xx, int yy, Sign s) : x(xx), y(yy), sign(s) {}
 };
 

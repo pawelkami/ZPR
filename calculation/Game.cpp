@@ -231,7 +231,7 @@ GameResult Game::checkDraw() const
 	return result;
 }
 
-void Game::setPoint(int a, int b, Sign w)
+void Game::setPoint(const int& a, const int& b, const Sign& w)
 {
 	x_ = a;
 	y_ = b;
@@ -239,12 +239,7 @@ void Game::setPoint(int a, int b, Sign w)
 	board_[x_][y_] = w;
 }
 
-void Game::setBoard(Board board)
-{
-	board_ = board;
-}
-
-void Game::setBoard(Sign sign)
+void Game::setBoard(const Sign& sign)
 {
 	for(auto& board : board_)
 	{
@@ -288,7 +283,7 @@ void Game::displayBoard() const
 	}
 }
 
-Sign Game::addPlayer(int id, std::string name)
+Sign Game::addPlayer(const int& id, const std::string& name)
 {
 	WriteLock lock(mtx);
 
@@ -315,7 +310,7 @@ Move Game::getLastMove() const
 	return Move(x_, y_, which_);
 }
 
-void Game::makeMove(int id, int x, int y)
+void Game::makeMove(const int& id, const int& x, const int& y)
 {
 	WriteLock lock(mtx);
 	if(oPlayer.id == id || xPlayer.id == id)
@@ -329,7 +324,7 @@ void Game::makeMove(int id, int x, int y)
 	}
 }
 
-std::string Game::getOpponentsName(int id) const
+std::string Game::getOpponentsName(const int& id) const
 {
 	ReadLock lock(mtx);
 	if(oPlayer.id == id)
@@ -340,7 +335,7 @@ std::string Game::getOpponentsName(int id) const
 		return "";
 }
 
-bool Game::hasPlayer(int id) const
+bool Game::hasPlayer(const int& id) const
 {
 	ReadLock lock(mtx);
 	return (xPlayer.id == id || oPlayer.id == id);
@@ -379,7 +374,7 @@ int GameList::getNewID()
 	return ret;
 }
 
-Sign GameList::addPlayer(int id, std::string name)
+Sign GameList::addPlayer(const int& id, const std::string& name)
 {
 	WriteLock lock(mtx);
 	for(Game& game : list)
@@ -395,7 +390,7 @@ Sign GameList::addPlayer(int id, std::string name)
 	return list.back().addPlayer(id, name);
 }
 
-std::string GameList::getOpponentsName(int id) const
+std::string GameList::getOpponentsName(const int& id) const
 {
 	ReadLock lock(mtx);
 	for(const Game& game : list)
@@ -406,7 +401,7 @@ std::string GameList::getOpponentsName(int id) const
 	return "";
 }
 
-Move GameList::getLastMove(int id) const
+Move GameList::getLastMove(const int& id) const
 {
 	ReadLock lock(mtx);
 	for(const Game& game : list)
@@ -417,7 +412,7 @@ Move GameList::getLastMove(int id) const
 	return Move();
 }
 
-void GameList::makeMove(int id, int x, int y)
+void GameList::makeMove(const int& id, const int& x, const int& y)
 {
 	ReadLock lock(mtx);
 	for(Game& game : list)
@@ -430,7 +425,7 @@ void GameList::makeMove(int id, int x, int y)
 	}
 }
 
-GameResult GameList::getResult(int id) const
+GameResult GameList::getResult(const int& id) const
 {
 	ReadLock lock(mtx);
 	for(const Game& game : list)
@@ -441,7 +436,7 @@ GameResult GameList::getResult(int id) const
 	return STILL_PLAYING;
 }
 
-void GameList::resetGame(int id)
+void GameList::resetGame(const int& id)
 {
 	WriteLock lock(mtx);
 	for(Game& game : list)
