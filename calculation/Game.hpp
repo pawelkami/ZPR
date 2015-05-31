@@ -49,7 +49,7 @@ private:
 	inline void setBoard(const Board& board) { board_ = board; };	// ustawienie planszy na podaną w argumencie
 	void setBoard(const Sign&);		// wypełnienie planszy danym znakiem
 
-  Player oPlayer;
+	Player oPlayer;
 	Player xPlayer;
 	int x_;		// oba inty reprezentuja wspolrzedne ostatnio dodanego znaku
 	int y_;
@@ -68,7 +68,7 @@ public:
 	void displayBoard() const;     /// funkcja do testowania, na koniec powinniśmy ją usunąć
 	Sign addPlayer(const int& id, const std::string& name);		/// dodaje do gry gracza i zwraca figurę, którą będzie grał
 	Move getLastMove() const;
-	void makeMove(const int& id, const int& x, const int& y);
+	bool makeMove(const int& id, const int& x, const int& y);
 	std::string getOpponentsName(const int& id) const;		/// zwraca imię przeciwnika gracza o podanym id. Jeśli gracz o podanym id
 	                                        /// nie uczestniczy w danej grze, zwracany string jest pusty
   bool hasPlayer(const int& id) const;		/// sprawdza czy w grze uczestniczy gracz o podanym id
@@ -101,7 +101,7 @@ public:
 	Sign addPlayer(const int& id, const std::string& name);
 	std::string getOpponentsName(const int& id) const;
 	Move getLastMove(const int& id) const;
-	void makeMove(const int& id, const int& x, const int& y);
+	bool makeMove(const int& id, const int& x, const int& y);
 	GameResult getResult(const int& id) const;
 	void resetGame(const int& id);
 	int getPlayerPoints(const int& id) const;

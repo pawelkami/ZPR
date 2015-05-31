@@ -67,10 +67,13 @@ def move():
     j = int(request.post_vars.y)
     idnum = int(request.post_vars.id)
 
-    GameList.getInstance().makeMove(idnum, i, j)
-    status = getGameState(idnum)
-    points = GameList.getInstance().getPlayerPoints(idnum)
-    return json.dumps({'status': status, 'points': points})
+    ret = GameList.getInstance().makeMove(idnum, i, j)
+    if ret == False :       # jesli False to znaczy ze nie udalo sie postawic ruchu
+        return json.dumps({'status': "False"})
+    else:
+        status = getGameState(idnum)
+        points = GameList.getInstance().getPlayerPoints(idnum)
+        return json.dumps({'status': status, 'points': points})
 
 
 def getName():

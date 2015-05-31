@@ -22,7 +22,7 @@ GameResult Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 {
 	if(!hasChanged)
 		return state_;
-		
+
 	if(which_ == NONE)
 		return state_ = STILL_PLAYING;
 
@@ -260,14 +260,14 @@ void Game::reset()
 	WriteLock lock(mtx);
 
 	if( ++reseted_ == 2 )
-		return;
-
-  state_ = STILL_PLAYING;
-	setBoard(NONE);
-	x_ = -1;
-  y_ = -1;
-	which_ = "";
-	hasChanged = false;
+	{
+		state_ = STILL_PLAYING;
+		setBoard(NONE);
+		x_ = -1;
+	  y_ = -1;
+		which_ = "";
+		hasChanged = false;
+	}
 }
 
 
@@ -314,7 +314,7 @@ Move Game::getLastMove() const
 	return Move(x_, y_, which_);
 }
 
-void Game::makeMove(const int& id, const int& x, const int& y)
+bool Game::makeMove(const int& id, const int& x, const int& y)
 {
 	WriteLock lock(mtx);
 
@@ -322,13 +322,18 @@ void Game::makeMove(const int& id, const int& x, const int& y)
 	{
 		if( reseted_ == 2 )
 			reseted_ = 0;
+		else if(reseted_ == 1)
+			return false;
 
 		hasChanged = true;
 		if(oPlayer.id == id)
 			setPoint(x, y, CIRCLE);
 		else
 			setPoint(x, y, CROSS);
+
+		return true;
 	}
+	return false;
 }
 
 std::string Game::getOpponentsName(const int& id) const
@@ -419,18 +424,24 @@ Move GameList::getLastMove(const int& id) const
 	return Move();
 }
 
-void GameList::makeMove(const int& id, const int& x, const int& y)
+bool GameList::makeMove(const int& id, const int& x, const int& y)
 {
 	ReadLock lock(mtx);
+	bool ret;		// czy udało się wykonać ruch
 	for(Game& game : list)
 	{
 		if(game.hasPlayer(id))
 		{
-			game.makeMove(id, x ,y);
+			ret = game.makeMove(id, x ,y);
+
+			if(ret == false)
+				return false;
+
 			game.condition();
 			break;
 		}
 	}
+	return ret;
 }
 
 GameResult GameList::getResult(const int& id) const
