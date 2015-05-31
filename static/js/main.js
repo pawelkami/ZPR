@@ -17,38 +17,6 @@ $("#nickname-textbox").keyup(function (e) {
   }
 });
 
-getPlayerID = function() {
-  $.ajax({
-    type: "GET",
-    url: "http://" + window.location.host + "/controller/getid.py",
-    success: function(data) {
-      //dodaje id do zmiennej player1, ale nie wiem czy nie lepiej uzyc ciasteczek
-      player1.id = data;
-    }
-  });
-}
-
-postMove = function(row, col) {
-  $.ajax({
-    type: "POST",
-    data: {x: col, y: row, id: player1.id},
-    url: "http://" + window.location.host + "/controller/move.py",
-  });
-}
-
-
-callAjaxGet = function(destination, outputDestination) {
-  $.ajax({
-    type: "GET",
-    dataType: "text",
-    cache: false,
-    url: destination,
-    success: function(data) {
-      $(outputDestination).replaceWith(data);
-    }
-  });
-}
-
 var timer;
 
 startWaitingAnimation = function() {

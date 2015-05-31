@@ -102,7 +102,7 @@ public:
 	std::string getOpponentsName(const int& id) const;
 	Move getLastMove(const int& id) const;
 	void makeMove(const int& id, const int& x, const int& y);
-	GameResult getResult(const int& id);
+	GameResult getResult(const int& id) const;
 	void resetGame(const int& id);
 	int getPlayerPoints(const int& id) const;
 	int getOpponentsPoints(const int& id) const;

@@ -22,6 +22,7 @@ GameResult Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 {
 	if(!hasChanged)
 		return state_;
+		
 	if(which_ == NONE)
 		return state_ = STILL_PLAYING;
 
@@ -321,6 +322,7 @@ void Game::makeMove(const int& id, const int& x, const int& y)
 	{
 		if( reseted_ == 2 )
 			reseted_ = 0;
+
 		hasChanged = true;
 		if(oPlayer.id == id)
 			setPoint(x, y, CIRCLE);
@@ -431,10 +433,10 @@ void GameList::makeMove(const int& id, const int& x, const int& y)
 	}
 }
 
-GameResult GameList::getResult(const int& id)
+GameResult GameList::getResult(const int& id) const
 {
 	ReadLock lock(mtx);
-	for(Game& game : list)
+	for(const Game& game : list)
 	{
 		if(game.hasPlayer(id))
 			return game.getState();
@@ -473,6 +475,7 @@ int GameList::getOpponentsPoints(const int& id) const
 	{
 		if(game.hasPlayer(id))
 			return game.getOpponentsPoints(id);
-		}
-		return -1;	// w razie braku takiego gracza
+	}
+
+	return -1;	// w razie braku takiego gracza
 }
