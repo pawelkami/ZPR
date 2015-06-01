@@ -13,6 +13,7 @@ int second_player_id;
 void test_case1()
 {
 	  GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), STILL_PLAYING);
 }
 
@@ -22,6 +23,7 @@ void test_case1()
 void test_case2()
 {
     GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
   	Board board =
   	{
     {"O","O","O","O","","","","","","","","","","","",""},
@@ -542,6 +544,7 @@ void test_case17()
 void test_case18() 
 { 
     GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
     GameList::getInstance()->makeMove(second_player_id, 8, 9);
     GameList::getInstance()->makeMove(first_player_id, 8, 5);
     GameList::getInstance()->makeMove(second_player_id, 7, 9);
@@ -562,6 +565,7 @@ void test_case18()
 void test_case19() 
 {
     GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
     GameList::getInstance()->makeMove(first_player_id, 8, 5);
     GameList::getInstance()->makeMove(second_player_id, 8, 9);
     GameList::getInstance()->makeMove(first_player_id, 7, 6);
@@ -583,6 +587,7 @@ void test_case19()
 void test_case20() 
 {    
     GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
     GameList::getInstance()->makeMove(first_player_id, 0, 15);
     GameList::getInstance()->makeMove(second_player_id, 2, 10);
     GameList::getInstance()->makeMove(first_player_id, 5, 11);
@@ -615,6 +620,7 @@ void test_case20()
 void test_case21() 
 { 
   	GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
     GameList::getInstance()->makeMove(first_player_id, 0, 15);
     GameList::getInstance()->makeMove(second_player_id, 2, 10);
     GameList::getInstance()->makeMove(first_player_id, 5, 11);
@@ -648,35 +654,8 @@ void test_case21()
  */
 void test_case22() 
 {
-//	  Game::getInstance()->setBoard(NONE);
-//    Game::getInstance()->setPoint(6, 0, CIRCLE);
-//    Game::getInstance()->setPoint(9, 3, CROSS);
-//    Game::getInstance()->setPoint(7, 1, CIRCLE);
-//    Game::getInstance()->setPoint(10, 0, CROSS);
-//    Game::getInstance()->setPoint(9, 1, CIRCLE);
-//    Game::getInstance()->setPoint(9, 5, CROSS);
-//    Game::getInstance()->setPoint(9, 2, CIRCLE);
-//    Game::getInstance()->setPoint(7, 5, CROSS);
-//    Game::getInstance()->setPoint(8, 2, CIRCLE);
-//    Game::getInstance()->setPoint(6, 5, CROSS);
-//    Game::getInstance()->setPoint(7, 2, CIRCLE);
-//    Game::getInstance()->setPoint(6, 6, CROSS);
-//    Game::getInstance()->setPoint(6, 2, CIRCLE);
-//    Game::getInstance()->setPoint(5, 5, CROSS);
-//    Game::getInstance()->setPoint(7, 3, CIRCLE);
-//    Game::getInstance()->setPoint(5, 7, CROSS);
-//    Game::getInstance()->setPoint(8, 4, CIRCLE);
-//    Game::getInstance()->setPoint(3, 8, CROSS);
-//    Game::getInstance()->setPoint(6, 4, CIRCLE);
-//    Game::getInstance()->setPoint(5, 4, CROSS);
-//    Game::getInstance()->setPoint(8, 5, CIRCLE);
-//    Game::getInstance()->setPoint(5, 3, CROSS);
-//    Game::getInstance()->setPoint(4, 8, CIRCLE);
-//    Game::getInstance()->setPoint(5, 2, CROSS);
-//    Game::getInstance()->setPoint(5, 6, CIRCLE);
-//    Game::getInstance()->setPoint(5, 1, CROSS);
-
     GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
     GameList::getInstance()->makeMove(first_player_id, 6, 0);
     GameList::getInstance()->makeMove(second_player_id, 9, 3);
     GameList::getInstance()->makeMove(first_player_id, 7, 1);
@@ -732,7 +711,7 @@ void test_case23()
     {"","","","","","","","","","","","","","","",""},
     {"","","","","","","","","","","","","","","",""}
   	};
-  	
+
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(second_player_id, 5, 1);
     
@@ -748,6 +727,7 @@ void test_case23()
 void test_case24() 
 {    
     GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
     GameList::getInstance()->makeMove(first_player_id, 0, 15);
     GameList::getInstance()->makeMove(second_player_id, 0, 0);
     GameList::getInstance()->makeMove(first_player_id, 11, 0);
