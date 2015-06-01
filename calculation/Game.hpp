@@ -46,7 +46,6 @@ private:
 	GameResult checkLeftUpperRightDown() const;
 	GameResult checkDraw() const;
 	void setPoint(const int& a, const int& b, const Sign& w);		/// zapisanie wspolrzednych nowego kolka lub krzyzyka
-	inline void setBoard(const Board& board) { board_ = board; };	// ustawienie planszy na podaną w argumencie
 	void setBoard(const Sign&);		// wypełnienie planszy danym znakiem
 
 	Player oPlayer;
@@ -78,6 +77,7 @@ public:
 	inline int getPlayerPoints(const int& id) const { return (id == oPlayer.id ? oPlayer.victories : xPlayer.victories); };
 	inline int getOpponentsPoints(const int& id) const { return (id != oPlayer.id ? oPlayer.victories : xPlayer.victories); };
 	inline GameResult getState() const { return state_; };
+	inline void setBoard(const Board& board) { board_ = board; };	// ustawienie planszy na podaną w argumencie
 };
 
 class Result;
@@ -104,6 +104,7 @@ public:
 	bool makeMove(const int& id, const int& x, const int& y);
 	GameResult getResult(const int& id) const;
 	void resetGame(const int& id);
+	void setGameBoard(const int & id, Board board); // <--
 	int getPlayerPoints(const int& id) const;
 	int getOpponentsPoints(const int& id) const;
 };

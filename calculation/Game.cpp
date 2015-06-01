@@ -119,6 +119,8 @@ GameResult Game::checkLeftUpperRightDown() const
 		int dif = ((x_ - from_x) < (y_ - from_y) ? (x_ - from_x) : (y_ - from_y) );
 		xfrom = x_ - dif;
 		yfrom = y_ - dif;
+		from_x = xfrom;
+		from_y = yfrom;
 	}
 	else
 	{
@@ -130,6 +132,8 @@ GameResult Game::checkLeftUpperRightDown() const
 		int dif = ((to_x - x_) < (to_y - y_) ? (to_x - x_) : (to_y - y_));
 		xto = x_ + dif;
 		yto = y_ + dif;
+		to_x = xto;
+		to_y = yto;
 	}
 	else
 	{
@@ -139,8 +143,9 @@ GameResult Game::checkLeftUpperRightDown() const
 
 	for (int it = 0; it < 5; it++)
 	{
-		xfrom += it;
-		yfrom += it;
+		xfrom = from_x + it;
+		yfrom = from_y + it;
+		
 		if (xfrom + 4 > xto || yfrom + 4 > yto) break;
 
 		result = VICTORY;
@@ -177,6 +182,8 @@ GameResult Game::checkLeftDownRightUpper() const
 		int dif = ((x_ - from_x) < (to_y - y_) ? (x_ - from_x) : (to_y - y_));
 		xfrom = x_ - dif;
 		yto = y_ + dif;
+		from_x = xfrom;
+		to_y = yto;
 	}
 	else
 	{
@@ -188,6 +195,8 @@ GameResult Game::checkLeftDownRightUpper() const
 		int dif = ((to_x - x_) < (y_ - from_y) ? (to_x - x_) : (y_ - from_y));
 		xto = x_ + dif;
 		yfrom = y_ - dif;
+		to_x = xto;
+		from_y = yfrom;
 	}
 	else
 	{
@@ -197,8 +206,9 @@ GameResult Game::checkLeftDownRightUpper() const
 
 	for (int it = 0; it < 5; it++)
 	{
-		xfrom += it;
-		yto -= it;
+		xfrom = from_x + it;
+		yto = to_y - it;
+		
 		if (xfrom + 4 > xto || yto - 4 < yfrom) break;
 
 		result = VICTORY;
@@ -489,4 +499,17 @@ int GameList::getOpponentsPoints(const int& id) const
 	}
 
 	return -1;	// w razie braku takiego gracza
+}
+
+void GameList::setGameBoard(const int& id, Board board)
+{
+	WriteLock lock(mtx);
+	for(Game& game : list)
+	{
+		if(game.hasPlayer(id))
+		{
+			game.setBoard(board);
+			break;
+		}
+	}
 }

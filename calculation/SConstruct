@@ -5,12 +5,12 @@ env.Append( ENV = {'PATH' : os.environ['PATH'] })
 
 
 if(platform.system() == "Linux"):
-    env.Append( CPPFLAGS = '-g -Wall -pedantic -std=c++11' )
-    env.Append( LINKFLAGS = '-Wall ' )
+    env.Append( CPPFLAGS = '-fPIC -Wall -pedantic -pthread -std=c++14' )
+    env.Append( LINKFLAGS = '-Wall -pthread' )
     env.Append( LIBS = [  ] )
 
 elif(platform.system() == "Windows"):
-   env.Append( CPPPATH = [ Dir('C:/Boost/include/boost-1_52'), #tutaj zainstalowane naglowki boost
+   env.Append( CPPPATH = [ Dir('C:/Boost/include/boost-1_57'), #tutaj zainstalowane naglowki boost
                            Dir('C:/Python27/include') ] ) #tutaj zaistalowane naglowki python
    env.Append( LIBPATH = [ Dir('C:/Boost/lib'), #tutaj sciezka do bibliotek boost
                            Dir('C:/Python27/libs') ] ) #tutaj sciezki do bibliotek python
