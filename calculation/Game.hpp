@@ -7,35 +7,13 @@
 #include <vector>
 #include <list>
 #include <shared_mutex>
+#include "Player.hpp"
+#include "Move.hpp"
+#include "Project_declarations.hpp"
 //#include <boost/thread/shared_mutex.hpp>
 
 enum GameResult { STILL_PLAYING, DRAW, VICTORY };
 
-#define BOARD_SIZE 16			// rozmiar planszy
-
-// zmienne odpowiadające za znaki na planszy
-typedef std::string Sign;
-const Sign CROSS = "X";
-const Sign CIRCLE = "O";
-const Sign NONE = "";
-
-class Player
-{
-public:
-	int id;
-	std::string name;
-	std::string sign;
-	int victories;
-	inline void incrementVictories() { ++victories; };
-	Player() : id(-1), name(""), sign(NONE), victories(0) {}
-	Player(int i, std::string n, std::string s, int v) : id(i), name(n), sign(s), victories(v) {}
-};
-
-typedef std::lock_guard<std::shared_timed_mutex> WriteLock;
-typedef std::shared_lock<std::shared_timed_mutex> ReadLock;
-class Move;
-
-typedef std::vector<std::vector<Sign> > Board;
 
 class Game
 {
@@ -50,9 +28,7 @@ private:
 
 	Player oPlayer;
 	Player xPlayer;
-	int x_;		// oba inty reprezentuja wspolrzedne ostatnio dodanego znaku
-	int y_;
-	Sign which_;	// znak jaki ostatnio wstawiono w miejscu (x, y)
+	Move move_;	//ostatni ruch
 	Board board_;	// reprezentacja planszy
 	mutable int reseted_; //flaga mowiaca czy gra jest zresetowana, true - zrestartowana, false - nie
 	mutable bool hasChanged;	// zmienna pomocnicza dla funkcji condition - sprawdza czy trzeba na nowo sprawdzać wynik gry
@@ -80,43 +56,5 @@ public:
 	inline void setBoard(const Board& board) { board_ = board; };	// ustawienie planszy na podaną w argumencie
 };
 
-class Result;
-
-class GameList;
-typedef std::shared_ptr<GameList> PGameList;
-
-class GameList
-{
-private:
-	std::list<Game> list;
-	mutable std::shared_timed_mutex mtx;
-	int firstUnusedID;
-	static PGameList pInstance;
-	GameList();
-	GameList(const GameList&) = delete;
-public:
-	~GameList();
-	static PGameList getInstance();
-	int getNewID();
-	Sign addPlayer(const int& id, const std::string& name);
-	std::string getOpponentsName(const int& id) const;
-	Move getLastMove(const int& id) const;
-	bool makeMove(const int& id, const int& x, const int& y);
-	GameResult getResult(const int& id) const;
-	void resetGame(const int& id);
-	void setGameBoard(const int & id, Board board); // <--
-	int getPlayerPoints(const int& id) const;
-	int getOpponentsPoints(const int& id) const;
-};
-
-class Move
-{
-public:
-	int x;
-	int y;
-	Sign sign;
-	Move() : x(-1), y(-1), sign(NONE) {}
-	Move(int xx, int yy, Sign s) : x(xx), y(yy), sign(s) {}
-};
 
 #endif // GAME_HPP

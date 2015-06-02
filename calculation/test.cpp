@@ -1,5 +1,6 @@
 #include <boost/test/included/unit_test.hpp>
 #include "Game.hpp"
+#include "GameList.hpp"
 #include <iostream>
 
 using namespace boost::unit_test;
@@ -23,7 +24,7 @@ void test_case1()
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(third_player_id), STILL_PLAYING);
 }
 
-/*! 
+/*!
  * test_case2 - test wyniku gry dla 5 kolek w lewym rogu planszy
  */
 void test_case2()
@@ -49,15 +50,15 @@ void test_case2()
   	{"","","","","","","","","","","","","","","",""},
   	{"","","","","","","","","","","","","","","",""}
   	};
-    
+
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(first_player_id, 0, 4);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
 /*!
- * test_case3 - test wyniku gry dla planszy z 5 kolkami i 5 krzyzykami 
+ * test_case3 - test wyniku gry dla planszy z 5 kolkami i 5 krzyzykami
  * (brak spelnionych warunkow zwyciestwa)
  */
 void test_case3()
@@ -86,15 +87,15 @@ void test_case3()
 
     GameList::getInstance()->setGameBoard(third_player_id, board);
     GameList::getInstance()->makeMove(third_player_id, 0, 5);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(third_player_id), STILL_PLAYING);
 }
 
 /*!
- * test_case4 - test wyniku gry dla pelnej planszy, gdzie brak 
+ * test_case4 - test wyniku gry dla pelnej planszy, gdzie brak
  * warunkow zwyciestwa
  */
-void test_case4() 
+void test_case4()
 {
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
@@ -117,18 +118,18 @@ void test_case4()
     {"O","X","X","O","O","X","X","O","O","X","X","O","O","X","X","O"},
     {"X","O","O","X","X","O","O","X","X","O","O","X","X","O","O","X"}
   	};
-  	
+
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(first_player_id, 0, 0);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), DRAW);
 }
 
 /*!
- * test_case5 - test wyniku gry dla 3 iksow oraz 2 dostawionych funkcja setPoint,  
+ * test_case5 - test wyniku gry dla 3 iksow oraz 2 dostawionych funkcja setPoint,
  * piatka iksow po skosie od pola (4, 0) do (0, 4)
  */
-void test_case5() 
+void test_case5()
 {
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
@@ -155,15 +156,15 @@ void test_case5()
   	GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(second_player_id, 2, 2);
     GameList::getInstance()->makeMove(second_player_id, 4, 0);
-    
+
     BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
 /*!
- * test_case6 - test wyniku gry dla czesciowo wypelnionej planszy 
+ * test_case6 - test wyniku gry dla czesciowo wypelnionej planszy
  * z zageszczeniem iksow w lewym dolnym rogu planszy
  */
-void test_case6() 
+void test_case6()
 {
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
@@ -186,18 +187,18 @@ void test_case6()
     {"X","X","X","X","","","","","","","","","","","",""},
     {"","X","X","X","","","","","","","","","","","",""}
   	};
-  	
+
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(second_player_id, 15, 4);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
 /*!
- * test_case7 - test wyniku gry dla pelnej planszy, gdzie brak 
+ * test_case7 - test wyniku gry dla pelnej planszy, gdzie brak
  * warunkow zwyciestwa
  */
-void test_case7() 
+void test_case7()
 {
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
@@ -220,18 +221,18 @@ void test_case7()
     {"","","","","","","","","","","","X","O","X","",""},
     {"","","","","","","","","","","X","","X","O","",""}
   	};
-  	
+
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(first_player_id, 15, 11);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
 /*!
- * test_case8 - test wyniku gry dla pelnej planszy, gdzie brak 
+ * test_case8 - test wyniku gry dla pelnej planszy, gdzie brak
  * warunkow zwyciestwa
  */
-void test_case8() 
+void test_case8()
 {
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
@@ -254,10 +255,10 @@ void test_case8()
     {"X","X","X","X","","","","","","","","","","","",""},
     {"","X","X","X","","","","","","","","","","","",""}
   	};
-  	
+
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(second_player_id, 13, 2);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), STILL_PLAYING);
 }
 
@@ -265,7 +266,7 @@ void test_case8()
  * test_case9 - test wyniku gry dla planszy, gdzie 5 krzyzykow
  * jest ustawionych po ukosie na srodku (od lewego gornego rogu do prawego dolnego)
  */
-void test_case9() 
+void test_case9()
 {
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
@@ -288,18 +289,18 @@ void test_case9()
     {"","","","","","","","","","","","","","","",""},
     {"","","","","","","","","","","","","","","",""}
   	};
-  	
+
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(second_player_id, 4, 4);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(second_player_id), VICTORY);
 }
 
 /*!
- * test_case10 - test wyniku gry dla planszy z piecioma kolkami  
+ * test_case10 - test wyniku gry dla planszy z piecioma kolkami
  * na srodku ustawionymi pionowo
  */
-void test_case10() 
+void test_case10()
 {
     GameList::getInstance()->resetGame(third_player_id);
     GameList::getInstance()->resetGame(fourth_player_id);
@@ -322,19 +323,19 @@ void test_case10()
     {"","","","","","","","","","","","","","","",""},
     {"","","","","","","","","","","","","","","",""}
   	};
-  	
+
     GameList::getInstance()->setGameBoard(third_player_id, board);
     GameList::getInstance()->makeMove(third_player_id, 8, 7);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(third_player_id), VICTORY);
 }
 
 /*!
- * test_case11 - test wyniku gry dla planszy, gdzie w lewym gornym 
+ * test_case11 - test wyniku gry dla planszy, gdzie w lewym gornym
  * rogu jest piec kolek po przekatnej do prawego dolnego rogu i
  * wszystkie otoczone krzyzykami
  */
-void test_case11() 
+void test_case11()
 {
     GameList::getInstance()->resetGame(third_player_id);
     GameList::getInstance()->resetGame(fourth_player_id);
@@ -357,18 +358,18 @@ void test_case11()
     {"","","","","","","","","","","","","","","",""},
     {"","","","","","","","","","","","","","","",""}
   	};
-  	
+
     GameList::getInstance()->setGameBoard(third_player_id, board);
     GameList::getInstance()->makeMove(third_player_id, 3, 3);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(fourth_player_id), VICTORY);
 }
 
 /*!
- * test_case12 - test wyniku gry dla planszy zawierajacej 5 kolek 
+ * test_case12 - test wyniku gry dla planszy zawierajacej 5 kolek
  * na srodku po przekatnej z lewego dolnego rogu do prawego gornego
  */
-void test_case12() 
+void test_case12()
 {
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
@@ -391,18 +392,18 @@ void test_case12()
     {"","","","","","","","","","","","","","","",""},
     {"","","","","","","","","","","","","","","",""}
   	};
-  	
+
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(first_player_id, 7, 8);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
 /*!
- * test_case13 - test wyniku gry dla planszy, gdzie na srodku jest 
+ * test_case13 - test wyniku gry dla planszy, gdzie na srodku jest
  * poziomo ustawione 5 kolek
  */
-void test_case13() 
+void test_case13()
 {
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
@@ -425,14 +426,14 @@ void test_case13()
     {"","","","","","","","","","","","","","","",""},
     {"","","","","","","","","","","","","","","",""}
   	};
-  	
+
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(first_player_id, 9, 9);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
-/*! 
+/*!
  * test_case14 - test wyniku gry planszy w pelni wypelnionej krzyzykami i kolkami
  * tak aby bylo jak najwiecej jak najwiekszych skupisk jednakowych znakow tj.
  * jak najwiecej krzyzykow i kolek skupionych po 4 na roznych prostych
@@ -460,17 +461,17 @@ void test_case14()
   	{"O","X","O","X","O","O","X","X","O","X","X","X","X","O","X","O"},
   	{"X","O","O","O","X","O","X","O","X","O","O","O","X","O","X","X"}
   	};
-  	
+
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(first_player_id, 10, 8);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), DRAW);
 }
 
 /*!
  * test_case15 - test wyniku gry dla planszy w pelni wypelnionej kolkami i krzyzykami
  * z naciskiem na utworzenie jak najwiecej jak najwiekszych skupisk tj. po 4 jednego znaku
- * ostatni zostaje wstawiony krzyzyk, ktory sprawia, ze powstaja: jedna 7 iksow w poziomie 
+ * ostatni zostaje wstawiony krzyzyk, ktory sprawia, ze powstaja: jedna 7 iksow w poziomie
  * oraz jedna 6 iksow w pionie
  */
 void test_case15()
@@ -496,10 +497,10 @@ void test_case15()
   	{"O","X","O","X","O","O","X","X","O","X","X","X","X","O","X","O"},
   	{"X","O","O","O","X","O","X","O","X","O","O","O","X","O","X","X"}
   	};
-  	
+
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(second_player_id, 10, 8);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
@@ -508,7 +509,7 @@ void test_case15()
  * testach nr 14 i 15, ale ostatni wstawiamy krzyzyk, ktory stwarza warunki zwyciestwa w pionie
  * (5 iksow) w obu ukosach (lewa_gora-prawy_dol 6 iksow oraz lewy_dol-prawa_gora 8 iksow)
  */
-void test_case16() 
+void test_case16()
 {
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
@@ -531,19 +532,19 @@ void test_case16()
   	{"O","X","O","X","O","O","X","X","O","X","X","X","X","O","X","O"},
   	{"X","O","O","O","X","O","X","O","X","O","O","O","X","O","X","X"}
   	};
-  	
+
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(second_player_id, 7, 4);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
 /*!
  * test_case17 - test wyniku gry dla planszy gry, gdzie gracze ustawili po cztery
- * znaki im przydzielone i ich "czworki" maja wspolny koniec, od ktorego zalezy 
+ * znaki im przydzielone i ich "czworki" maja wspolny koniec, od ktorego zalezy
  * kto zwyciezy gre
  */
-void test_case17() 
+void test_case17()
 {
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
@@ -566,10 +567,10 @@ void test_case17()
     {"","","","","","","","","","","","","","","",""},
     {"","","","","","","","","","","","","","","",""}
   	};
-  	
+
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(first_player_id, 7, 9);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
@@ -577,8 +578,8 @@ void test_case17()
  * test_case18 - test wyniku gry dla planszy wypelnianej tylko funkcja setPoint,
  * czyli tak, jak to bedzie wygladalo w rzeczywistosci  (w aplikacji)
  */
-void test_case18() 
-{ 
+void test_case18()
+{
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
     GameList::getInstance()->makeMove(second_player_id, 8, 9);
@@ -590,15 +591,15 @@ void test_case18()
     GameList::getInstance()->makeMove(second_player_id, 5, 9);
     GameList::getInstance()->makeMove(first_player_id, 5, 8);
     GameList::getInstance()->makeMove(second_player_id, 4, 9);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
 /*!
- * test_case19 - test sytuacji identycznej jak tescie nr 18,  
+ * test_case19 - test sytuacji identycznej jak tescie nr 18,
  * tylko gracze w innej kolejnosci uzupelniali plansze gry
  */
-void test_case19() 
+void test_case19()
 {
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
@@ -611,17 +612,17 @@ void test_case19()
     GameList::getInstance()->makeMove(first_player_id, 5, 8);
     GameList::getInstance()->makeMove(second_player_id, 5, 9);
     GameList::getInstance()->makeMove(first_player_id, 4, 9);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
 /*!
  * test_case20 - test wyniku gry dla planszy wypelnianej przy pomocy metody setPoint
- * symulacja rywalizacji w prawym gornym rogu planszy, gdzie gracze postawili 10 iksow i 
+ * symulacja rywalizacji w prawym gornym rogu planszy, gdzie gracze postawili 10 iksow i
  * 11 kolek, ktore zwyciezyly tworzac piatke kolek w pionie na polach od (0,15) do (4, 15)
  */
-void test_case20() 
-{    
+void test_case20()
+{
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
     GameList::getInstance()->makeMove(first_player_id, 0, 15);
@@ -645,16 +646,16 @@ void test_case20()
     GameList::getInstance()->makeMove(first_player_id, 4, 14);
     GameList::getInstance()->makeMove(second_player_id, 0, 14);
     GameList::getInstance()->makeMove(first_player_id, 1, 15);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
 /*!
  * test_case21 - test wyniku gry dla planszy, gdzie gracze naprzemiennie blokowali sie w lewym
- * gornym rogu, powstaly dwie czworki (1 x kolek i 1 x krzyzykow) i kilka mniejszych skupisk 
+ * gornym rogu, powstaly dwie czworki (1 x kolek i 1 x krzyzykow) i kilka mniejszych skupisk
  */
-void test_case21() 
-{ 
+void test_case21()
+{
   	GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
     GameList::getInstance()->makeMove(first_player_id, 0, 15);
@@ -679,16 +680,16 @@ void test_case21()
     GameList::getInstance()->makeMove(second_player_id, 0, 14);
     GameList::getInstance()->makeMove(first_player_id, 5, 15);
     GameList::getInstance()->makeMove(second_player_id, 4, 15);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), STILL_PLAYING);
 }
 
 /*!
- * test_case22 - test wyniku gry, podczas ktorej gracze rywalizowali srodkowo-zachodniej 
+ * test_case22 - test wyniku gry, podczas ktorej gracze rywalizowali srodkowo-zachodniej
  * czesci planszy, powstaly dwie udaremnione proby kolek i dwie krzyzykow oraz jedna
  * zwycieska piatka ustawiona przez krzyzyki
  */
-void test_case22() 
+void test_case22()
 {
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
@@ -718,15 +719,15 @@ void test_case22()
     GameList::getInstance()->makeMove(second_player_id, 5, 2);
     GameList::getInstance()->makeMove(first_player_id, 5, 6);
     GameList::getInstance()->makeMove(second_player_id, 5, 1);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
 /*!
- * test_case23 - test wyniku gry dla planszy, wypelnionej tak samo, jak 
+ * test_case23 - test wyniku gry dla planszy, wypelnionej tak samo, jak
  * w tescie nr 22, lecz przy pomocy metody setGameBoard
  */
-void test_case23() 
+void test_case23()
 {
 	  Board board =
   	{
@@ -750,18 +751,18 @@ void test_case23()
 
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(second_player_id, 5, 1);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
 /*!
  * test_case24 - test wyniku gry dla planszy wypelnionej przy pomocy
- * metody setPoint, gdzie w lewym gornym rogu pola wypelniane byly 
- * krzyzykami zas w lewym dolnym kolkami, zasymulowalem jednoczesnie 
+ * metody setPoint, gdzie w lewym gornym rogu pola wypelniane byly
+ * krzyzykami zas w lewym dolnym kolkami, zasymulowalem jednoczesnie
  * sytuacje, gdy gracze sie wzajemnie blokuja
  */
-void test_case24() 
-{    
+void test_case24()
+{
     GameList::getInstance()->resetGame(first_player_id);
     GameList::getInstance()->resetGame(second_player_id);
     GameList::getInstance()->makeMove(first_player_id, 0, 15);
@@ -785,7 +786,7 @@ void test_case24()
     GameList::getInstance()->makeMove(first_player_id, 11, 4);
     GameList::getInstance()->makeMove(second_player_id, 4, 4);
     GameList::getInstance()->makeMove(first_player_id, 15, 4);
-    
+
   	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
 }
 
@@ -946,7 +947,7 @@ test_suite* init_unit_test_suite( int argc, char * argv[] )
     second_player_sign = GameList::getInstance()->addPlayer(second_player_id, "second");   // dodajemy drugiego gracza do listy
     third_player_sign = GameList::getInstance()->addPlayer(third_player_id, "third");   // --||--
     fourth_player_sign = GameList::getInstance()->addPlayer(fourth_player_id, "fourth");  // --||--
-    
+
     test_suite *ts0 = BOOST_TEST_SUITE( "CheckPlayersSuite" );
     ts0->add( BOOST_TEST_CASE( & test_case0_1 ) );
     ts0->add( BOOST_TEST_CASE( & test_case0_2 ) );
@@ -956,7 +957,7 @@ test_suite* init_unit_test_suite( int argc, char * argv[] )
     ts0->add( BOOST_TEST_CASE( & test_case0_6 ) );
     ts0->add( BOOST_TEST_CASE( & test_case0_7 ) );
     ts0->add( BOOST_TEST_CASE( & test_case0_8 ) );
-    
+
     test_suite *ts1 = BOOST_TEST_SUITE( "CheckConditionSuite" );
     ts1->add( BOOST_TEST_CASE( & test_case1 ) );
     ts1->add( BOOST_TEST_CASE( & test_case2 ) );
@@ -982,7 +983,7 @@ test_suite* init_unit_test_suite( int argc, char * argv[] )
     ts1->add( BOOST_TEST_CASE( & test_case22 ) );
     ts1->add( BOOST_TEST_CASE( & test_case23 ) );
     ts1->add( BOOST_TEST_CASE( & test_case24 ) );
-    
+
     test_suite *ts2 = BOOST_TEST_SUITE( "CheckPointsSuite" );
     ts2->add( BOOST_TEST_CASE( & test_case2_1 ) );
     ts2->add( BOOST_TEST_CASE( & test_case2_2 ) );
@@ -992,10 +993,10 @@ test_suite* init_unit_test_suite( int argc, char * argv[] )
     ts2->add( BOOST_TEST_CASE( & test_case2_6 ) );
     ts2->add( BOOST_TEST_CASE( & test_case2_7 ) );
     ts2->add( BOOST_TEST_CASE( & test_case2_8 ) );
-    
+
     framework::master_test_suite().add( ts0 );
     framework::master_test_suite().add( ts1 );
     framework::master_test_suite().add( ts2 );
-   
-    return 0; 
+
+    return 0;
 }

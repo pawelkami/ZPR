@@ -8,9 +8,7 @@ Game::Game() : oPlayer(), xPlayer(), mtx()					/// inicjujemy tablice EMPTY'ami
 		for (int j = 0; j < BOARD_SIZE; ++j)
 			board_[i].push_back(NONE);
 	}
-	x_ = -1;
-	y_ = -1;
-	which_ = NONE;
+	move_ = Move();
 	state_ = STILL_PLAYING;
 	hasChanged = false;
 	reseted_ = 0;
@@ -23,7 +21,7 @@ GameResult Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 	if(!hasChanged)
 		return state_;
 
-	if(which_ == NONE)
+	if(move_.sign == NONE)
 		return state_ = STILL_PLAYING;
 
 	//najpierw sprawdzamy czy w prostej pionowej lub poziomej mamy spelniony warunek zwyciestwa
@@ -32,7 +30,7 @@ GameResult Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 		|| checkLeftDownRightUpper() == VICTORY
 		|| checkLeftUpperRightDown() == VICTORY)
 	{
-		which_ == CIRCLE ? oPlayer.incrementVictories() : xPlayer.incrementVictories();		// zwiekszamy licznik wygranych
+		move_.sign == CIRCLE ? oPlayer.incrementVictories() : xPlayer.incrementVictories();		// zwiekszamy licznik wygranych
 		return state_ = VICTORY;
 	}
 
@@ -43,8 +41,8 @@ GameResult Game::condition()		/// 0 nic, 1 remis, 2 wygrana
 
 GameResult Game::checkVertically() const
 {
-	int from_x = (x_ - 4 > 0 ? x_ - 4 : 0);		// jesli x_ - 5 jest ujemne to bedziemy sprawdzac od brzegu tablicy, czyli od 0
-	int to_x = (x_ + 4 < BOARD_SIZE ? x_ + 4 : BOARD_SIZE - 1);		// analogicznie dla x_ - 5
+	int from_x = (move_.x - 4 > 0 ? move_.x - 4 : 0);		// jesli x_ - 5 jest ujemne to bedziemy sprawdzac od brzegu tablicy, czyli od 0
+	int to_x = (move_.x + 4 < BOARD_SIZE ? move_.x + 4 : BOARD_SIZE - 1);		// analogicznie dla x_ - 5
 
 	int from, to;
 	GameResult result;
@@ -57,7 +55,7 @@ GameResult Game::checkVertically() const
 		result = VICTORY;
 		for (int j = from; j <= to; j++)
 		{
-			if (board_[j][y_] != which_)			// jesli w sprawdzanej piatce trafimy na inny znak niz dodany to niespelnione warunki
+			if (board_[j][move_.y] != move_.sign)			// jesli w sprawdzanej piatce trafimy na inny znak niz dodany to niespelnione warunki
 			{
 				result = STILL_PLAYING;
 				break;
@@ -73,8 +71,8 @@ GameResult Game::checkVertically() const
 GameResult Game::checkHorizontally() const
 {
 	GameResult result;
-	int from_y = (y_ - 4 > 0 ? y_ - 4 : 0);
-	int to_y = (y_ + 4 < BOARD_SIZE ? y_ + 4 : BOARD_SIZE - 1);
+	int from_y = (move_.y - 4 > 0 ? move_.y - 4 : 0);
+	int to_y = (move_.y + 4 < BOARD_SIZE ? move_.y + 4 : BOARD_SIZE - 1);
 
 	int from, to;
 
@@ -86,7 +84,7 @@ GameResult Game::checkHorizontally() const
 		result = VICTORY;
 		for (int j = from; j <= to; j++)
 		{
-			if (board_[x_][j] != which_)			// jesli w sprawdzanej piatce trafimy na inny znak niz dodany to niespelnione warunki
+			if (board_[move_.x][j] != move_.sign)			// jesli w sprawdzanej piatce trafimy na inny znak niz dodany to niespelnione warunki
 			{
 				result = STILL_PLAYING;
 				break;
@@ -105,20 +103,20 @@ GameResult Game::checkLeftUpperRightDown() const
 	int xfrom, yfrom, xto, yto;
 	int i, j;
 
-	int from_x = (x_ - 4 > 0 ? x_ - 4 : 0);
-	int to_x = (x_ + 4 < BOARD_SIZE ? x_ + 4 : BOARD_SIZE - 1);
-	int from_y = (y_ - 4 > 0 ? y_ - 4 : 0);
-	int to_y = (y_ + 4 < BOARD_SIZE ? y_ + 4 : BOARD_SIZE - 1);
+	int from_x = (move_.x - 4 > 0 ? move_.x - 4 : 0);
+	int to_x = (move_.x + 4 < BOARD_SIZE ? move_.x + 4 : BOARD_SIZE - 1);
+	int from_y = (move_.y - 4 > 0 ? move_.y - 4 : 0);
+	int to_y = (move_.y + 4 < BOARD_SIZE ? move_.y + 4 : BOARD_SIZE - 1);
 
 	// wspolrzedne skrajne dla nieregularnych przypadkow w rogach i przy krawedziach planszy
 
 	// wpierw od lewego gornego rogu do prawego dolnego
 
-	if ((x_ - from_x) != (y_ - from_y))
+	if ((move_.x - from_x) != (move_.y - from_y))
 	{
-		int dif = ((x_ - from_x) < (y_ - from_y) ? (x_ - from_x) : (y_ - from_y) );
-		xfrom = x_ - dif;
-		yfrom = y_ - dif;
+		int dif = ((move_.x - from_x) < (move_.y - from_y) ? (move_.x - from_x) : (move_.y - from_y) );
+		xfrom = move_.x - dif;
+		yfrom = move_.y - dif;
 		from_x = xfrom;
 		from_y = yfrom;
 	}
@@ -127,11 +125,11 @@ GameResult Game::checkLeftUpperRightDown() const
 		xfrom = from_x;
 		yfrom = from_y;
 	}
-	if ((to_x - x_) != (to_y - y_))
+	if ((to_x - move_.x) != (to_y - move_.y))
 	{
-		int dif = ((to_x - x_) < (to_y - y_) ? (to_x - x_) : (to_y - y_));
-		xto = x_ + dif;
-		yto = y_ + dif;
+		int dif = ((to_x - move_.x) < (to_y - move_.y) ? (to_x - move_.x) : (to_y - move_.y));
+		xto = move_.x + dif;
+		yto = move_.y + dif;
 		to_x = xto;
 		to_y = yto;
 	}
@@ -145,13 +143,13 @@ GameResult Game::checkLeftUpperRightDown() const
 	{
 		xfrom = from_x + it;
 		yfrom = from_y + it;
-		
+
 		if (xfrom + 4 > xto || yfrom + 4 > yto) break;
 
 		result = VICTORY;
 		for (i = xfrom, j = yfrom; i <= (xfrom + 4) && j <= (yfrom + 4); i++, j++)
 		{
-			if (board_[i][j] != which_)
+			if (board_[i][j] != move_.sign)
 			{
 				result = STILL_PLAYING;
 				break;
@@ -171,17 +169,17 @@ GameResult Game::checkLeftDownRightUpper() const
 	GameResult result = STILL_PLAYING;
 	int xfrom, yfrom, xto, yto;
 
-	int from_x = (x_ - 4 > 0 ? x_ - 4 : 0);
-	int to_x = (x_ + 4 < BOARD_SIZE ? x_ + 4 : BOARD_SIZE - 1);
+	int from_x = (move_.x - 4 > 0 ? move_.x - 4 : 0);
+	int to_x = (move_.x + 4 < BOARD_SIZE ? move_.x + 4 : BOARD_SIZE - 1);
 
-	int from_y = (y_ - 4 > 0 ? y_ - 4 : 0);
-	int to_y = (y_ + 4 < BOARD_SIZE ? y_ + 4 : BOARD_SIZE - 1);
+	int from_y = (move_.y - 4 > 0 ? move_.y - 4 : 0);
+	int to_y = (move_.y + 4 < BOARD_SIZE ? move_.y + 4 : BOARD_SIZE - 1);
 
-	if ((x_ - from_x) != (to_y - y_))
+	if ((move_.x - from_x) != (to_y - move_.y))
 	{
-		int dif = ((x_ - from_x) < (to_y - y_) ? (x_ - from_x) : (to_y - y_));
-		xfrom = x_ - dif;
-		yto = y_ + dif;
+		int dif = ((move_.x - from_x) < (to_y - move_.y) ? (move_.x - from_x) : (to_y - move_.y));
+		xfrom = move_.x - dif;
+		yto = move_.y + dif;
 		from_x = xfrom;
 		to_y = yto;
 	}
@@ -190,11 +188,11 @@ GameResult Game::checkLeftDownRightUpper() const
 		xfrom = from_x;
 		yto = to_y;
 	}
-	if ((to_x - x_) != (y_ - from_y))
+	if ((to_x - move_.x) != (move_.y - from_y))
 	{
-		int dif = ((to_x - x_) < (y_ - from_y) ? (to_x - x_) : (y_ - from_y));
-		xto = x_ + dif;
-		yfrom = y_ - dif;
+		int dif = ((to_x - move_.x) < (move_.y - from_y) ? (to_x - move_.x) : (move_.y - from_y));
+		xto = move_.x + dif;
+		yfrom = move_.y - dif;
 		to_x = xto;
 		from_y = yfrom;
 	}
@@ -208,13 +206,13 @@ GameResult Game::checkLeftDownRightUpper() const
 	{
 		xfrom = from_x + it;
 		yto = to_y - it;
-		
+
 		if (xfrom + 4 > xto || yto - 4 < yfrom) break;
 
 		result = VICTORY;
 		for (int i = xfrom, j = yto; i <= (xfrom + 4) && j >= (yto - 4); i++, j--)
 		{
-			if (board_[i][j] != which_)
+			if (board_[i][j] != move_.sign)
 			{
 				result = STILL_PLAYING;
 				break;
@@ -248,10 +246,8 @@ GameResult Game::checkDraw() const
 
 void Game::setPoint(const int& a, const int& b, const Sign& w)
 {
-	x_ = a;
-	y_ = b;
-	which_ = w;
-	board_[x_][y_] = w;
+	move_.setPoint(a, b, w);
+	board_[move_.x][move_.y] = w;
 }
 
 void Game::setBoard(const Sign& sign)
@@ -273,9 +269,7 @@ void Game::reset()
 	{
 		state_ = STILL_PLAYING;
 		setBoard(NONE);
-		x_ = -1;
-	  y_ = -1;
-		which_ = "";
+		move_.setPoint(-1, -1, NONE);
 		hasChanged = false;
 	}
 }
@@ -321,7 +315,7 @@ Sign Game::addPlayer(const int& id, const std::string& name)
 Move Game::getLastMove() const
 {
 	ReadLock lock(mtx);
-	return Move(x_, y_, which_);
+	return move_;
 }
 
 bool Game::makeMove(const int& id, const int& x, const int& y)
@@ -367,149 +361,4 @@ bool Game::isFull() const
 {
 	ReadLock lock(mtx);
 	return xPlayer.id != -1;		/// gra nie jest pełna, jeśli nie ma w niej drugiego gracza
-}
-
-GameList::GameList() : list(), mtx()
-{
-	firstUnusedID = 0;
-}
-
-GameList::~GameList() {}
-
-PGameList GameList::pInstance = nullptr;
-
-PGameList GameList::getInstance()
-{
-	if(!pInstance)
-	{
-		pInstance = PGameList(new GameList());
-	}
-
-	return pInstance;
-}
-
-int GameList::getNewID()
-{
-	WriteLock lock(mtx);
-	int ret = firstUnusedID;
-	firstUnusedID = (firstUnusedID + 1) % 100000;
-	return ret;
-}
-
-Sign GameList::addPlayer(const int& id, const std::string& name)
-{
-	WriteLock lock(mtx);
-	for(Game& game : list)
-	{
-		if(!game.isFull())
-		{
-			return game.addPlayer(id, name);
-		}
-	}
-
-	list.emplace_back();			/// dodanie nowej gry
-	                          /// nie możemy tu tak po prostu użyć push_back, bo mutex nie ma konstruktora kopiującego
-	return list.back().addPlayer(id, name);
-}
-
-std::string GameList::getOpponentsName(const int& id) const
-{
-	ReadLock lock(mtx);
-	for(const Game& game : list)
-	{
-		if(game.hasPlayer(id))
-			return game.getOpponentsName(id);
-	}
-	return "";
-}
-
-Move GameList::getLastMove(const int& id) const
-{
-	ReadLock lock(mtx);
-	for(const Game& game : list)
-	{
-		if(game.hasPlayer(id))
-			return game.getLastMove();
-	}
-	return Move();
-}
-
-bool GameList::makeMove(const int& id, const int& x, const int& y)
-{
-	ReadLock lock(mtx);
-	bool ret;		// czy udało się wykonać ruch
-	for(Game& game : list)
-	{
-		if(game.hasPlayer(id))
-		{
-			ret = game.makeMove(id, x ,y);
-
-			if(ret == false)
-				return false;
-
-			game.condition();
-			break;
-		}
-	}
-	return ret;
-}
-
-GameResult GameList::getResult(const int& id) const
-{
-	ReadLock lock(mtx);
-	for(const Game& game : list)
-	{
-		if(game.hasPlayer(id))
-			return game.getState();
-	}
-	return STILL_PLAYING;
-}
-
-void GameList::resetGame(const int& id)
-{
-	WriteLock lock(mtx);
-	for(Game& game : list)
-	{
-		if(game.hasPlayer(id))
-		{
-			game.reset();
-			break;
-		}
-	}
-}
-
-int GameList::getPlayerPoints(const int& id) const
-{
-	ReadLock lock(mtx);
-	for(const Game& game : list)
-	{
-		if(game.hasPlayer(id))
-			return game.getPlayerPoints(id);
-	}
-	return -1;	// w razie braku takiego gracza
-}
-
-int GameList::getOpponentsPoints(const int& id) const
-{
-	ReadLock lock(mtx);
-	for(const Game& game : list)
-	{
-		if(game.hasPlayer(id))
-			return game.getOpponentsPoints(id);
-	}
-
-	return -1;	// w razie braku takiego gracza
-}
-
-void GameList::setGameBoard(const int& id, Board board)
-{
-	WriteLock lock(mtx);
-	for(Game& game : list)
-	{
-		if(game.hasPlayer(id))
-		{
-			game.setBoard(board);
-			break;
-		}
-	}
 }
