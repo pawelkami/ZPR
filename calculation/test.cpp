@@ -6,15 +6,21 @@ using namespace boost::unit_test;
 
 int first_player_id;
 int second_player_id;
+int third_player_id;
+int fourth_player_id;
+Sign first_player_sign;
+Sign second_player_sign;
+Sign third_player_sign;
+Sign fourth_player_sign;
 
 /*!
  * test_case1 - test wyniku gry dla pustej planszy
  */
 void test_case1()
 {
-	  GameList::getInstance()->resetGame(first_player_id);
-    GameList::getInstance()->resetGame(second_player_id);
-  	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), STILL_PLAYING);
+	  GameList::getInstance()->resetGame(third_player_id);
+    GameList::getInstance()->resetGame(fourth_player_id);
+  	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(third_player_id), STILL_PLAYING);
 }
 
 /*! 
@@ -56,6 +62,8 @@ void test_case2()
  */
 void test_case3()
 {
+    GameList::getInstance()->resetGame(third_player_id);
+    GameList::getInstance()->resetGame(fourth_player_id);
     Board board =
   	{
     {"O","O","X","O","O","","X","","","","","","","","",""},
@@ -76,10 +84,10 @@ void test_case3()
     {"","","","","","","","","","","","","","","",""}
   	};
 
-    GameList::getInstance()->setGameBoard(first_player_id, board);
-    GameList::getInstance()->makeMove(first_player_id, 0, 5);
+    GameList::getInstance()->setGameBoard(third_player_id, board);
+    GameList::getInstance()->makeMove(third_player_id, 0, 5);
     
-  	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), STILL_PLAYING);
+  	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(third_player_id), STILL_PLAYING);
 }
 
 /*!
@@ -88,6 +96,8 @@ void test_case3()
  */
 void test_case4() 
 {
+    GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
 	  Board board =
   	{
     {"","X","X","O","O","X","X","O","O","X","X","O","O","X","X","O"},
@@ -120,6 +130,8 @@ void test_case4()
  */
 void test_case5() 
 {
+    GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
 	  Board board =
   	{
     {"","","","","X","","","","","","","","","","",""},
@@ -153,6 +165,8 @@ void test_case5()
  */
 void test_case6() 
 {
+    GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
 	  Board board =
   	{
     {"","0","","","","","","","","","","","","","",""},
@@ -185,6 +199,8 @@ void test_case6()
  */
 void test_case7() 
 {
+    GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
 	  Board board =
   	{
     {"","","","","X","","","","","","","","","","",""},
@@ -217,6 +233,8 @@ void test_case7()
  */
 void test_case8() 
 {
+    GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
 	  Board board =
   	{
     {"","0","","","","","","","","","","","","","",""},
@@ -249,6 +267,8 @@ void test_case8()
  */
 void test_case9() 
 {
+    GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
 	  Board board =
   	{
     {"","","","","","","","","","","","","","","",""},
@@ -272,7 +292,7 @@ void test_case9()
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(second_player_id, 4, 4);
     
-  	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
+  	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(second_player_id), VICTORY);
 }
 
 /*!
@@ -281,6 +301,8 @@ void test_case9()
  */
 void test_case10() 
 {
+    GameList::getInstance()->resetGame(third_player_id);
+    GameList::getInstance()->resetGame(fourth_player_id);
 	  Board board =
   	{
     {"","","","","","","","","","","","","","","",""},
@@ -301,10 +323,10 @@ void test_case10()
     {"","","","","","","","","","","","","","","",""}
   	};
   	
-    GameList::getInstance()->setGameBoard(first_player_id, board);
-    GameList::getInstance()->makeMove(first_player_id, 8, 7);
+    GameList::getInstance()->setGameBoard(third_player_id, board);
+    GameList::getInstance()->makeMove(third_player_id, 8, 7);
     
-  	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
+  	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(third_player_id), VICTORY);
 }
 
 /*!
@@ -314,6 +336,8 @@ void test_case10()
  */
 void test_case11() 
 {
+    GameList::getInstance()->resetGame(third_player_id);
+    GameList::getInstance()->resetGame(fourth_player_id);
 	  Board board =
   	{
     {"O","X","X","","","","","","","","","","","","",""},
@@ -334,10 +358,10 @@ void test_case11()
     {"","","","","","","","","","","","","","","",""}
   	};
   	
-    GameList::getInstance()->setGameBoard(first_player_id, board);
-    GameList::getInstance()->makeMove(first_player_id, 3, 3);
+    GameList::getInstance()->setGameBoard(third_player_id, board);
+    GameList::getInstance()->makeMove(third_player_id, 3, 3);
     
-  	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
+  	BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(fourth_player_id), VICTORY);
 }
 
 /*!
@@ -346,6 +370,8 @@ void test_case11()
  */
 void test_case12() 
 {
+    GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
 	  Board board =
   	{
     {"","","","","","","","","","","","","","","",""},
@@ -378,6 +404,8 @@ void test_case12()
  */
 void test_case13() 
 {
+    GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
 	  Board board =
   	{
     {"","","","","","","","","","","","","","","",""},
@@ -411,6 +439,8 @@ void test_case13()
  */
 void test_case14()
 {
+    GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
   	Board board =
   	{
     {"O","O","O","O","X","O","X","O","X","X","X","X","O","O","O","O"},
@@ -445,6 +475,8 @@ void test_case14()
  */
 void test_case15()
 {
+    GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
     Board board =
   	{
     {"O","O","O","O","X","O","X","O","X","X","X","X","O","O","O","O"},
@@ -478,6 +510,8 @@ void test_case15()
  */
 void test_case16() 
 {
+    GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
 	  Board board =
   	{
     {"O","O","O","O","X","O","X","O","X","X","X","X","O","O","O","O"},
@@ -511,6 +545,8 @@ void test_case16()
  */
 void test_case17() 
 {
+    GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
 	  Board board =
   	{
     {"","","","","","","","","","","","","","","",""},
@@ -754,16 +790,174 @@ void test_case24()
 }
 
 /*!
+ * test_case0_1 - sprawdzenie poprawnego przydzielenia znaku pierwszemu graczowi
+ */
+
+void test_case0_1()
+{
+    BOOST_REQUIRE_EQUAL(first_player_sign, "O");
+}
+
+/*!
+ * test_case0_2 - sprawdzenie poprawnego przydzielenia znaku drugiemu graczowi
+ */
+
+void test_case0_2()
+{
+    BOOST_REQUIRE_EQUAL(second_player_sign, "X");
+}
+
+/*!
+ * test_case0_3 - sprawdzenie poprawnego przydzielenia znaku trzeciemu graczowi
+ */
+
+void test_case0_3()
+{
+    BOOST_REQUIRE_EQUAL(third_player_sign, "O");
+}
+
+/*!
+ * test_case0_4 - sprawdzenie poprawnego przydzielenia znaku czwartemu graczowi
+ */
+
+void test_case0_4()
+{
+    BOOST_REQUIRE_EQUAL(fourth_player_sign, "X");
+}
+
+/*!
+ * test_case0_5 - sprawdzenie poprawnego przydzielenia przeciwnika pierwszemu graczowi
+ */
+
+void test_case0_5()
+{
+    BOOST_REQUIRE_EQUAL(GameList::getInstance()->getOpponentsName(first_player_id), "second");
+}
+
+/*!
+ * test_case0_6 - sprawdzenie poprawnego przydzielenia przeciwnika drugiemu graczowi
+ */
+
+void test_case0_6()
+{
+    BOOST_REQUIRE_EQUAL(GameList::getInstance()->getOpponentsName(second_player_id), "first");
+}
+
+/*!
+ * test_case0_7 - sprawdzenie poprawnego przydzielenia przeciwnika trzeciemu graczowi
+ */
+
+void test_case0_7()
+{
+    BOOST_REQUIRE_EQUAL(GameList::getInstance()->getOpponentsName(third_player_id), "fourth");
+}
+
+/*!
+ * test_case0_8 - sprawdzenie poprawnego przydzielenia przeciwnika czwartemu graczowi
+ */
+
+void test_case0_8()
+{
+    BOOST_REQUIRE_EQUAL(GameList::getInstance()->getOpponentsName(fourth_player_id), "third");
+}
+
+/*!
+ * test_case2_1 - sprawdzenie poprawnego dzialania licznika zwyciestw
+ */
+
+void test_case2_1()
+{
+    BOOST_CHECK_EQUAL(GameList::getInstance()->getPlayerPoints(fourth_player_id), 0);
+}
+
+/*!
+ * test_case2_2 - sprawdzenie poprawnego dzialania licznika zwyciestw
+ */
+
+void test_case2_2()
+{
+    BOOST_CHECK_EQUAL(GameList::getInstance()->getPlayerPoints(third_player_id), 2);
+}
+
+/*!
+ * test_case2_3 - sprawdzenie poprawnego dzialania licznika zwyciestw
+ */
+
+void test_case2_3()
+{
+    BOOST_CHECK_EQUAL(GameList::getInstance()->getOpponentsPoints(fourth_player_id), 2);
+}
+
+/*!
+ * test_case2_4 - sprawdzenie poprawnego dzialania licznika zwyciestw
+ */
+
+void test_case2_4()
+{
+    BOOST_CHECK_EQUAL(GameList::getInstance()->getOpponentsPoints(third_player_id), 0);
+}
+
+/*!
+ * test_case2_5 - sprawdzenie poprawnego dzialania licznika zwyciestw
+ */
+
+void test_case2_5()
+{
+    BOOST_CHECK_EQUAL(GameList::getInstance()->getPlayerPoints(first_player_id), 8);
+}
+
+/*!
+ * test_case2_6 - sprawdzenie poprawnego dzialania licznika zwyciestw
+ */
+
+void test_case2_6()
+{
+    BOOST_CHECK_EQUAL(GameList::getInstance()->getPlayerPoints(second_player_id), 8);
+}
+
+/*!
+ * test_case2_7 - sprawdzenie poprawnego dzialania licznika zwyciestw
+ */
+
+void test_case2_7()
+{
+    BOOST_CHECK_EQUAL(GameList::getInstance()->getOpponentsPoints(first_player_id), 8);
+}
+
+/*!
+ * test_case2_8 - sprawdzenie poprawnego dzialania licznika zwyciestw
+ */
+
+void test_case2_8()
+{
+    BOOST_CHECK_EQUAL(GameList::getInstance()->getOpponentsPoints(second_player_id), 8);
+}
+
+/*!
  * master_test_suite - skumulowanie wszystkich testow
  */
 test_suite* init_unit_test_suite( int argc, char * argv[] )
 {
     first_player_id = GameList::getInstance()->getNewID();    // pobieramy id dla pierwszego gracza
     second_player_id = GameList::getInstance()->getNewID();   // pobieramy id dla drugiego gracza
-    Sign first_player_sign = GameList::getInstance()->addPlayer(first_player_id, "first");  // dodajemy pierwszego gracza do listy
-    Sign second_player_sign = GameList::getInstance()->addPlayer(second_player_id, "second");   // dodajemy drugiego gracza do listy
-  
-    test_suite * ts1 = BOOST_TEST_SUITE( "ConditionSuite" );
+    third_player_id = GameList::getInstance()->getNewID();    // --||--
+    fourth_player_id = GameList::getInstance()->getNewID();   // --||--
+    first_player_sign = GameList::getInstance()->addPlayer(first_player_id, "first");  // dodajemy pierwszego gracza do listy
+    second_player_sign = GameList::getInstance()->addPlayer(second_player_id, "second");   // dodajemy drugiego gracza do listy
+    third_player_sign = GameList::getInstance()->addPlayer(third_player_id, "third");   // --||--
+    fourth_player_sign = GameList::getInstance()->addPlayer(fourth_player_id, "fourth");  // --||--
+    
+    test_suite *ts0 = BOOST_TEST_SUITE( "CheckPlayersSuite" );
+    ts0->add( BOOST_TEST_CASE( & test_case0_1 ) );
+    ts0->add( BOOST_TEST_CASE( & test_case0_2 ) );
+    ts0->add( BOOST_TEST_CASE( & test_case0_3 ) );
+    ts0->add( BOOST_TEST_CASE( & test_case0_4 ) );
+    ts0->add( BOOST_TEST_CASE( & test_case0_5 ) );
+    ts0->add( BOOST_TEST_CASE( & test_case0_6 ) );
+    ts0->add( BOOST_TEST_CASE( & test_case0_7 ) );
+    ts0->add( BOOST_TEST_CASE( & test_case0_8 ) );
+    
+    test_suite *ts1 = BOOST_TEST_SUITE( "CheckConditionSuite" );
     ts1->add( BOOST_TEST_CASE( & test_case1 ) );
     ts1->add( BOOST_TEST_CASE( & test_case2 ) );
     ts1->add( BOOST_TEST_CASE( & test_case3 ) );
@@ -789,10 +983,19 @@ test_suite* init_unit_test_suite( int argc, char * argv[] )
     ts1->add( BOOST_TEST_CASE( & test_case23 ) );
     ts1->add( BOOST_TEST_CASE( & test_case24 ) );
     
-    //test_suite * ts2 = BOOST_TEST_SUITE( "CheckSuite" );
+    test_suite *ts2 = BOOST_TEST_SUITE( "CheckPointsSuite" );
+    ts2->add( BOOST_TEST_CASE( & test_case2_1 ) );
+    ts2->add( BOOST_TEST_CASE( & test_case2_2 ) );
+    ts2->add( BOOST_TEST_CASE( & test_case2_3 ) );
+    ts2->add( BOOST_TEST_CASE( & test_case2_4 ) );
+    ts2->add( BOOST_TEST_CASE( & test_case2_5 ) );
+    ts2->add( BOOST_TEST_CASE( & test_case2_6 ) );
+    ts2->add( BOOST_TEST_CASE( & test_case2_7 ) );
+    ts2->add( BOOST_TEST_CASE( & test_case2_8 ) );
     
+    framework::master_test_suite().add( ts0 );
     framework::master_test_suite().add( ts1 );
-    //framework::master_test_suite().add( ts2 );
+    framework::master_test_suite().add( ts2 );
    
     return 0; 
 }
