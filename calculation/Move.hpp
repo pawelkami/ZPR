@@ -12,6 +12,7 @@ public:
   int y;
   Sign sign;
   void setPoint(int x, int y, Sign s){ this->x = x; this->y = y; sign = s;};
+  bool operator ==( const Move & m) { return (x == m.x && y == m.y && sign == m.sign); };
   Move() : x(-1), y(-1), sign(NONE) {}
   Move(int xx, int yy, Sign s) : x(xx), y(yy), sign(s) {}
 };
