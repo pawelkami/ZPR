@@ -38,6 +38,8 @@ private:
 public:
 	Game();
 	~Game();
+	const int BOARD_SIZE = 16;			// rozmiar planszy
+
 	inline Board getBoard() const { return board_; };
 	void reset();
 	void displayBoard() const;     /// funkcja do testowania, na koniec powinniśmy ją usunąć

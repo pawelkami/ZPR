@@ -12,7 +12,7 @@
 class GameList
 {
 private:
-  std::list<Game> list;
+  std::list<Game> list_;
   mutable std::shared_timed_mutex mtx;
   int firstUnusedID;
   static PGameList pInstance;
@@ -31,6 +31,9 @@ public:
   void setGameBoard(const int & id, Board board); // <--
   int getPlayerPoints(const int& id) const;
   int getOpponentsPoints(const int& id) const;
+  Game* findGame(const int& id);
+  const Game* findGame(const int& id) const;
+
 };
 
 #endif // GAMELIST_HPP

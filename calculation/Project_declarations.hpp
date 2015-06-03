@@ -1,8 +1,6 @@
 #ifndef PROJECT_DECLARATIONS_HPP
 #define PROJECT_DECLARATIONS_HPP
 
-#define BOARD_SIZE 16			// rozmiar planszy
-
 // zmienne odpowiadające za znaki na planszy
 typedef std::string Sign;
 const Sign CROSS = "X";

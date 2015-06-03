@@ -1,6 +1,6 @@
 #include "GameList.hpp"
 
-GameList::GameList() : list(), mtx()
+GameList::GameList() : list_(), mtx()
 {
   firstUnusedID = 0;
 }
@@ -30,7 +30,7 @@ int GameList::getNewID()
 Sign GameList::addPlayer(const int& id, const std::string& name)
 {
   WriteLock lock(mtx);
-  for(Game& game : list)
+  for(Game& game : list_)
   {
     if(!game.isFull())
     {
@@ -38,109 +38,106 @@ Sign GameList::addPlayer(const int& id, const std::string& name)
     }
   }
 
-  list.emplace_back();			/// dodanie nowej gry
+  list_.emplace_back();			/// dodanie nowej gry
                             /// nie możemy tu tak po prostu użyć push_back, bo mutex nie ma konstruktora kopiującego
-  return list.back().addPlayer(id, name);
+  return list_.back().addPlayer(id, name);
 }
 
 std::string GameList::getOpponentsName(const int& id) const
 {
   ReadLock lock(mtx);
-  for(const Game& game : list)
-  {
-    if(game.hasPlayer(id))
-      return game.getOpponentsName(id);
-  }
-  return "";
+  const Game* game = findGame(id);
+
+  return (game != nullptr) ? game->getOpponentsName(id) : "";
 }
 
 Move GameList::getLastMove(const int& id) const
 {
   ReadLock lock(mtx);
-  for(const Game& game : list)
-  {
-    if(game.hasPlayer(id))
-      return game.getLastMove();
-  }
-  return Move();
+  const Game* game = findGame(id);
+
+  return (game != nullptr) ? game->getLastMove() : Move();
 }
 
 bool GameList::makeMove(const int& id, const int& x, const int& y)
 {
   ReadLock lock(mtx);
   bool ret;		// czy udało się wykonać ruch
-  for(Game& game : list)
+
+  Game* game = findGame(id);
+
+  if(game != nullptr)
   {
-    if(game.hasPlayer(id))
-    {
-      ret = game.makeMove(id, x ,y);
+    ret = game->makeMove(id, x ,y);
 
-      if(ret == false)
-        return false;
+    if(ret == false)
+      return false;
 
-      game.condition();
-      break;
-    }
+    game->condition();
   }
-  return ret;
+  return true;
 }
 
 GameResult GameList::getResult(const int& id) const
 {
   ReadLock lock(mtx);
-  for(const Game& game : list)
-  {
-    if(game.hasPlayer(id))
-      return game.getState();
-  }
-  return STILL_PLAYING;
+  const Game* game = findGame(id);
+
+  return (game != nullptr) ? game->getState() : STILL_PLAYING;
 }
 
 void GameList::resetGame(const int& id)
 {
   WriteLock lock(mtx);
-  for(Game& game : list)
-  {
-    if(game.hasPlayer(id))
-    {
-      game.reset();
-      break;
-    }
-  }
+  Game* game = findGame(id);
+
+  if(game != nullptr)
+    game->reset();
 }
 
 int GameList::getPlayerPoints(const int& id) const
 {
   ReadLock lock(mtx);
-  for(const Game& game : list)
-  {
-    if(game.hasPlayer(id))
-      return game.getPlayerPoints(id);
-  }
-  return -1;	// w razie braku takiego gracza
+  const Game* game = findGame(id);
+
+  return (game != nullptr) ? game->getPlayerPoints(id) : -1;
 }
 
 int GameList::getOpponentsPoints(const int& id) const
 {
   ReadLock lock(mtx);
-  for(const Game& game : list)
-  {
-    if(game.hasPlayer(id))
-      return game.getOpponentsPoints(id);
-  }
 
-  return -1;	// w razie braku takiego gracza
+  const Game* game = findGame(id);
+
+  return (game != nullptr) ? game->getOpponentsPoints(id) : -1;
 }
 
 void GameList::setGameBoard(const int& id, Board board)
 {
   WriteLock lock(mtx);
-  for(Game& game : list)
+
+  Game* game = findGame(id);
+
+  if(game != nullptr)
+  {
+      game->setBoard(board);
+  }
+}
+
+const Game* GameList::findGame(const int& id) const
+{
+  for(const Game& game : list_)
   {
     if(game.hasPlayer(id))
     {
-      game.setBoard(board);
-      break;
+      return &game;
     }
   }
+
+  return nullptr;
+}
+
+Game* GameList::findGame(const int& id)
+{
+  return const_cast<Game*>( static_cast<const GameList*>(this)->findGame(id));
 }
