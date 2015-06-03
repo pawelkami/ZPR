@@ -32,7 +32,7 @@ else:
    print platform.system() + " not supported"
 
 #build C++ library
-cpplib = env.SharedLibrary( target = 'cppGame', source = ['calculation/Game.cpp', 'calculation/Game_Module.cpp'])
+cpplib = env.SharedLibrary( target = 'cppGame', source = ['calculation/Game.cpp', 'calculation/Game_Module.cpp', 'calculation/GameList.cpp'])
 if(platform.system() == "Linux"):
    target = 'modules/cppGame.so'
 elif(platform.system() == "Windows"):
