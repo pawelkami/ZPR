@@ -1,7 +1,43 @@
-{{extend 'layout.html'}}
+<!DOCTYPE html>
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="{{=T.accepted_language or 'en'}}"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <!-- www.phpied.com/conditional-comments-block-downloads/ -->
+  <!-- Always force latest IE rendering engine
+  (even in intranet) & Chrome Frame
+  Remove this if you use the .htaccess -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge{{=not request.is_local and ',chrome=1' or ''}}">
+  <!--  Mobile Viewport Fix
+  j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag
+  device-width: Occupy full width of the screen in its current orientation
+  initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
+  user-scalable = yes allows the user to zoom in -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{=response.title or request.application}}</title>
+  <!-- http://dev.w3.org/html5/markup/meta.name.html -->
+  <meta name="application-name" content="{{=request.application}}">
+  <!-- Speaking of Google, don't forget to set your site up:
+  http://google.com/webmasters -->
+  <meta name="google-site-verification" content="">
+  <!-- include stylesheets -->
+  <link rel="stylesheet" href="{{=URL('static','css/bootstrap.min.css')}}"/>
+  <link rel="stylesheet" href="{{=URL('static','css/bootstrap-theme.min.css')}}"/>
+  <link rel="stylesheet" href="{{=URL('static','css/web2py-bootstrap3.css')}}"/>
+  <link rel="shortcut icon" href="{{=URL('static','images/favicon.png')}}" type="image/x-icon">
+  <link rel="apple-touch-icon" href="{{=URL('static','images/favicon.png')}}">
+  <link rel="stylesheet" href="{{=URL('static','css/main.css')}}">
+  <!-- All JavaScript at the bottom, except for Modernizr which enables
+  HTML5 elements & feature detects -->
+  <script src="{{=URL('static','js/modernizr-2.8.3.min.js')}}"></script>
 
-{{block header}}
-<div id="container">
+  <!--[if lt IE 9]>
+  <script src="{{=URL('static','js/respond-1.4.2.min.js')}}"></script>
+  <![endif]-->
+  <!-- Favicons -->
+  {{include 'web2py_ajax.html'}} <!-- this includes jquery.js, calendar.js/.css and web2py.js -->
+</head>
+<body>
+  <div id="container">
 
     <div class="player1">
       <div class="player1Text"></div>
@@ -14,331 +50,8 @@
       <div class="player2Points"></div>
       <div class="player2Turn"></div>
     </div>
-
-
-
     <div id="game">
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
-
-      <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-      </div>
-
     </div>
-  </div>
   <div id="nickname-form">Choose your nickname<br>
     <input id="nickname-textbox" type="text"><br>
     <button id="start-button" type="button">Start</button>
@@ -349,198 +62,14 @@
   </div>
   <script type="text/javascript">
 
-  $('#game-result-form').hide();
+  var urlRegister = "{{=url_register}}";
+  var urlMove = "{{=url_move}}";
+  var urlReset = "{{=url_reset}}";
+  var urlGetName = "{{=url_getName}}";
+  var urlGetMove = "{{=url_getMove}}";
 
-  $(".col").click(function(){
-    if(!gameStarted || turn !== player1.sign){
-         return;
-    }
-    var row = $(this).parent().index();
-    var col = $(this).index();
-
-    if($(this).text().length === 1){
-      alert("To miejsce jest juz zajete, prosze wykonac ruch gdzie indziej.");
-      return;
-    }
-
-    var ret = postMove(row,col);
-
-    if(ret !== "False"){
-      $(this).text(player1.sign);
-      turn = player2.sign;
-      if( ret === "STILL_PLAYING"){
-        getOpponentsMove();
-      }
-    }
-  });
-
-    $("#start-button").click(function() {
-      if($("#nickname-textbox").val().length < 1)
-        alert("Podaj swoje imie");
-      else {
-        player1.nickname = ($("#nickname-textbox")).val();
-        $(".player1Text").text(player1.nickname);
-
-        // zapisuje imię gracza na serwerze i zwraca mu jego id oraz znak
-        $.ajax({
-          type: "POST",
-          async: false,
-          data: {name: player1.nickname},
-          url: "{{=url_register}}",
-          success: function( out_data ) {
-            out_data = $.parseJSON(out_data);
-            player1.id = out_data.id;
-            player1.sign = out_data.sign;
-            if(out_data.sign === "O") {
-              player2.sign = "X";
-            } else {
-              player2.sign = "O";
-            }
-          }
-        });
-
-        startWaitingAnimation();
-        getOpponentsName();
-        $('#nickname-form').delay(150).fadeOut(400);
-
-        $('.player1Points').text("0");
-        $('.player2Points').text("0");
-        $(".player1Turn").text(player1.sign);
-        $(".player2Turn").text(player2.sign);
-
-
-        if(turn === player2.sign){
-          getOpponentsMove();
-        }
-      }
-    });
-
-    $("#new-game-button").click(function() {
-      $('#game-result-form').hide();
-      new_game();
-      turn = "O";
-      if(player1.sign === "X"){
-        $(".player1Turn").fadeTo(200, 0);
-        $(".player2Turn").fadeTo(200, 1);
-        getOpponentsMove();
-      } else {
-        $(".player1Turn").fadeTo(200, 1);
-        $(".player2Turn").fadeTo(200, 0);
-      }
-
-    });
-
-    new_game = function() {
-        $(".col").map(function() {
-          $(this).text("");
-        });
-        $.ajax({
-          type: "POST",
-          data: {id: player1.id},
-          url: "{{=url_reset}}",
-          async: false
-        });
-    };
-
-  getOpponentsName = function() {
-    $.ajax({
-      type: "POST",
-      url: "{{=url_getName}}",
-      data: {id: player1.id},
-      success: function( out_data ) {
-        out_data = $.parseJSON(out_data);
-
-        if(out_data.x === -1 || out_data.y === -1){ // jesli zaczynamy nowa gre to przy pobraniu poczatkowych wartosci jeszcze raz pobierz
-          setTimeout(getOpponentsName, 2000);
-        }
-
-        if( out_data.playerName === "" ){
-          setTimeout(getOpponentsName, 2000);
-        } else {
-          player2.nickname = out_data.playerName;
-          stopWaitingAnimation();
-          gameStarted = true;
-          if(player1.sign !== turn)
-            $(".player1Turn").fadeTo(200, 0);
-          else
-            $(".player2Turn").fadeTo(200, 0);
-        }
-      },
-      error: function(){
-        setTimeout(getOpponentsName, 2000);
-      }
-    });
-  };
-
-  getOpponentsMove = function() {
-    $.ajax({
-      type: "POST",
-      data: {id: player1.id},
-      url: "{{=url_getMove}}",
-      success: function( out_data ) {
-        out_data = $.parseJSON(out_data);
-        if(out_data.sign === player2.sign) {
-          $("#game").children().each(function() {
-
-            if($(this).index() === out_data.y)
-              $(this).children().each(function() {
-                if($(this).index() === out_data.x)
-                  $(this).text(player2.sign);
-            });
-          });
-
-          setStatus( out_data, player2 );   //ustawia okienko wygranej jesli taka nastapi
-
-          if( out_data.status === "STILL_PLAYING" ){
-             turn = player1.sign;
-             $(".player1Turn").fadeTo(200, 1);
-             $(".player2Turn").fadeTo(200, 0);
-          }
-        }
-        else setTimeout(getOpponentsMove, 2000);
-      },
-      error: function() {
-        setTimeout(getOpponentsMove, 2000);
-      }
-    });
-  }
-
-  setStatus = function(out_data, player) {  // funkcja ustawia okienko statusu gry, wlacza sie gdy jest wygrana lub remis
-    if( out_data.status === "VICTORY" ){
-      $('#result-text').text(player.nickname + " WIN");
-      $('#game-result-form').fadeTo(200, 0.9);
-      if(player.sign === player1.sign){
-        $('.player1Points').text(out_data.points);
-      } else {
-        $('.player2Points').text(out_data.points);
-      }
-    } else if( status === "DRAW" ) {
-      $('#result-text').text("DRAW");
-      $('#game-result-form').fadeTo(200, 0.9);
-    } else {
-      $(".player1Turn").fadeTo(200, 0);
-      $(".player2Turn").fadeTo(200, 1);
-    }
-  }
-
-  postMove = function(row, col){
-    var output = "";
-    $.ajax({
-      type: "POST",
-      async: false,
-      data: {x: col, y: row, id: player1.id},
-      url: "{{=url_move}}"
-    }).done(function( out_data ){
-      out_data = $.parseJSON(out_data);
-      output = out_data.status;
-
-      if(out_data.status === "False"){
-        return;
-      }
-      setStatus( out_data, player1);
-    });
-    return output;
-  }
   </script>
-
-{{end}}
+  <script src="{{=URL('static','js/ajax.js')}}"></script>
+  <script src="{{=URL('static','js/main.js')}}"></script>
+</body>
+</html>
