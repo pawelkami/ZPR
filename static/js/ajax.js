@@ -1,3 +1,23 @@
+// zapisuje imię gracza na serwerze i zwraca mu jego id oraz znak
+registerPlayer = function() {
+  $.ajax({
+    type: "POST",
+    async: false,
+    data: {name: player1.nickname},
+    url: urlRegister,
+    success: function( out_data ) {
+      out_data = $.parseJSON(out_data);
+      player1.id = out_data.id;
+      player1.sign = out_data.sign;
+      if(out_data.sign === "O") {
+        player2.sign = "X";
+      } else {
+        player2.sign = "O";
+      }
+    }
+  });
+};
+
 new_game = function() {
   $(".col").map(function() {
     $(this).text("");
