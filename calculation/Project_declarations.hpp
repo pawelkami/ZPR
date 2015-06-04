@@ -1,7 +1,11 @@
+/*
+ * File contains typedefs and declarations for Tic Tac Toe game project.
+ */
+
 #ifndef PROJECT_DECLARATIONS_HPP
 #define PROJECT_DECLARATIONS_HPP
 
-// zmienne odpowiadające za znaki na planszy
+// variables which represents signs on a board
 typedef std::string Sign;
 const Sign CROSS = "X";
 const Sign CIRCLE = "O";

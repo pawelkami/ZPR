@@ -1,3 +1,6 @@
+/*
+ * File implements boost_python_module of C++ classes and methods which will be used in Python.
+ */
 #include "Game.hpp"
 #include "GameList.hpp"
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
@@ -14,9 +17,9 @@ BOOST_PYTHON_MODULE(cppGame)
 		;
 
 	boost::python::class_<Move>("Move")
-		.def_readwrite("x", &Move::x)
-		.def_readwrite("y", &Move::y)
-		.def_readwrite("sign", &Move::sign)
+		.def_readwrite("x", &Move::x_)
+		.def_readwrite("y", &Move::y_)
+		.def_readwrite("sign", &Move::sign_)
 		;
 
 	boost::python::enum_<GameResult>("GameResult")

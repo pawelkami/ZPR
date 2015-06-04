@@ -1,20 +1,60 @@
+/*
+ *  Header file for Move class.
+ */
 #ifndef MOVE_HPP
 #define MOVE_HPP
 
 #include "Project_declarations.hpp"
 
 
-
+/*!
+ *  Class representing move.
+ */
 class Move
 {
 public:
-  int x;
-  int y;
-  Sign sign;
-  void setPoint(int x, int y, Sign s){ this->x = x; this->y = y; sign = s;};
-  bool operator ==( const Move & m) { return (x == m.x && y == m.y && sign == m.sign); };
-  Move() : x(-1), y(-1), sign(NONE) {}
-  Move(int xx, int yy, Sign s) : x(xx), y(yy), sign(s) {}
+
+  /*!
+   *  x coordinate
+   */
+  int x_;
+
+  /*!
+   *  y coordinate
+   */
+  int y_;
+
+  /*!
+   *  Sign of a move (CIRCLE OR CROSS)
+   */
+  Sign sign_;
+
+  /*!
+   *  Sets move with coordinates and sign.
+   *  @param x x coordinate.
+   *  @param y y coordinate.
+   *  @param s sign which made a move.
+   */
+  void setPoint(int x, int y, Sign s){ x_ = x; y_ = y; sign_ = s;};
+
+  /*!
+   *  Comparing operator == for comparing two moves.
+   *  @return true if moves are the same.
+   */
+  bool operator ==( const Move & m) { return (x_ == m.x_ && y_ == m.y_ && sign_ == m.sign_); };
+
+  /*!
+   *  Default constructor.
+   */
+  Move() : x_(-1), y_(-1), sign_(NONE) {}
+
+  /*!
+   *  Constructor with arguments.
+   *  @param xx x coordinate
+   *  @param yy y coordinate
+   *  @param s sign
+   */
+  Move(int xx, int yy, Sign s) : x_(xx), y_(yy), sign_(s) {}
 };
 
 #endif // MOVE_HPP
