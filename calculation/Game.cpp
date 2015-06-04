@@ -76,7 +76,7 @@ GameResult Game::checkVertically() const
 				winPnt.x3 = j-3;
 				winPnt.x4 = j-2;
 				winPnt.x5 = j-1;
-				winPnt.y1 = winPnt.y2 = winPnt.y3 = winPnt.y4 = winPnt.y5 = move_.y;	
+				winPnt.y1 = winPnt.y2 = winPnt.y3 = winPnt.y4 = winPnt.y5 = move_.y_;
 			}
 			break;
 		}
@@ -117,7 +117,7 @@ GameResult Game::checkHorizontally() const
 				winPnt.y3 = j-3;
 				winPnt.y4 = j-2;
 				winPnt.y5 = j-1;
-				winPnt.x1 = winPnt.x2 = winPnt.x3 = winPnt.x4 = winPnt.x5 = move_.x;	
+				winPnt.x1 = winPnt.x2 = winPnt.x3 = winPnt.x4 = winPnt.x5 = move_.x_;
 			}
 			break;
 		}
