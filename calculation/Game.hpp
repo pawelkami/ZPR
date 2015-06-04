@@ -23,6 +23,15 @@
 enum GameResult { STILL_PLAYING, DRAW, VICTORY };
 
 /*!
+ *	Struct representing coordinates of points which resulted in a VICTORY.
+ */
+struct WinnerPoints
+{
+	int x1, y1, x2, y2, x3, y3, x4, y4, x5, y5;
+};
+
+
+/*!
  *	\brief A class representing single Game.
  * A class representing single Game. It provides methods for checking the result of
  * a Game and setting it up.
@@ -119,6 +128,11 @@ private:
 	 */
 	mutable std::shared_timed_mutex mtx;
 
+	/*!
+	 *	Struct which contains coordinates of points that has resulted in a VICTORY of a Game.
+	 */
+	mutable WinnerPoints winPnt;
+
 public:
 	/*!
 	 * A default constructor. It sets up all the variables at the beggining.
@@ -186,6 +200,17 @@ public:
 	 *	@return true - 2 players are present, false - there is an empty space for other player
 	 */
 	bool isFull() const;
+
+	/*!
+	*  Checks if the game is empty.
+	*	@return true - game is empty, false - not empty
+	*/
+	bool isEmpty() const;
+
+	/*!
+	*	 @return struct with points that resulted in a VICTORY.
+	*/
+	WinnerPoints getWinnerPoints() const;
 
 	/*!
 	 *  @param id Player id

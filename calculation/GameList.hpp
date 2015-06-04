@@ -157,6 +157,7 @@ public:
   *  @return true if it has opponent left, false otherwise
   */
   bool hasOpponentLeft(int id) const;
+  WinnerPoints getWinnerPoints(const int& id) const;
 };
 
 #endif // GAMELIST_HPP

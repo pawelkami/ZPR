@@ -18,7 +18,8 @@ def index():
         url_register = URL('register'),
         url_getName = URL('getName'),
         url_getMove = URL('getMove'),
-        url_unregister = URL('unregister')
+        url_unregister = URL('unregister'),
+        url_getWinnerPoints = URL('getWinnerPoints')
     )
 
 
@@ -109,3 +110,8 @@ def reset():
 def unregister():
     idnum = int(request.post_vars.id)
     GameList.getInstance().unregister(idnum)
+
+def getWinnerPoints():
+    idnum = int(request.post_vars.id)
+    struc = GameList.getInstance().getWinnerPoints(idnum)
+    return json.dumps({'x1' : struc.x1, 'y1': struc.y1, 'x2' : struc.x2, 'y2': struc.y2, 'x3' : struc.x3, 'y3': struc.y3, 'x4' : struc.x4, 'y4': struc.y4, 'x5' : struc.x5, 'y5': struc.y5})
