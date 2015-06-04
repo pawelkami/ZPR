@@ -365,6 +365,12 @@ bool Game::isFull() const
 	return xPlayer.id != -1;		/// gra nie jest pełna, jeśli nie ma w niej drugiego gracza
 }
 
+bool Game::isEmpty() const
+{
+	ReadLock lock(mtx);
+	return (oPlayer.id == -1 || oPlayer.active == false) && (xPlayer.id == -1 || xPlayer.active == false);
+}
+
 bool Game::setPlayerInactive(int id)
 {
 	WriteLock lock(mtx);

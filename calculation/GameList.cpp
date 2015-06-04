@@ -145,12 +145,17 @@ Game* GameList::findGame(const int& id)
 bool GameList::unregister(int id)
 {
   WriteLock lock(mtx);
-  Game* game = findGame(id);
-
-  if(game != nullptr)
-    return game->setPlayerInactive(id);
-  else
-    return false;
+  for(auto it = list_.begin(); it != list_.end(); ++it)
+  {
+    if(it->hasPlayer(id))
+    {
+      it->setPlayerInactive(id);
+      if(it->isEmpty())
+        list_.erase(it);
+      return true;
+    }
+  }
+  return false;
 }
 
 bool GameList::hasOpponentLeft(int id) const

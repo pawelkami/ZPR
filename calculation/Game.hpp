@@ -50,6 +50,7 @@ public:
 	                                        /// nie uczestniczy w danej grze, zwracany string jest pusty
   bool hasPlayer(const int& id) const;		/// sprawdza czy w grze uczestniczy gracz o podanym id
 	bool isFull() const;
+	bool isEmpty() const;
 	GameResult condition();		/// sprawdzenie warunkow zwyciestwa
 	inline bool getReseted() const { return reseted_; };
 	inline int getPlayerPoints(const int& id) const { return (id == oPlayer.id ? oPlayer.victories : xPlayer.victories); };
