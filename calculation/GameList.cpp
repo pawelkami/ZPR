@@ -162,3 +162,17 @@ bool GameList::hasOpponentLeft(int id) const
     return game->isOpponentInactive(id);
   return false;
 }
+
+WinnerPoints GameList::getWinnerPoints(const int& id) const
+{
+  const Game *game = findGame(id);
+  WinnerPoints winpoint;
+  if(game != nullptr)
+    winpoint = game->getWinnerPoints();
+  else
+  {
+    winpoint.x1 = winpoint.x2 = winpoint.x3 = winpoint.x4 = winpoint.x5 = -1;
+    winpoint.y1 = winpoint.y2 = winpoint.y3 = winpoint.y4 = winpoint.y5 = -1;
+  }
+  return winpoint;
+}

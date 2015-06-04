@@ -12,6 +12,8 @@ Game::Game() : oPlayer(), xPlayer(), mtx()					/// inicjujemy tablice EMPTY'ami
 	state_ = STILL_PLAYING;
 	hasChanged = false;
 	reseted_ = 0;
+	winPnt.x1 = winPnt.x2 = winPnt.x3 = winPnt.x4 = winPnt.x5 = -1;
+	winPnt.y1 = winPnt.y2 = winPnt.y3 = winPnt.y4 = winPnt.y5 = -1;
 }
 
 Game::~Game() { }
@@ -44,7 +46,7 @@ GameResult Game::checkVertically() const
 	int from_x = (move_.x - 4 > 0 ? move_.x - 4 : 0);		// jesli x_ - 5 jest ujemne to bedziemy sprawdzac od brzegu tablicy, czyli od 0
 	int to_x = (move_.x + 4 < BOARD_SIZE ? move_.x + 4 : BOARD_SIZE - 1);		// analogicznie dla x_ - 5
 
-	int from, to;
+	int from, to, j;
 	GameResult result;
 
 	for (int i = from_x; i <= (from_x + 4); i++)			// prosta pionowa
@@ -53,7 +55,7 @@ GameResult Game::checkVertically() const
 		to = ((i+4) <= to_x ? i+4 : to_x);
 
 		result = VICTORY;
-		for (int j = from; j <= to; j++)
+		for ( j = from; j <= to; j++)
 		{
 			if (board_[j][move_.y] != move_.sign)			// jesli w sprawdzanej piatce trafimy na inny znak niz dodany to niespelnione warunki
 			{
@@ -62,7 +64,19 @@ GameResult Game::checkVertically() const
 			} // if
 		} // for
 
-		if (to == to_x || result == VICTORY) break;
+		if (to == to_x || result == VICTORY)
+		{
+			if(result == VICTORY)
+			{
+				winPnt.x1 = j-5;
+				winPnt.x2 = j-4;
+				winPnt.x3 = j-3;
+				winPnt.x4 = j-2;
+				winPnt.x5 = j-1;
+				winPnt.y1 = winPnt.y2 = winPnt.y3 = winPnt.y4 = winPnt.y5 = move_.y;	
+			}
+			break;
+		}
 	} // for
 
 	return result;
@@ -74,7 +88,7 @@ GameResult Game::checkHorizontally() const
 	int from_y = (move_.y - 4 > 0 ? move_.y - 4 : 0);
 	int to_y = (move_.y + 4 < BOARD_SIZE ? move_.y + 4 : BOARD_SIZE - 1);
 
-	int from, to;
+	int from, to, j;
 
 	for (int i = from_y; i <= (from_y + 4); i++)		// prosta pozioma
 	{
@@ -82,7 +96,7 @@ GameResult Game::checkHorizontally() const
 		to = ((i + 4) <= to_y ? i + 4 : to_y);
 
 		result = VICTORY;
-		for (int j = from; j <= to; j++)
+		for ( j = from; j <= to; j++)
 		{
 			if (board_[move_.x][j] != move_.sign)			// jesli w sprawdzanej piatce trafimy na inny znak niz dodany to niespelnione warunki
 			{
@@ -91,7 +105,19 @@ GameResult Game::checkHorizontally() const
 			} // if
 		} // for
 
-		if (to == to_y || result == VICTORY) break;
+		if (to == to_y || result == VICTORY)
+		{
+			if(result == VICTORY)
+			{
+				winPnt.y1 = j-5;
+				winPnt.y2 = j-4;
+				winPnt.y3 = j-3;
+				winPnt.y4 = j-2;
+				winPnt.y5 = j-1;
+				winPnt.x1 = winPnt.x2 = winPnt.x3 = winPnt.x4 = winPnt.x5 = move_.x;	
+			}
+			break;
+		}
 	} // for
 
 	return result;
@@ -155,7 +181,20 @@ GameResult Game::checkLeftUpperRightDown() const
 				break;
 			} // if
 		} // for
-		if (result == VICTORY) break;
+		if (result == VICTORY)
+		{
+			winPnt.y1 = j-5;
+			winPnt.y2 = j-4;
+			winPnt.y3 = j-3;
+			winPnt.y4 = j-2;
+			winPnt.y5 = j-1;
+			winPnt.x1 = i-5;
+			winPnt.x2 = i-4;
+			winPnt.x3 = i-3;
+			winPnt.x4 = i-2;
+			winPnt.x5 = i-1;
+			break;
+		}
 	} // for it
 
 	return result;
@@ -167,7 +206,7 @@ GameResult Game::checkLeftUpperRightDown() const
 GameResult Game::checkLeftDownRightUpper() const
 {
 	GameResult result = STILL_PLAYING;
-	int xfrom, yfrom, xto, yto;
+	int xfrom, yfrom, xto, yto, i, j;
 
 	int from_x = (move_.x - 4 > 0 ? move_.x - 4 : 0);
 	int to_x = (move_.x + 4 < BOARD_SIZE ? move_.x + 4 : BOARD_SIZE - 1);
@@ -210,7 +249,7 @@ GameResult Game::checkLeftDownRightUpper() const
 		if (xfrom + 4 > xto || yto - 4 < yfrom) break;
 
 		result = VICTORY;
-		for (int i = xfrom, j = yto; i <= (xfrom + 4) && j >= (yto - 4); i++, j--)
+		for ( i = xfrom, j = yto; i <= (xfrom + 4) && j >= (yto - 4); i++, j--)
 		{
 			if (board_[i][j] != move_.sign)
 			{
@@ -218,7 +257,20 @@ GameResult Game::checkLeftDownRightUpper() const
 				break;
 			} // if
 		} // for
-		if (result == VICTORY) break;
+		if (result == VICTORY)
+		{
+			winPnt.y1 = j+5;
+			winPnt.y2 = j+4;
+			winPnt.y3 = j+3;
+			winPnt.y4 = j+2;
+			winPnt.y5 = j+1;
+			winPnt.x1 = i-5;
+			winPnt.x2 = i-4;
+			winPnt.x3 = i-3;
+			winPnt.x4 = i-2;
+			winPnt.x5 = i-1;
+			break;
+		}
 	} // for it
 
 	return result;
@@ -271,6 +323,8 @@ void Game::reset()
 		setBoard(NONE);
 		move_.setPoint(-1, -1, NONE);
 		hasChanged = false;
+		winPnt.x1 = winPnt.x2 = winPnt.x3 = winPnt.x4 = winPnt.x5 = -1;
+		winPnt.y1 = winPnt.y2 = winPnt.y3 = winPnt.y4 = winPnt.y5 = -1;
 	}
 }
 
@@ -385,4 +439,10 @@ bool Game::isOpponentInactive(int id) const
 		return true;
 	else
 		return false;
+}
+
+WinnerPoints Game::getWinnerPoints() const
+{
+	ReadLock lock(mtx);
+	return winPnt;
 }
