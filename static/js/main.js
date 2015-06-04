@@ -4,14 +4,15 @@ var player2 = { nickname: "", sign: "" };
 var gameStarted = false;
 var status = "";
 
-$('#game-result-form').hide();
+$("#game-result-form").hide();
+$("#game-left-form").hide();
 
 for(var i = 0; i < 16; ++i) {
-  $( "#game" ).append("<div class = 'row'></div>");
+  $("#game").append('<div class = "row"></div>');
 }
 for(var i = 0; i < 16; ++i)
 {
-  $(".row").append("<div class = 'col'></div>");
+  $(".row").append('<div class = "col"></div>');
 }
 
 
@@ -28,55 +29,55 @@ $("#start-button").click(function() {
   if($("#nickname-textbox").val().length < 1)
   alert("Podaj swoje imie");
   else {
-    player1.nickname = ($("#nickname-textbox")).val();
+    player1.nickname = ($("#nickname-textbox")).val().substring(0, 20); //we take only the first 20 letters of the input
     $(".player1Text").text(player1.nickname);
 
 
     registerPlayer();
     startWaitingAnimation();
     getOpponentsName();
-    $('#nickname-form').delay(150).fadeOut(400);
+    $("#nickname-form").delay(150).fadeOut(400);
 
-    $('.player1Points').text("0");
-    $('.player2Points').text("0");
+    $(".player1Points").text("0");
+    $(".player2Points").text("0");
     $(".player1Turn").text(player1.sign);
     $(".player2Turn").text(player2.sign);
 
 
-    if(turn === player2.sign){
+    if(turn === player2.sign) {
       getOpponentsMove();
     }
   }
 });
 
-$(".col").click(function(){
-  if(!gameStarted || turn !== player1.sign){
+$(".col").click(function() {
+  if(!gameStarted || turn !== player1.sign) {
     return;
   }
   var row = $(this).parent().index();
   var col = $(this).index();
 
-  if($(this).text().length === 1){
+  if($(this).text().length === 1) {
     alert("To miejsce jest juz zajete, prosze wykonac ruch gdzie indziej.");
     return;
   }
 
   var ret = postMove(row,col);
 
-  if(ret !== "False"){
+  if(ret !== "False") {
     $(this).text(player1.sign);
     turn = player2.sign;
-    if( ret === "STILL_PLAYING"){
+    if( ret === "STILL_PLAYING") {
       getOpponentsMove();
     }
   }
 });
 
 $("#new-game-button").click(function() {
-  $('#game-result-form').hide();
+  $("#game-result-form").hide();
   new_game();
   turn = "O";
-  if(player1.sign === "X"){
+  if(player1.sign === "X") {
     $(".player1Turn").fadeTo(200, 0);
     $(".player2Turn").fadeTo(200, 1);
     getOpponentsMove();
@@ -90,7 +91,7 @@ $("#new-game-button").click(function() {
 var timer;
 
 startWaitingAnimation = function() {
-  $(".player2Text").text("Searching player");
+  $(".player2Text").text("Waiting");
   $(".player2Text").fadeTo(500, 0).delay(500).fadeTo(500, 1);
   timer = setInterval(function() {
     $(".player2Text").fadeTo(500, 0).delay(500).fadeTo(500, 1);
@@ -103,18 +104,18 @@ stopWaitingAnimation = function() {
 }
 
 setStatus = function(out_data, player) {  // funkcja ustawia okienko statusu gry, wlacza sie gdy jest wygrana lub remis
-  if( out_data.status === "VICTORY" ){
+  if( out_data.status === "VICTORY" ) {
     getWinnerPoints();
-    $('#result-text').text(player.nickname + " WIN");
-    $('#game-result-form').fadeTo(200, 0.9);
-    if(player.sign === player1.sign){
-      $('.player1Points').text(out_data.points);
+    $("#result-text").text(player.nickname + " WINS");
+    $("#game-result-form").fadeTo(200, 0.9);
+    if(player.sign === player1.sign) {
+      $(".player1Points").text(out_data.points);
     } else {
-      $('.player2Points').text(out_data.points);
+      $(".player2Points").text(out_data.points);
     }
   } else if( status === "DRAW" ) {
-    $('#result-text').text("DRAW");
-    $('#game-result-form').fadeTo(200, 0.9);
+    $("#result-text").text("DRAW");
+    $("#game-result-form").fadeTo(200, 0.9);
   } else {
     $(".player1Turn").fadeTo(200, 0);
     $(".player2Turn").fadeTo(200, 1);
@@ -124,3 +125,9 @@ setStatus = function(out_data, player) {  // funkcja ustawia okienko statusu gry
 $(window).unload(function() {
   unregister();
 });
+
+showGameLeftForm = function() {
+  gameStarted = false;
+  $("#who-left-text").text(player2.nickname + " has left!");
+  $("#game-left-form").show();
+}

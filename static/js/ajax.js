@@ -21,7 +21,6 @@ registerPlayer = function() {
 new_game = function() {
   $(".col").map(function() {
     $(this).text("");
-    $(this).css('color', 'white');
   });
   $.ajax({
     type: "POST",
@@ -69,7 +68,10 @@ getOpponentsMove = function() {
     success: function( out_data ) {
       out_data = $.parseJSON(out_data);
       if(out_data.status === "HAS_LEFT")
-        alert("Przeciwnik opóścił grę"); // tymczasowe
+      {
+        unregister();
+        showGameLeftForm();
+      }
       else if(out_data.sign === player2.sign) {
         $("#game").children().each(function() {
 
