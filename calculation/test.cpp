@@ -818,8 +818,8 @@ void test_case26()
  */
 void test_case27()
 {
-  bool cond = (GameList::getInstance()->getLastMove(first_player_id) == (*( new Move(15, 4, "O") ) ) );
-  BOOST_CHECK_EQUAL(cond, true);
+    bool cond = (GameList::getInstance()->getLastMove(first_player_id) == (*( new Move(15, 4, "O") ) ) );
+    BOOST_CHECK_EQUAL(cond, true);
 }
 
 /*!
@@ -827,7 +827,59 @@ void test_case27()
  */
 void test_case28()
 {
-  BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
+    BOOST_CHECK_EQUAL(GameList::getInstance()->getResult(first_player_id), VICTORY);
+}
+
+/*!
+ * test_case29 - it tests if method getWinnerPoints works
+ */
+void test_case29()
+{
+    GameList::getInstance()->resetGame(first_player_id);
+    GameList::getInstance()->resetGame(second_player_id);
+	  Board board =
+  	{
+    {"","","","","","","","","","","","","","","",""},
+    {"","","","","","","","","","","","","","","",""},
+    {"","","","","","","","","","","","","","","",""},
+    {"","","","","","","","","","","","","","","",""},
+    {"","","","","","","","","","","","","","","",""},
+    {"","","","","","X","","","","","","","","","",""},
+    {"","","","","","","X","","","","","","","","",""},
+    {"","","","","","","","X","","","","","","","",""},
+    {"","","","","","","","","X","","","","","","",""},
+    {"","","","","","","","","","","","","","","",""},
+    {"","","","","","","","","","","","","","","",""},
+    {"","","","","","","","","","","","","","","",""},
+    {"","","","","","","","","","","","","","","",""},
+    {"","","","","","","","","","","","","","","",""},
+    {"","","","","","","","","","","","","","","",""},
+    {"","","","","","","","","","","","","","","",""}
+  	};
+
+    GameList::getInstance()->setGameBoard(first_player_id, board);
+    GameList::getInstance()->makeMove(second_player_id, 4, 4);
+    WinnerPoints winpt = GameList::getInstance()->getWinnerPoints(first_player_id);
+    bool cond = ( winpt.x1 == 4 && winpt.y1 == 4 
+               && winpt.x2 == 5 && winpt.y2 == 5
+               && winpt.x3 == 6 && winpt.y3 == 6
+               && winpt.x4 == 7 && winpt.y4 == 7
+               && winpt.x5 == 8 && winpt.y5 == 8);
+    BOOST_CHECK_EQUAL( cond, true );
+}
+
+/*!
+ * test_case30 - it tests if method getWinnerPoints works
+ */
+void test_case30()
+{
+    WinnerPoints winpt = GameList::getInstance()->getWinnerPoints(10);
+    bool cond = ( winpt.x5 == -1 && winpt.y5 == -1 
+               && winpt.x4 == -1 && winpt.y4 == -1
+               && winpt.x3 == -1 && winpt.y3 == -1
+               && winpt.x2 == -1 && winpt.y2 == -1
+               && winpt.x1 == -1 && winpt.y1 == -1);
+    BOOST_CHECK_EQUAL( cond, true);
 }
 
 /*!
@@ -972,7 +1024,7 @@ void test_case2_5()
 
 void test_case2_6()
 {
-    BOOST_CHECK_EQUAL(GameList::getInstance()->getPlayerPoints(second_player_id), 8);
+    BOOST_CHECK_EQUAL(GameList::getInstance()->getPlayerPoints(second_player_id), 9);
 }
 
 /*!
@@ -981,7 +1033,7 @@ void test_case2_6()
 
 void test_case2_7()
 {
-    BOOST_CHECK_EQUAL(GameList::getInstance()->getOpponentsPoints(first_player_id), 8);
+    BOOST_CHECK_EQUAL(GameList::getInstance()->getOpponentsPoints(first_player_id), 9);
 }
 
 /*!
@@ -991,6 +1043,52 @@ void test_case2_7()
 void test_case2_8()
 {
     BOOST_CHECK_EQUAL(GameList::getInstance()->getOpponentsPoints(second_player_id), 8);
+}
+
+/*!
+ * test_case2_9 - it test if method unregister works as we expect
+ */
+
+void test_case2_9()
+{
+    BOOST_CHECK_EQUAL(GameList::getInstance()->unregister(fifth_player_id), true);
+}
+
+/*!
+ * test_case2_10 - it test if method unregister works as we expect
+ */
+
+void test_case2_10()
+{
+    BOOST_CHECK_EQUAL(GameList::getInstance()->unregister(10), false);
+}
+
+/*!
+ * test_case2_11 - it test if method hasOpponentLeft returns false when opponent is active
+ */
+
+void test_case2_11()
+{
+    BOOST_CHECK_EQUAL(GameList::getInstance()->hasOpponentLeft(fourth_player_id), false);
+}
+
+/*!
+ * test_case2_12 - it test if method hasOpponentLeft returns true when opponent is inactive
+ */
+
+void test_case2_12()
+{
+    GameList::getInstance()->unregister(fourth_player_id);
+    BOOST_CHECK_EQUAL(GameList::getInstance()->hasOpponentLeft(third_player_id), true);
+}
+
+/*!
+ * test_case2_13 - it test if method hasOpponentLeft returns false when gamer is not existed
+ */
+
+void test_case2_13()
+{
+    BOOST_CHECK_EQUAL(GameList::getInstance()->hasOpponentLeft(10), false);
 }
 
 /*!
@@ -1050,6 +1148,8 @@ test_suite* init_unit_test_suite( int argc, char * argv[] )
     ts1->add( BOOST_TEST_CASE( & test_case26 ) );
     ts1->add( BOOST_TEST_CASE( & test_case27 ) );
     ts1->add( BOOST_TEST_CASE( & test_case28 ) );
+    ts1->add( BOOST_TEST_CASE( & test_case29 ) );
+    ts1->add( BOOST_TEST_CASE( & test_case30 ) );
 
     test_suite *ts2 = BOOST_TEST_SUITE( "CheckPointsSuite" );
     ts2->add( BOOST_TEST_CASE( & test_case2_1 ) );
@@ -1060,6 +1160,11 @@ test_suite* init_unit_test_suite( int argc, char * argv[] )
     ts2->add( BOOST_TEST_CASE( & test_case2_6 ) );
     ts2->add( BOOST_TEST_CASE( & test_case2_7 ) );
     ts2->add( BOOST_TEST_CASE( & test_case2_8 ) );
+    ts2->add( BOOST_TEST_CASE( & test_case2_9 ) );
+    ts2->add( BOOST_TEST_CASE( & test_case2_10 ) );
+    ts2->add( BOOST_TEST_CASE( & test_case2_11 ) );
+    ts2->add( BOOST_TEST_CASE( & test_case2_12 ) );
+    ts2->add( BOOST_TEST_CASE( & test_case2_13 ) );
 
     framework::master_test_suite().add( ts0 );
     framework::master_test_suite().add( ts1 );
