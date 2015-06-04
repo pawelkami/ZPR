@@ -104,6 +104,7 @@ stopWaitingAnimation = function() {
 
 setStatus = function(out_data, player) {  // funkcja ustawia okienko statusu gry, wlacza sie gdy jest wygrana lub remis
   if( out_data.status === "VICTORY" ){
+    getWinnerPoints();
     $('#result-text').text(player.nickname + " WIN");
     $('#game-result-form').fadeTo(200, 0.9);
     if(player.sign === player1.sign){

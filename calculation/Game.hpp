@@ -14,6 +14,10 @@
 
 enum GameResult { STILL_PLAYING, DRAW, VICTORY };
 
+typedef struct WinnerPoints
+{
+	int x1, y1, x2, y2, x3, y3, x4, y4, x5, y5;
+} WinnerPoints;
 
 class Game
 {
@@ -34,6 +38,7 @@ private:
 	mutable bool hasChanged;	// zmienna pomocnicza dla funkcji condition - sprawdza czy trzeba na nowo sprawdzać wynik gry
 	mutable GameResult state_;		// stan gry ( VICTORY, DRAW, STILL_PLAYING )
 	mutable std::shared_timed_mutex mtx;
+	mutable WinnerPoints winPnt;
 
 public:
 	Game();
@@ -50,6 +55,7 @@ public:
 	                                        /// nie uczestniczy w danej grze, zwracany string jest pusty
   bool hasPlayer(const int& id) const;		/// sprawdza czy w grze uczestniczy gracz o podanym id
 	bool isFull() const;
+	WinnerPoints getWinnerPoints() const;
 	GameResult condition();		/// sprawdzenie warunkow zwyciestwa
 	inline bool getReseted() const { return reseted_; };
 	inline int getPlayerPoints(const int& id) const { return (id == oPlayer.id ? oPlayer.victories : xPlayer.victories); };
