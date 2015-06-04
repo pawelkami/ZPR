@@ -30,7 +30,7 @@ private:
 	Player xPlayer;
 	Move move_;	//ostatni ruch
 	Board board_;	// reprezentacja planszy
-	mutable int reseted_; //flaga mowiaca czy gra jest zresetowana, true - zrestartowana, false - nie
+	int reseted_; //flaga mowiaca czy gra jest zresetowana, true - zrestartowana, false - nie
 	mutable bool hasChanged;	// zmienna pomocnicza dla funkcji condition - sprawdza czy trzeba na nowo sprawdzać wynik gry
 	mutable GameResult state_;		// stan gry ( VICTORY, DRAW, STILL_PLAYING )
 	mutable std::shared_timed_mutex mtx;
@@ -56,6 +56,8 @@ public:
 	inline int getOpponentsPoints(const int& id) const { return (id != oPlayer.id ? oPlayer.victories : xPlayer.victories); };
 	inline GameResult getState() const { return state_; };
 	inline void setBoard(const Board& board) { board_ = board; };	// ustawienie planszy na podaną w argumencie
+	bool setPlayerInactive(int id);
+	bool isOpponentInactive(int id) const;
 };
 
 

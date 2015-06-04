@@ -299,12 +299,14 @@ Sign Game::addPlayer(const int& id, const std::string& name)
 	{
 		oPlayer.id = id;
 		oPlayer.name = name;
+		oPlayer.active = true;
 		return CIRCLE;
 	}
 	else if(xPlayer.id == -1)
 	{
 		xPlayer.id = id;
 		xPlayer.name = name;
+		xPlayer.active = true;
 		return CROSS;
 	}
 	else
@@ -361,4 +363,26 @@ bool Game::isFull() const
 {
 	ReadLock lock(mtx);
 	return xPlayer.id != -1;		/// gra nie jest pełna, jeśli nie ma w niej drugiego gracza
+}
+
+bool Game::setPlayerInactive(int id)
+{
+	WriteLock lock(mtx);
+	if(oPlayer.id == id || xPlayer.id == id)
+	{
+		if(oPlayer.id == id)
+			oPlayer.active = false;
+		else
+			xPlayer.active = false;
+	}
+	return false;
+}
+
+bool Game::isOpponentInactive(int id) const
+{
+	ReadLock lock(mtx);
+	if((oPlayer.id == id && !xPlayer.active) || (xPlayer.id == id && !oPlayer.active))
+		return true;
+	else
+		return false;
 }

@@ -17,7 +17,8 @@ def index():
         url_reset = URL('reset'),
         url_register = URL('register'),
         url_getName = URL('getName'),
-        url_getMove = URL('getMove')
+        url_getMove = URL('getMove'),
+        url_unregister = URL('unregister')
     )
 
 
@@ -84,6 +85,9 @@ def getName():
 
 def getMove():
     idnum = int(request.post_vars.id)
+    hasLeft = bool(GameList.getInstance().hasOpponentLeft(idnum))
+    if(hasLeft):
+        return json.dumps({ "status" : "HAS_LEFT" })
     lastMove = GameList.getInstance().getLastMove(idnum)
     status = getGameState(idnum)
     points = GameList.getInstance().getOpponentsPoints(idnum)
@@ -101,3 +105,7 @@ def getGameState(idnum):
 
 def reset():
     GameList.getInstance().resetGame(int(request.post_vars.id))
+
+def unregister():
+    idnum = int(request.post_vars.id)
+    GameList.getInstance().unregister(idnum)

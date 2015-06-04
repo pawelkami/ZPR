@@ -33,7 +33,8 @@ public:
   int getOpponentsPoints(const int& id) const;
   Game* findGame(const int& id);
   const Game* findGame(const int& id) const;
-
+  bool unregister(int id);
+  bool hasOpponentLeft(int id) const;
 };
 
 #endif // GAMELIST_HPP

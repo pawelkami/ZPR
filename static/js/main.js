@@ -119,3 +119,7 @@ setStatus = function(out_data, player) {  // funkcja ustawia okienko statusu gry
     $(".player2Turn").fadeTo(200, 1);
   }
 }
+
+$(window).unload(function() {
+  unregister();
+});

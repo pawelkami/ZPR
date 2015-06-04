@@ -37,5 +37,7 @@ BOOST_PYTHON_MODULE(cppGame)
 		.def( "getLastMove", &GameList::getLastMove, boost::python::args("id") )
 		.def( "getPlayerPoints", &GameList::getPlayerPoints, boost::python::args("id") )
 		.def( "getOpponentsPoints", &GameList::getOpponentsPoints, boost::python::args("id") )
+		.def( "unregister", &GameList::unregister, boost::python::args("id"))
+		.def( "hasOpponentLeft", &GameList::hasOpponentLeft, boost::python::args("id"))
 		;
 }

@@ -67,7 +67,9 @@ getOpponentsMove = function() {
     url: urlGetMove,
     success: function( out_data ) {
       out_data = $.parseJSON(out_data);
-      if(out_data.sign === player2.sign) {
+      if(out_data.status === "HAS_LEFT")
+        alert("Przeciwnik opóścił grę"); // tymczasowe
+      else if(out_data.sign === player2.sign) {
         $("#game").children().each(function() {
 
           if($(this).index() === out_data.y)
@@ -93,13 +95,13 @@ getOpponentsMove = function() {
   });
 }
 
-postMove = function(row, col){
+postMove = function(row, col) {
   var output = "";
   $.ajax({
     type: "POST",
     async: false,
     data: {x: col, y: row, id: player1.id},
-    url: urlMove,
+    url: urlMove
   }).done(function( out_data ){
     out_data = $.parseJSON(out_data);
     output = out_data.status;
@@ -110,4 +112,13 @@ postMove = function(row, col){
     setStatus( out_data, player1);
   });
   return output;
+}
+
+unregister = function() {
+  $.ajax({
+    type: "POST",
+    async: false,
+    data: { id: player1.id },
+    url: urlUnregister
+  });
 }

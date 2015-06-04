@@ -141,3 +141,24 @@ Game* GameList::findGame(const int& id)
 {
   return const_cast<Game*>( static_cast<const GameList*>(this)->findGame(id));
 }
+
+bool GameList::unregister(int id)
+{
+  WriteLock lock(mtx);
+  Game* game = findGame(id);
+
+  if(game != nullptr)
+    return game->setPlayerInactive(id);
+  else
+    return false;
+}
+
+bool GameList::hasOpponentLeft(int id) const
+{
+  ReadLock lock(mtx);
+  const Game* game = findGame(id);
+
+  if(game != nullptr)
+    return game->isOpponentInactive(id);
+  return false;
+}
