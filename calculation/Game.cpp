@@ -4,7 +4,7 @@
 
 #include "Game.hpp"
 
-Game::Game() : oPlayer(), xPlayer(), mtx()					/// inicjujemy tablice EMPTY'ami
+Game::Game() : oPlayer(), xPlayer(), mtx()
 {
 	for (int i = 0; i < BOARD_SIZE; ++i)
 	{
@@ -132,7 +132,7 @@ GameResult Game::checkLeftUpperRightDown() const
 	int xfrom, yfrom, xto, yto;
 	int i, j;
 
-	// wspolrzedne skrajne dla nieregularnych przypadkow w rogach i przy krawedziach planszy
+	// extreme coordinates for irregular cases in the corners and borders
 	int from_x = (move_.x_ - 4 > 0 ? move_.x_ - 4 : 0);
 	int to_x = (move_.x_ + 4 < BOARD_SIZE ? move_.x_ + 4 : BOARD_SIZE - 1);
 	int from_y = (move_.y_ - 4 > 0 ? move_.y_ - 4 : 0);
@@ -207,7 +207,7 @@ GameResult Game::checkLeftDownRightUpper() const
 	int xfrom, yfrom, xto, yto, i, j;
 
 	int from_x = (move_.x_ - 4 > 0 ? move_.x_ - 4 : 0);
-	int to_x = (move_.x_ + 4 < BOARD_SIZE ? move_.x_ + 4 : BOARD_SIZE - 1);
+	int to_x = (move_.x_ + 4 < BOARD_SIZE ? move_.x_ + 4 : BOARD_SIZE <<<<<<< HEAD
 
 	int from_y = (move_.y_ - 4 > 0 ? move_.y_ - 4 : 0);
 	int to_y = (move_.y_ + 4 < BOARD_SIZE ? move_.y_ + 4 : BOARD_SIZE - 1);

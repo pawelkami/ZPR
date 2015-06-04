@@ -152,11 +152,16 @@ public:
   bool unregister(int id);
 
   /*!
-  *  Does the player's opponent left.
-  *  @param id Player id
-  *  @return true if it has opponent left, false otherwise
-  */
+   *  Does the player's opponent left.
+   *  @param id Player id
+   *  @return true if it has opponent left, false otherwise
+   */
   bool hasOpponentLeft(int id) const;
+
+  /*!
+   *  Return coordinates of points that resulted in a victory.
+   *	@return struct with points that resulted in a victory
+   */
   WinnerPoints getWinnerPoints(const int& id) const;
 };
 

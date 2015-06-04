@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
-# this file is released under public domain and you can use without limitations
 
 #########################################################################
-## This is a sample controller
-## - index is the default action of any application
-## - user is required for authentication and authorization
-## - download is for downloading files uploaded in the db (does streaming)
+## Controller of a Tic Tac Toe Game
 #########################################################################
 
 from cppGame import *
 import json
 
+## Default function which passes URLs to Python functions to index.html
+#
 def index():
     return dict(
         url_move = URL('move'),
@@ -22,68 +20,39 @@ def index():
         url_getWinnerPoints = URL('getWinnerPoints')
     )
 
-
-def user():
-    """
-    exposes:
-    http://..../[app]/default/user/login
-    http://..../[app]/default/user/logout
-    http://..../[app]/default/user/register
-    http://..../[app]/default/user/profile
-    http://..../[app]/default/user/retrieve_password
-    http://..../[app]/default/user/change_password
-    http://..../[app]/default/user/manage_users (requires membership in
-    use @auth.requires_login()
-        @auth.requires_membership('group name')
-        @auth.requires_permission('read','table name',record_id)
-    to decorate functions that need access control
-    """
-    return dict(form=auth())
-
-
-def download():
-    """
-    allows downloading of uploaded files
-    http://..../[app]/default/download/[filename]
-    """
-    return response.download(request, db)
-
-
-def call():
-    """
-    exposes services. for example:
-    http://..../[app]/default/call/jsonrpc
-    decorate with @services.jsonrpc the functions to expose
-    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
-    """
-    return service()
-
+## Function to register new player
+#
 def register():
     idnum = GameList.getInstance().getNewID()
     name = str(request.post_vars.name)
     sign = GameList.getInstance().addPlayer(idnum, name)
     return json.dumps({'id' : idnum, 'sign' : sign})
 
+
+## Function to make move by a player
+# @return 'status' - Game result(VICTORY, DRAW, STILL_PLAYING) and 'points' - player points or False if move wasn't made
 def move():
     i = int(request.post_vars.x)
     j = int(request.post_vars.y)
     idnum = int(request.post_vars.id)
 
     ret = GameList.getInstance().makeMove(idnum, i, j)
-    if ret == False :       # jesli False to znaczy ze nie udalo sie postawic ruchu
+    if ret == False :       # if False, move wasn't made
         return json.dumps({'status': "False"})
     else:
         status = getGameState(idnum)
         points = GameList.getInstance().getPlayerPoints(idnum)
         return json.dumps({'status': status, 'points': points})
 
-
+## @return 'playerName' - opponent's name
+#
 def getName():
     idnum = int(request.post_vars.id)
     playerName = ""
     playerName = GameList.getInstance().getOpponentsName(idnum)
     return json.dumps({'playerName' : playerName})
 
+## @return last move in a game
 def getMove():
     idnum = int(request.post_vars.id)
     hasLeft = bool(GameList.getInstance().hasOpponentLeft(idnum))
@@ -94,7 +63,9 @@ def getMove():
     points = GameList.getInstance().getOpponentsPoints(idnum)
     return json.dumps({'x' : lastMove.x, 'y' : lastMove.y, "sign" : lastMove.sign, "status" : status, 'points' : points})
 
-
+##
+# @param idnum player id
+# @return Game result converted to string
 def getGameState(idnum):
         game_state = GameList.getInstance().getResult(idnum)
         if game_state == GameResult.VICTORY :
@@ -104,13 +75,16 @@ def getGameState(idnum):
         else :
             return "STILL_PLAYING"
 
+## Method which resets game which has player with id passed by JSON
 def reset():
     GameList.getInstance().resetGame(int(request.post_vars.id))
 
+## Method to unregister Player
 def unregister():
     idnum = int(request.post_vars.id)
     GameList.getInstance().unregister(idnum)
 
+## @return Points that has resulted in a VICTORY
 def getWinnerPoints():
     idnum = int(request.post_vars.id)
     struc = GameList.getInstance().getWinnerPoints(idnum)
