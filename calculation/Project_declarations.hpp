@@ -1,5 +1,6 @@
-/*
- * File contains typedefs and declarations for Tic Tac Toe game project.
+/*!
+ *  @file   Project_declarations.hpp
+ * @brief File contains typedefs and declarations for Tic Tac Toe game project.
  */
 
 #ifndef PROJECT_DECLARATIONS_HPP

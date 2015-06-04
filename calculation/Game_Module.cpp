@@ -1,5 +1,6 @@
-/*
- * File implements boost_python_module of C++ classes and methods which will be used in Python.
+/*!
+ *  @file   Game_Module.cpp
+ *  @brief File implements boost_python_module of C++ classes and methods which will be used in Python.
  */
 #include "Game.hpp"
 #include "GameList.hpp"
@@ -27,7 +28,7 @@ BOOST_PYTHON_MODULE(cppGame)
 		.value( "DRAW", DRAW )
 		.value( "VICTORY", VICTORY )
 		;
-		
+
 	boost::python::class_<WinnerPoints>("WinnerPoints")
 		.def_readwrite("x1", &WinnerPoints::x1)
 		.def_readwrite("y1", &WinnerPoints::y1)

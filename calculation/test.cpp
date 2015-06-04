@@ -1,3 +1,7 @@
+/*!
+ * @file test.cpp
+ * @brief File contains test for Game, GameList, Player, Move classes.
+ */
 #include <boost/test/included/unit_test.hpp>
 #include "Game.hpp"
 #include "GameList.hpp"
@@ -22,7 +26,7 @@ Sign fifth_player_sign;
  */
 void test_case1()
 {
-    bool cond = (GameList::getInstance()->getResult(third_player_id) == STILL_PLAYING 
+    bool cond = (GameList::getInstance()->getResult(third_player_id) == STILL_PLAYING
                   && GameList::getInstance()->getResult(first_player_id) == STILL_PLAYING);
   	BOOST_CHECK_EQUAL(cond, true);
 }
@@ -232,7 +236,7 @@ void test_case7()
 }
 
 /*!
- * test_case8 - test of result of game where situation is similar to 
+ * test_case8 - test of result of game where situation is similar to
  * test_case6 but here we have victory condition
  */
 void test_case8()
@@ -266,7 +270,7 @@ void test_case8()
 }
 
 /*!
- * test_case9 - test of result of game where isn't any new sign 
+ * test_case9 - test of result of game where isn't any new sign
  * in comparison with board from last test (test_case8)
  */
 void test_case9()
@@ -275,7 +279,7 @@ void test_case9()
 }
 
 /*!
- * test_case10 - test of result of game with five crosses which are 
+ * test_case10 - test of result of game with five crosses which are
  * crosswise from left upper to right down in the middle of board
  */
 void test_case10()
@@ -309,7 +313,7 @@ void test_case10()
 }
 
 /*!
- * test_case11 - test of result of game with five circles 
+ * test_case11 - test of result of game with five circles
  * in the middle, vertically placed
  */
 void test_case11()
@@ -345,7 +349,7 @@ void test_case11()
 /*!
  * test_case12 - test of game where in board's left upper corner
  * are five circles which are crosswise placed from right down
- * to left upper among crosses 
+ * to left upper among crosses
  */
 void test_case12()
 {
@@ -379,7 +383,7 @@ void test_case12()
 
 /*!
  * test_case13 - test of result of game where on board
- * are five circles in the middle, which are crosswise placed 
+ * are five circles in the middle, which are crosswise placed
  * from left down corner to right upper
  */
 void test_case13()
@@ -448,7 +452,7 @@ void test_case14()
 
 /*!
  * test_case15 - test of result of game where board are full
- * and where we can find many concentrations of foursome 
+ * and where we can find many concentrations of foursome
  * circles and crosses in different arrangements
  */
 void test_case15()
@@ -482,7 +486,7 @@ void test_case15()
 }
 
 /*!
- * test_case16 - test of result of game where board has a similar 
+ * test_case16 - test of result of game where board has a similar
  * filling as board in test_case15 but here we have a two victory conditions
  * (seven crosses horizontally and six vertically)
  */
@@ -517,7 +521,7 @@ void test_case16()
 }
 
 /*!
- * test_case17 - test of result of game where board is full with similar 
+ * test_case17 - test of result of game where board is full with similar
  * filling as in test_case15 and test_case16 but here are more victory conditions
  */
 void test_case17()
@@ -553,7 +557,7 @@ void test_case17()
 /*!
  * test_case18 - test of result of game where both of players
  * have fourth signs in one line and the victory is depend on
- * last sign which can be inserted in the same place for both 
+ * last sign which can be inserted in the same place for both
  */
 void test_case18()
 {
@@ -608,8 +612,8 @@ void test_case19()
 }
 
 /*!
- * test_case20 - test of result of a similar game as 
- * is in test_case19 but players filling board in 
+ * test_case20 - test of result of a similar game as
+ * is in test_case19 but players filling board in
  * different order
  */
 void test_case20()
@@ -631,7 +635,7 @@ void test_case20()
 
 /*!
  * test_case21 - test of result of game where players were putting
- * their signs in right upper corner, there are ten crosses and eleven 
+ * their signs in right upper corner, there are ten crosses and eleven
  * circles, which won, beacuse of fivesome (0,15) from to (4, 15)
  */
 void test_case21()
@@ -769,10 +773,10 @@ void test_case24()
 
 /*!
  * test_case25 - it tests if method makeMove is well-working
- * in strange situations, when one player end game and another one 
+ * in strange situations, when one player end game and another one
  * want to insert his sign
  */
- 
+
 void test_case25()
 {
     GameList::getInstance()->resetGame(first_player_id);
@@ -860,7 +864,7 @@ void test_case29()
     GameList::getInstance()->setGameBoard(first_player_id, board);
     GameList::getInstance()->makeMove(second_player_id, 4, 4);
     WinnerPoints winpt = GameList::getInstance()->getWinnerPoints(first_player_id);
-    bool cond = ( winpt.x1 == 4 && winpt.y1 == 4 
+    bool cond = ( winpt.x1 == 4 && winpt.y1 == 4
                && winpt.x2 == 5 && winpt.y2 == 5
                && winpt.x3 == 6 && winpt.y3 == 6
                && winpt.x4 == 7 && winpt.y4 == 7
@@ -874,7 +878,7 @@ void test_case29()
 void test_case30()
 {
     WinnerPoints winpt = GameList::getInstance()->getWinnerPoints(10);
-    bool cond = ( winpt.x5 == -1 && winpt.y5 == -1 
+    bool cond = ( winpt.x5 == -1 && winpt.y5 == -1
                && winpt.x4 == -1 && winpt.y4 == -1
                && winpt.x3 == -1 && winpt.y3 == -1
                && winpt.x2 == -1 && winpt.y2 == -1

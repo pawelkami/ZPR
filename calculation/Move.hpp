@@ -1,5 +1,6 @@
-/*
- *  Header file for Move class.
+/*!
+ *  @file   Move.hpp
+ *  @brief Header file for Move class.
  */
 #ifndef MOVE_HPP
 #define MOVE_HPP
@@ -8,7 +9,7 @@
 
 
 /*!
- *  Class representing move.
+ *  \brief Class representing move.
  */
 class Move
 {

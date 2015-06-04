@@ -1,5 +1,6 @@
-/*
- *  File contains implemented methods of a GameList class.
+/*!
+ *  @file   GameList.cpp
+ *  @brief File contains implemented methods of a GameList class.
  */
 
 #include "GameList.hpp"

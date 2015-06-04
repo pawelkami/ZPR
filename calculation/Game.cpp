@@ -1,5 +1,6 @@
-/*
- *  File contains implemented methods of a Game class.
+/*!
+ *  @file   Game.cpp
+ *  @brief File contains implemented methods of a Game class.
  */
 
 #include "Game.hpp"
@@ -207,7 +208,7 @@ GameResult Game::checkLeftDownRightUpper() const
 	int xfrom, yfrom, xto, yto, i, j;
 
 	int from_x = (move_.x_ - 4 > 0 ? move_.x_ - 4 : 0);
-	int to_x = (move_.x_ + 4 < BOARD_SIZE ? move_.x_ + 4 : BOARD_SIZE <<<<<<< HEAD
+	int to_x = (move_.x_ + 4 < BOARD_SIZE ? move_.x_ + 4 : BOARD_SIZE - 1);
 
 	int from_y = (move_.y_ - 4 > 0 ? move_.y_ - 4 : 0);
 	int to_y = (move_.y_ + 4 < BOARD_SIZE ? move_.y_ + 4 : BOARD_SIZE - 1);

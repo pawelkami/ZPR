@@ -1,5 +1,6 @@
-/*
- *  Header file for GameList class.
+/*!
+ *  @file   GameList.hpp
+ *  @brief Header file for GameList class.
  */
 
 #ifndef GAMELIST_HPP
@@ -15,7 +16,7 @@
 
 
 /*!
- *  GameList class which implements list of a games on a server.
+ *  \brief GameList class which implements list of a games on a server.
  *  Used Singleton pattern.
  */
 class GameList

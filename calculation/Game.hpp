@@ -1,5 +1,6 @@
-/*
- * Header file for Game class of Tic Tac Toe game.
+/*!
+ *  @file   Game.hpp
+ *  @brief Header file for Game class of Tic Tac Toe game.
  */
 
 #ifndef GAME_HPP
@@ -7,7 +8,6 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <memory>
 #include <vector>
 #include <list>
 #include <shared_mutex>
@@ -23,7 +23,7 @@
 enum GameResult { STILL_PLAYING, DRAW, VICTORY };
 
 /*!
- *	Struct representing coordinates of points which resulted in a VICTORY.
+ *	\brief Struct representing coordinates of points which resulted in a VICTORY.
  */
 struct WinnerPoints
 {
@@ -33,7 +33,7 @@ struct WinnerPoints
 
 /*!
  *	\brief A class representing single Game.
- * A class representing single Game. It provides methods for checking the result of
+ * It provides methods for checking the result of
  * a Game and setting it up.
  */
 class Game
@@ -83,7 +83,7 @@ private:
 	 * @param sign Sign that will be used to fill the board.
 	 *
 	 */
-	void setBoard(const Sign& sign);		// wypełnienie planszy danym znakiem
+	void setBoard(const Sign& sign);
 
 
 	/*!
@@ -147,7 +147,7 @@ public:
 	/*!
 	 *	The size of a game board.
 	 */
-	const int BOARD_SIZE = 16;			// rozmiar planszy
+	const int BOARD_SIZE = 16;
 
 	/*!
 	 *	Method for returning a private member of a class representing game board.
@@ -193,7 +193,7 @@ public:
 	 *  @param id Player id
 	 *	@return true if player with such id is present, false otherwise
 	 */
-  bool hasPlayer(const int& id) const;		/// sprawdza czy w grze uczestniczy gracz o podanym id
+  bool hasPlayer(const int& id) const;
 
 	/*!
 	 *  Checks if there are 2 players in a Game.
@@ -240,7 +240,7 @@ public:
 	 *  Method used for testing class.
 	 *  @param board Board to set game with.
 	 */
-	inline void setBoard(const Board& board) { board_ = board; };	// ustawienie planszy na podaną w argumencie
+	inline void setBoard(const Board& board) { board_ = board; };
 
 	/*!
 	 * Method for setting the player as inactive.

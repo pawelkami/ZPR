@@ -1,5 +1,6 @@
-/*
- *  Header file for class representing Player.
+/*!
+ *  @file   Player.hpp
+ *  @brief Header file for class representing Player.
  */
 
 #ifndef PLAYER_HPP
@@ -8,7 +9,7 @@
 #include "Project_declarations.hpp"
 
 /*!
- *  Class represents Player.
+ *  \brief Class represents Player.
  */
 class Player
 {
