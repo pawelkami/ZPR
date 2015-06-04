@@ -1,3 +1,7 @@
+/*
+ *  File contains implemented methods of a GameList class.
+ */
+
 #include "GameList.hpp"
 
 GameList::GameList() : list_(), mtx()
@@ -62,7 +66,7 @@ Move GameList::getLastMove(const int& id) const
 bool GameList::makeMove(const int& id, const int& x, const int& y)
 {
   ReadLock lock(mtx);
-  bool ret;		// czy udało się wykonać ruch
+  bool ret;		// was move done?
 
   Game* game = findGame(id);
 
@@ -73,7 +77,7 @@ bool GameList::makeMove(const int& id, const int& x, const int& y)
     if(ret == false)
       return false;
 
-    game->condition();
+    game->checkGame();
   }
   return true;
 }
