@@ -83,8 +83,7 @@ getOpponentsMove = function() {
     url: urlGetMove,
     success: function( out_data ) {
       out_data = $.parseJSON(out_data);
-      if(out_data.status === "HAS_LEFT")
-      {
+      if(out_data.status === "HAS_LEFT"){
 
         unregisterPlayer();
         showGameLeftForm();
