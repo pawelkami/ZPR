@@ -1,15 +1,12 @@
-# -*- coding: utf-8 -*-
-
-#########################################################################
-## Controller of a Tic Tac Toe Game
-#########################################################################
-
+""" @package pydefault
+Controller of a Tic Tac Toe Game
+"""
 from cppGame import *
 import json
 
-## Default function which passes URLs to Python functions to index.html
-#
 def index():
+    """Default function which passes URLs to Python functions to index.html
+    """
     return dict(
         url_move = URL('move'),
         url_reset = URL('reset'),
@@ -20,18 +17,20 @@ def index():
         url_getWinnerPoints = URL('getWinnerPoints')
     )
 
-## Function to register new player
-#
 def register():
+    """Function to register new player
+    """
     idnum = GameList.getInstance().getNewID()
     name = str(request.post_vars.name)
     sign = GameList.getInstance().addPlayer(idnum, name)
     return json.dumps({'id' : idnum, 'sign' : sign})
 
 
-## Function to make move by a player
-# @return 'status' - Game result(VICTORY, DRAW, STILL_PLAYING) and 'points' - player points or False if move wasn't made
 def move():
+    """Function to make move by a player
+    Returns:
+        'status' - Game result(VICTORY, DRAW, STILL_PLAYING) and 'points' - player points or False if move wasn't made
+    """
     i = int(request.post_vars.x)
     j = int(request.post_vars.y)
     idnum = int(request.post_vars.id)
@@ -44,16 +43,19 @@ def move():
         points = GameList.getInstance().getPlayerPoints(idnum)
         return json.dumps({'status': status, 'points': points})
 
-## @return 'playerName' - opponent's name
-#
 def getName():
+    """Returns:
+        'playerName' - opponent's name
+    """
     idnum = int(request.post_vars.id)
     playerName = ""
     playerName = GameList.getInstance().getOpponentsName(idnum)
     return json.dumps({'playerName' : playerName})
 
-## @return last move in a game
 def getMove():
+    """Returns:
+        last move in a game
+    """
     idnum = int(request.post_vars.id)
     hasLeft = bool(GameList.getInstance().hasOpponentLeft(idnum))
     if(hasLeft):
@@ -63,10 +65,13 @@ def getMove():
     points = GameList.getInstance().getOpponentsPoints(idnum)
     return json.dumps({'x' : lastMove.x, 'y' : lastMove.y, "sign" : lastMove.sign, "status" : status, 'points' : points})
 
-##
-# @param idnum player id
-# @return Game result converted to string
 def getGameState(idnum):
+    """
+    Args:
+        idnum: player id
+    Returns:
+        Game result converted to string
+    """
         game_state = GameList.getInstance().getResult(idnum)
         if game_state == GameResult.VICTORY :
             return "VICTORY"
@@ -75,17 +80,21 @@ def getGameState(idnum):
         else :
             return "STILL_PLAYING"
 
-## Method which resets game which has player with id passed by JSON
 def reset():
+    """ Method which resets game which has player with id passed by JSON
+    """
     GameList.getInstance().resetGame(int(request.post_vars.id))
 
-## Method to unregister Player
 def unregister():
+    """Method to unregister Player
+    """
     idnum = int(request.post_vars.id)
     GameList.getInstance().unregister(idnum)
 
-## @return Points that has resulted in a VICTORY
 def getWinnerPoints():
+    """Returns:
+        Points that has resulted in a VICTORY
+    """
     idnum = int(request.post_vars.id)
     struc = GameList.getInstance().getWinnerPoints(idnum)
     return json.dumps({'x1' : struc.x1, 'y1': struc.y1, 'x2' : struc.x2, 'y2': struc.y2, 'x3' : struc.x3, 'y3': struc.y3, 'x4' : struc.x4, 'y4': struc.y4, 'x5' : struc.x5, 'y5': struc.y5})

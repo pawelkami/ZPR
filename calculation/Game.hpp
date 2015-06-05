@@ -7,9 +7,7 @@
 #define GAME_HPP
 
 #include <cstdlib>
-#include <iostream>
 #include <vector>
-#include <list>
 #include <shared_mutex>
 #include "Player.hpp"
 #include "Move.hpp"
