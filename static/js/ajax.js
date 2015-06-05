@@ -26,6 +26,7 @@ registerPlayer = function() {
 new_game = function() {
   $(".col").map(function() {
     $(this).text("");
+    $(this).css({"color" : "white"});
   });
   $.ajax({
     type: "POST",
