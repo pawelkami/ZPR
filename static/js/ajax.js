@@ -157,24 +157,3 @@ getWinnerPoints = function(){
   });
 }
 
-getWinnerPoints = function(){
-  $.ajax({
-  type: "POST",
-    data: {id: player1.id},
-    url: urlGetWinnerPoints,
-    success: function( out_data ) {
-      out_data = $.parseJSON(out_data);
-      var tab = [ out_data.x1, out_data.y1, out_data.x2, out_data.y2, out_data.x3, out_data.y3,
-                out_data.x4, out_data.y4, out_data.x5, out_data.y5 ];
-      for( var i = 0; i < 10; i+=2 ){
-        $("#game").children().each(function() {
-          if($(this).index() === tab[i+1])
-            $(this).children().each(function() {
-            if($(this).index() === tab[i])
-              $(this).css('color', 'red');    //pokolorowac znak
-            });
-        });
-      }
-    },
-  });
-}
