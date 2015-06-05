@@ -34,7 +34,6 @@ $("#start-button").click(function() {
 
 
     registerPlayer();
-    startWaitingAnimation();
     getOpponentsName();
     $("#nickname-form").delay(150).fadeOut(400);
 
@@ -88,19 +87,39 @@ $("#new-game-button").click(function() {
 
 });
 
-var timer;
+$("#search-new-game-button").click(function() {
+
+  resetGameBoard();
+  player2.nickname = "";
+  player2.sign = "";
+  unregisterPlayer();
+  registerPlayer();
+  getOpponentsName();
+  $("#game-left-form").delay(150).fadeOut(400);
+
+  $(".player1Points").text("0");
+  $(".player2Points").text("0");
+  $(".player1Turn").text(player1.sign);
+  $(".player2Turn").text(player2.sign);
+
+  if(turn === player2.sign) {
+    getOpponentsMove();
+  }
+});
+
+var intervalID;
 
 startWaitingAnimation = function() {
   $(".player2Text").text("Waiting");
   $(".player2Text").fadeTo(500, 0).delay(500).fadeTo(500, 1);
-  timer = setInterval(function() {
+  intervalID = setInterval(function() {
     $(".player2Text").fadeTo(500, 0).delay(500).fadeTo(500, 1);
   }, 2000);
 }
 
 stopWaitingAnimation = function() {
-  clearInterval(timer);
-  $(".player2Text").stop().fadeTo(0, 1).text(player2.nickname);
+  clearInterval(intervalID);
+  $(".player2Text").finish().fadeTo(0, 1).text(player2.nickname);
 }
 
 setStatus = function(out_data, player) {  // funkcja ustawia okienko statusu gry, wlacza sie gdy jest wygrana lub remis
@@ -123,11 +142,19 @@ setStatus = function(out_data, player) {  // funkcja ustawia okienko statusu gry
 }
 
 $(window).unload(function() {
-  unregister();
+  unregisterPlayer();
 });
 
 showGameLeftForm = function() {
   gameStarted = false;
   $("#who-left-text").text(player2.nickname + " has left!");
   $("#game-left-form").show();
+}
+
+resetGameBoard = function() {
+  $("#game").children().each(function() {
+    $(this).children().each(function () {
+      $(this).text("");
+    })
+  });
 }

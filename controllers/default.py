@@ -72,13 +72,13 @@ def getGameState(idnum):
     Returns:
         Game result converted to string
     """
-        game_state = GameList.getInstance().getResult(idnum)
-        if game_state == GameResult.VICTORY :
-            return "VICTORY"
-        elif game_state == GameResult.DRAW :
-            return "DRAW"
-        else :
-            return "STILL_PLAYING"
+    game_state = GameList.getInstance().getResult(idnum)
+    if game_state == GameResult.VICTORY :
+        return "VICTORY"
+    elif game_state == GameResult.DRAW :
+        return "DRAW"
+    else :
+        return "STILL_PLAYING"
 
 def reset():
     """ Method which resets game which has player with id passed by JSON
