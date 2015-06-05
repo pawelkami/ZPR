@@ -31,7 +31,7 @@
 ###### Skompiluj grę:
 ###### $ scons
 ###### Przejdź do głównego katalogu web2py.
-###### Wpisz komende:
+###### Wpisz komendę:
 ###### $ python web2py.py
 ###### W okienku proszę wpisać jakiekolwiek hasło i nacisnąć Start server.
 ###### Po uruchomieniu serwera gra pojawia się w przeglądarce pod adresem http://127.0.0.1:8000
