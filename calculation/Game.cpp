@@ -2,10 +2,10 @@
  *  @file   Game.cpp
  *  @brief File contains implemented methods of a Game class.
  */
-
+#include "Project_declarations.hpp"
 #include "Game.hpp"
 
-Game::Game() : oPlayer(), xPlayer(), mtx()
+Game::Game() : oPlayer_(), xPlayer_(), mtx_()
 {
 	for (int i = 0; i < BOARD_SIZE; ++i)
 	{
@@ -15,17 +15,17 @@ Game::Game() : oPlayer(), xPlayer(), mtx()
 	}
 	move_ = Move();
 	state_ = STILL_PLAYING;
-	hasChanged = false;
+	hasChanged_ = false;
 	reseted_ = 0;
-	winPnt.x1 = winPnt.x2 = winPnt.x3 = winPnt.x4 = winPnt.x5 = -1;
-	winPnt.y1 = winPnt.y2 = winPnt.y3 = winPnt.y4 = winPnt.y5 = -1;
+	winPnt_.x1 = winPnt_.x2 = winPnt_.x3 = winPnt_.x4 = winPnt_.x5 = -1;
+	winPnt_.y1 = winPnt_.y2 = winPnt_.y3 = winPnt_.y4 = winPnt_.y5 = -1;
 }
 
 Game::~Game() { }
 
 GameResult Game::checkGame()
 {
-	if(!hasChanged)
+	if(!hasChanged_)
 		return state_;
 
 	if(move_.sign_ == NONE)
@@ -36,7 +36,7 @@ GameResult Game::checkGame()
 		|| checkLeftDownRightUpper() == VICTORY
 		|| checkLeftUpperRightDown() == VICTORY)
 	{
-		move_.sign_ == CIRCLE ? oPlayer.incrementVictories() : xPlayer.incrementVictories();		// incrementing victory counter
+		move_.sign_ == CIRCLE ? oPlayer_.incrementVictories() : xPlayer_.incrementVictories();		// incrementing victory counter
 		return state_ = VICTORY;
 	}
 
@@ -72,12 +72,12 @@ GameResult Game::checkVertically() const
 		{
 			if(result == VICTORY)
 			{
-				winPnt.x1 = j-5;
-				winPnt.x2 = j-4;
-				winPnt.x3 = j-3;
-				winPnt.x4 = j-2;
-				winPnt.x5 = j-1;
-				winPnt.y1 = winPnt.y2 = winPnt.y3 = winPnt.y4 = winPnt.y5 = move_.y_;
+				winPnt_.x1 = j-5;
+				winPnt_.x2 = j-4;
+				winPnt_.x3 = j-3;
+				winPnt_.x4 = j-2;
+				winPnt_.x5 = j-1;
+				winPnt_.y1 = winPnt_.y2 = winPnt_.y3 = winPnt_.y4 = winPnt_.y5 = move_.y_;
 			}
 			break;
 		}
@@ -113,12 +113,12 @@ GameResult Game::checkHorizontally() const
 		{
 			if(result == VICTORY)
 			{
-				winPnt.y1 = j-5;
-				winPnt.y2 = j-4;
-				winPnt.y3 = j-3;
-				winPnt.y4 = j-2;
-				winPnt.y5 = j-1;
-				winPnt.x1 = winPnt.x2 = winPnt.x3 = winPnt.x4 = winPnt.x5 = move_.x_;
+				winPnt_.y1 = j-5;
+				winPnt_.y2 = j-4;
+				winPnt_.y3 = j-3;
+				winPnt_.y4 = j-2;
+				winPnt_.y5 = j-1;
+				winPnt_.x1 = winPnt_.x2 = winPnt_.x3 = winPnt_.x4 = winPnt_.x5 = move_.x_;
 			}
 			break;
 		}
@@ -185,16 +185,16 @@ GameResult Game::checkLeftUpperRightDown() const
 		} // for
 		if (result == VICTORY)
 		{
-			winPnt.y1 = j-5;
-			winPnt.y2 = j-4;
-			winPnt.y3 = j-3;
-			winPnt.y4 = j-2;
-			winPnt.y5 = j-1;
-			winPnt.x1 = i-5;
-			winPnt.x2 = i-4;
-			winPnt.x3 = i-3;
-			winPnt.x4 = i-2;
-			winPnt.x5 = i-1;
+			winPnt_.y1 = j-5;
+			winPnt_.y2 = j-4;
+			winPnt_.y3 = j-3;
+			winPnt_.y4 = j-2;
+			winPnt_.y5 = j-1;
+			winPnt_.x1 = i-5;
+			winPnt_.x2 = i-4;
+			winPnt_.x3 = i-3;
+			winPnt_.x4 = i-2;
+			winPnt_.x5 = i-1;
 			break;
 		}
 	} // for it
@@ -258,16 +258,16 @@ GameResult Game::checkLeftDownRightUpper() const
 		} // for
 		if (result == VICTORY)
 		{
-			winPnt.y1 = j+5;
-			winPnt.y2 = j+4;
-			winPnt.y3 = j+3;
-			winPnt.y4 = j+2;
-			winPnt.y5 = j+1;
-			winPnt.x1 = i-5;
-			winPnt.x2 = i-4;
-			winPnt.x3 = i-3;
-			winPnt.x4 = i-2;
-			winPnt.x5 = i-1;
+			winPnt_.y1 = j+5;
+			winPnt_.y2 = j+4;
+			winPnt_.y3 = j+3;
+			winPnt_.y4 = j+2;
+			winPnt_.y5 = j+1;
+			winPnt_.x1 = i-5;
+			winPnt_.x2 = i-4;
+			winPnt_.x3 = i-3;
+			winPnt_.x4 = i-2;
+			winPnt_.x5 = i-1;
 			break;
 		}
 	} // for it
@@ -314,35 +314,35 @@ void Game::setBoard(const Sign& sign)
 
 void Game::reset()
 {
-	WriteLock lock(mtx);
+	WriteLock lock(mtx_);
 
 	if( ++reseted_ == 2 )
 	{
 		state_ = STILL_PLAYING;
 		setBoard(NONE);
 		move_.setPoint(-1, -1, NONE);
-		hasChanged = false;
-		winPnt.x1 = winPnt.x2 = winPnt.x3 = winPnt.x4 = winPnt.x5 = -1;
-		winPnt.y1 = winPnt.y2 = winPnt.y3 = winPnt.y4 = winPnt.y5 = -1;
+		hasChanged_ = false;
+		winPnt_.x1 = winPnt_.x2 = winPnt_.x3 = winPnt_.x4 = winPnt_.x5 = -1;
+		winPnt_.y1 = winPnt_.y2 = winPnt_.y3 = winPnt_.y4 = winPnt_.y5 = -1;
 	}
 }
 
 Sign Game::addPlayer(const int& id, const std::string& name)
 {
-	WriteLock lock(mtx);
+	WriteLock lock(mtx_);
 
-	if (oPlayer.id == -1)
+	if (oPlayer_.id_ == -1)
 	{
-		oPlayer.id = id;
-		oPlayer.name = name;
-		oPlayer.active = true;
+		oPlayer_.id_ = id;
+		oPlayer_.name_ = name;
+		oPlayer_.active_ = true;
 		return CIRCLE;
 	}
-	else if(xPlayer.id == -1)
+	else if(xPlayer_.id_ == -1)
 	{
-		xPlayer.id = id;
-		xPlayer.name = name;
-		xPlayer.active = true;
+		xPlayer_.id_ = id;
+		xPlayer_.name_ = name;
+		xPlayer_.active_ = true;
 		return CROSS;
 	}
 	else
@@ -351,23 +351,23 @@ Sign Game::addPlayer(const int& id, const std::string& name)
 
 Move Game::getLastMove() const
 {
-	ReadLock lock(mtx);
+	ReadLock lock(mtx_);
 	return move_;
 }
 
 bool Game::makeMove(const int& id, const int& x, const int& y)
 {
-	WriteLock lock(mtx);
+	WriteLock lock(mtx_);
 
-	if(oPlayer.id == id || xPlayer.id == id)
+	if(oPlayer_.id_ == id || xPlayer_.id_ == id)
 	{
 		if( reseted_ == 2 )
 			reseted_ = 0;
 		else if(reseted_ == 1)
 			return false;
 
-		hasChanged = true;
-		if(oPlayer.id == id)
+		hasChanged_ = true;
+		if(oPlayer_.id_ == id)
 			setPoint(x, y, CIRCLE);
 		else
 			setPoint(x, y, CROSS);
@@ -379,50 +379,50 @@ bool Game::makeMove(const int& id, const int& x, const int& y)
 
 std::string Game::getOpponentsName(const int& id) const
 {
-	ReadLock lock(mtx);
-	if(oPlayer.id == id)
-		return xPlayer.name;
-	else if(xPlayer.id == id)
-		return oPlayer.name;
+	ReadLock lock(mtx_);
+	if(oPlayer_.id_ == id)
+		return xPlayer_.name_;
+	else if(xPlayer_.id_ == id)
+		return oPlayer_.name_;
 	else
 		return "";
 }
 
 bool Game::hasPlayer(const int& id) const
 {
-	ReadLock lock(mtx);
-	return (xPlayer.id == id || oPlayer.id == id);
+	ReadLock lock(mtx_);
+	return (xPlayer_.id_ == id || oPlayer_.id_ == id);
 }
 
 bool Game::isFull() const
 {
-	ReadLock lock(mtx);
-	return xPlayer.id != -1;		/// game is not full if there is no second player
+	ReadLock lock(mtx_);
+	return xPlayer_.id_ != -1;		/// game is not full if there is no second player
 }
 
 bool Game::isEmpty() const
 {
-	ReadLock lock(mtx);
-	return (oPlayer.id == -1 || oPlayer.active == false) && (xPlayer.id == -1 || xPlayer.active == false);
+	ReadLock lock(mtx_);
+	return (oPlayer_.id_ == -1 || oPlayer_.active_ == false) && (xPlayer_.id_ == -1 || xPlayer_.active_ == false);
 }
 
 bool Game::setPlayerInactive(int id)
 {
-	WriteLock lock(mtx);
-	if(oPlayer.id == id || xPlayer.id == id)
+	WriteLock lock(mtx_);
+	if(oPlayer_.id_ == id || xPlayer_.id_ == id)
 	{
-		if(oPlayer.id == id)
-			oPlayer.active = false;
+		if(oPlayer_.id_ == id)
+			oPlayer_.active_ = false;
 		else
-			xPlayer.active = false;
+			xPlayer_.active_ = false;
 	}
 	return false;
 }
 
 bool Game::isOpponentInactive(int id) const
 {
-	ReadLock lock(mtx);
-	if((oPlayer.id == id && !xPlayer.active) || (xPlayer.id == id && !oPlayer.active))
+	ReadLock lock(mtx_);
+	if((oPlayer_.id_ == id && !xPlayer_.active_) || (xPlayer_.id_ == id && !oPlayer_.active_))
 		return true;
 	else
 		return false;
@@ -430,6 +430,6 @@ bool Game::isOpponentInactive(int id) const
 
 WinnerPoints Game::getWinnerPoints() const
 {
-	ReadLock lock(mtx);
-	return winPnt;
+	ReadLock lock(mtx_);
+	return winPnt_;
 }

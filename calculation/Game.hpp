@@ -85,12 +85,12 @@ private:
 	/*!
 	 *	Object of a class Player, representing player with CIRCLE.
 	 */
-	Player oPlayer;
+	Player oPlayer_;
 
 	/*!
 	 *	Object of a class Player, representing player with CROSS.
 	 */
-	Player xPlayer;
+	Player xPlayer_;
 
 	/*!
 	 * Object of class Move representing last move that was done.
@@ -112,7 +112,7 @@ private:
 	/*!
 	 * Variable used for condition() method. condition() uses it to know if there is a need for checking game.
 	 */
-	mutable bool hasChanged;
+	mutable bool hasChanged_;
 
 	/*!
 	 * An actual state of a game (VICTORY, DRAW, STILL_PLAYING).
@@ -122,12 +122,12 @@ private:
 	/*!
 	 * Mutex used for synchronizing an access to Game methods.
 	 */
-	mutable Mutex mtx;
+	mutable Mutex mtx_;
 
 	/*!
 	 *	Struct which contains coordinates of points that has resulted in a VICTORY of a Game.
 	 */
-	mutable WinnerPoints winPnt;
+	mutable WinnerPoints winPnt_;
 
 public:
 	/*!
@@ -212,13 +212,13 @@ public:
 	 *  @param id Player id
 	 *	@return How many games player won.
 	 */
-	inline int getPlayerPoints(const int& id) const { return (id == oPlayer.id ? oPlayer.victories : xPlayer.victories); };
+	inline int getPlayerPoints(const int& id) const { return (id == oPlayer_.id_ ? oPlayer_.victories_ : xPlayer_.victories_); };
 
 	/*!
 	 *  @param id Player id
 	 *  @return How many games opponent won.
 	 */
-	inline int getOpponentsPoints(const int& id) const { return (id != oPlayer.id ? oPlayer.victories : xPlayer.victories); };
+	inline int getOpponentsPoints(const int& id) const { return (id != oPlayer_.id_ ? oPlayer_.victories_ : xPlayer_.victories_); };
 
 
 	/*!

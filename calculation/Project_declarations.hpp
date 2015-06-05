@@ -6,11 +6,13 @@
 #ifndef PROJECT_DECLARATIONS_HPP
 #define PROJECT_DECLARATIONS_HPP
 
+#include <string>
+#include <vector>
 // variables which represents signs on a board
 typedef std::string Sign;
 const Sign CROSS = "X";
 const Sign CIRCLE = "O";
-const Sign NONE = "";;
+const Sign NONE = "";
 
 #ifdef _MSC_VER
 
@@ -60,9 +62,11 @@ typedef WinReaderLock ReadLock;
 #else
 
 #include <shared_mutex>
+
 typedef std::shared_timed_mutex Mutex;
 typedef std::lock_guard<Mutex> WriteLock;
 typedef std::shared_lock<Mutex> ReadLock;
+
 
 #endif
 typedef std::vector<std::vector<Sign> > Board;

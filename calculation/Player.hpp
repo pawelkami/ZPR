@@ -18,42 +18,42 @@ public:
   /*!
    *  Id of a Player
    */
-  int id;
+  int id_;
 
 
   /*!
    *  Player name.
    */
-  std::string name;
+  std::string name_;
 
 
   /*!
    *  Player sign.
    */
-  Sign sign;
+  Sign sign_;
 
 
   /*!
    *  How many times has player won.
    */
-  int victories;
+  int victories_;
 
 
   /*!
    *  Is player active or not.
    */
-  bool active;
+  bool active_;
 
 
   /*!
    *  Method which increments victories of a player.
    */
-  inline void incrementVictories() { ++victories; };
+  inline void incrementVictories() { ++victories_; };
 
   /*!
    *  Default constructor of a Player class. Sets id to -1, name to null string and victories to 0.
    */
-  Player() : id(-1), name(""), sign(NONE), victories(0), active(false) {}
+  Player() : id_(-1), name_(""), sign_(NONE), victories_(0), active_(false) {}
 
   /*!
    *  Constructor of a Player class.
@@ -62,7 +62,7 @@ public:
    *  @param v Player victories
    *  @param a if player is active or not
    */
-  Player(int i, std::string n, std::string s, int v = 0, bool a = false) : id(i), name(n), sign(s), victories(v), active(a) {}
+  Player(int i, std::string n, std::string s, int v = 0, bool a = false) : id_(i), name_(n), sign_(s), victories_(v), active_(a) {}
 };
 
 #endif // PLAYER_HPP
