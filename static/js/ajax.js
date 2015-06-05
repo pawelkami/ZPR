@@ -21,7 +21,7 @@ registerPlayer = function() {
 };
 
 /**
- * Saves player name on the server and gets his sign
+ * Sets signal to the server to reset the game
  */
 new_game = function() {
   $(".col").map(function() {
@@ -35,6 +35,9 @@ new_game = function() {
   });
 };
 
+/**
+ * Calls the server to get opponents name every 2 seconds.
+ */
 getOpponentsName = function() {
   startWaitingAnimation();
   var ajaxCall = function() {
@@ -45,7 +48,7 @@ getOpponentsName = function() {
       success: function( out_data ) {
         out_data = $.parseJSON(out_data);
 
-        if(out_data.x === -1 || out_data.y === -1){ // jesli zaczynamy nowa gre to przy pobraniu poczatkowych wartosci jeszcze raz pobierz
+        if(out_data.x === -1 || out_data.y === -1){
           setTimeout(ajaxCall, 2000);
         }
 
@@ -69,6 +72,9 @@ getOpponentsName = function() {
   ajaxCall();
 };
 
+/**
+ * Calls the server to get opponents move every 2 seconds.
+ */
 getOpponentsMove = function() {
   $.ajax({
     type: "POST",
@@ -92,7 +98,7 @@ getOpponentsMove = function() {
           });
         });
 
-        setStatus( out_data, player2 );   //ustawia okienko wygranej jesli taka nastapi
+        setStatus( out_data, player2 );
 
         if( out_data.status === "STILL_PLAYING" ){
           turn = player1.sign;
@@ -108,6 +114,9 @@ getOpponentsMove = function() {
   });
 }
 
+/**
+ * Sends to the server the coordinates of players click.
+ */
 postMove = function(row, col) {
   var output = "";
   $.ajax({
@@ -127,6 +136,9 @@ postMove = function(row, col) {
   return output;
 }
 
+/**
+ * Sends information to the server that the player is leaving.
+ */
 unregisterPlayer = function() {
   $.ajax({
     type: "POST",
@@ -138,6 +150,9 @@ unregisterPlayer = function() {
   player1.id = -1;
 }
 
+/**
+ * Gets the combination of fields that won the game.
+ */
 getWinnerPoints = function(){
   $.ajax({
   type: "POST",

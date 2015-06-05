@@ -7,6 +7,8 @@ var status = "";
 $("#game-result-form").hide();
 $("#game-left-form").hide();
 
+
+//creating game board
 for(var i = 0; i < 16; ++i) {
   $("#game").append('<div class = "row"></div>');
 }
@@ -16,9 +18,6 @@ for(var i = 0; i < 16; ++i)
 }
 
 
-//wciśnięcie entera po wprowadzeniu nazwy gracza, powinno dac sam efekt co klikniecie "start"
-//(nie liczac tego, ze przycisk nie zmienia swojego wygladu na "klikniety" - da sie to obejsc,
-//ale to drobnostka, ktora nie chce na razie zabrudzac kodu)
 $("#nickname-textbox").keyup(function (e) {
   if (e.keyCode == 13) {
     $("#start-button").trigger("click");
@@ -95,6 +94,9 @@ $("#search-new-game-button").click(function() {
 
 var intervalID;
 
+/**
+ * Start the animation used while waiting for opponent.
+ */
 startWaitingAnimation = function() {
   $(".player2Text").text("Waiting");
   $(".player2Text").fadeTo(500, 0).delay(500).fadeTo(500, 1);
@@ -108,7 +110,10 @@ stopWaitingAnimation = function() {
   $(".player2Text").finish().fadeTo(0, 1).text(player2.nickname);
 }
 
-setStatus = function(out_data, player) {  // funkcja ustawia okienko statusu gry, wlacza sie gdy jest wygrana lub remis
+/**
+ * Shows form with results of the game.
+ */
+setStatus = function(out_data, player) {
   if( out_data.status === "VICTORY" ) {
     getWinnerPoints();
     $("#result-text").text(player.nickname + " WINS");
@@ -131,6 +136,9 @@ $(window).unload(function() {
   unregisterPlayer();
 });
 
+/**
+ * Shows form informing that opponent has left.
+ */
 showGameLeftForm = function() {
   gameStarted = false;
   $("#who-left-text").text(player2.nickname + " has left!");
