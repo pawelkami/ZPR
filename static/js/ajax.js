@@ -167,7 +167,7 @@ getWinnerPoints = function(){
           if($(this).index() === tab[i+1])
             $(this).children().each(function() {
             if($(this).index() === tab[i])
-              $(this).css('color', 'red');    //pokolorowac znak
+              $(this).css('color', 'red');
             });
         });
       }
