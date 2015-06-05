@@ -5,7 +5,6 @@
 *~
 *.so
 *.os
-*.pyc
 .sconsign.dblite
 start
 test
