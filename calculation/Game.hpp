@@ -8,11 +8,9 @@
 
 #include <cstdlib>
 #include <vector>
-#include <shared_mutex>
 #include "Player.hpp"
 #include "Move.hpp"
 #include "Project_declarations.hpp"
-//#include <boost/thread/shared_mutex.hpp>
 
 /*!
  * Enum representing the result of a Game.
@@ -124,7 +122,7 @@ private:
 	/*!
 	 * Mutex used for synchronizing an access to Game methods.
 	 */
-	mutable std::shared_timed_mutex mtx;
+	mutable Mutex mtx;
 
 	/*!
 	 *	Struct which contains coordinates of points that has resulted in a VICTORY of a Game.

@@ -9,7 +9,6 @@
 #include "Game.hpp"
 #include <cstdlib>
 #include <list>
-#include <shared_mutex>
 
 
 /*!
@@ -29,7 +28,7 @@ private:
   /*!
    *  Mutex.
    */
-  mutable std::shared_timed_mutex mtx;
+  mutable Mutex mtx;
 
 
   /*!
