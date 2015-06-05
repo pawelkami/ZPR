@@ -18,8 +18,10 @@
 ###### ******************************************************************
 ###### Uruchamianie testów:
 ###### cd calculations
-###### bash runtest.sh
+###### bash runcovertest.sh
 ######
+###### Aby wyczyścić katalog po testach należy użyć:
+###### bash runcovertest.sh clean
 ###### Wyniki testu zapisują się w pliku testresult.txt
 ###### ******************************************************************
 ###### Uruchamianie servera:
