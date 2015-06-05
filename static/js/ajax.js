@@ -1,4 +1,6 @@
-// zapisuje imię gracza na serwerze i zwraca mu jego id oraz znak
+/**
+ * Saves player name on the server and gets his sign
+ */
 registerPlayer = function() {
   $.ajax({
     type: "POST",
@@ -18,6 +20,9 @@ registerPlayer = function() {
   });
 };
 
+/**
+ * Saves player name on the server and gets his sign
+ */
 new_game = function() {
   $(".col").map(function() {
     $(this).text("");

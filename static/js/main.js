@@ -89,22 +89,8 @@ $("#new-game-button").click(function() {
 
 $("#search-new-game-button").click(function() {
 
-  resetGameBoard();
-  player2.nickname = "";
-  player2.sign = "";
   unregisterPlayer();
-  registerPlayer();
-  getOpponentsName();
-  $("#game-left-form").delay(150).fadeOut(400);
-
-  $(".player1Points").text("0");
-  $(".player2Points").text("0");
-  $(".player1Turn").text(player1.sign);
-  $(".player2Turn").text(player2.sign);
-
-  if(turn === player2.sign) {
-    getOpponentsMove();
-  }
+  location.reload(true);
 });
 
 var intervalID;
@@ -149,12 +135,4 @@ showGameLeftForm = function() {
   gameStarted = false;
   $("#who-left-text").text(player2.nickname + " has left!");
   $("#game-left-form").show();
-}
-
-resetGameBoard = function() {
-  $("#game").children().each(function() {
-    $(this).children().each(function () {
-      $(this).text("");
-    })
-  });
 }
