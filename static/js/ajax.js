@@ -21,7 +21,6 @@ registerPlayer = function() {
 new_game = function() {
   $(".col").map(function() {
     $(this).text("");
-    $(this).css({"color" : "white"});
   });
   $.ajax({
     type: "POST",
@@ -76,7 +75,6 @@ getOpponentsMove = function() {
       {
 
         unregisterPlayer();
-        unregister();
         showGameLeftForm();
       }
       else if(out_data.sign === player2.sign) {
@@ -156,4 +154,3 @@ getWinnerPoints = function(){
     },
   });
 }
-
