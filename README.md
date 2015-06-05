@@ -7,17 +7,29 @@
 ##### ******************************************************************
 ###### Projekt wykorzystuje:
 ###### HTML + CSS + JavaScript(jQuery) jako interfejs graficzny klienta
-###### lighttpd + Python jako serwer
+###### web2py + Python jako kontroler po stronie serwera
 ###### boost::python + C++ jako logika aplikacji
 ###### ******************************************************************
 ###### Wymagania:
-###### boost, lighttpd, scons, python
+###### boost, web2py, scons, python 
 ###### ******************************************************************
 ###### Kompilacja:
 ###### scons
 ###### ******************************************************************
-###### Uruchamianie servera:
-###### cd server
-###### bash run-server.sh
+###### Uruchamianie testów:
+###### cd calculations
+###### bash runtest.sh
+######
+###### Wyniki testu zapisują się w pliku testresult.txt
 ###### ******************************************************************
-###### Po uruchomieniu serwera gra pojawia się w przeglądarce pod adresem http://127.0.0.1:3000
+###### Uruchamianie servera:
+###### Należy pobrać web2py i umieścić gdziekolwiek na dysku.
+###### Katalog z githuba nazwij game i wrzuć go do katalogu applications w
+###### miejscu gdzie masz rozpakowane web2py.
+###### Skompiluj grę:
+###### $ scons
+###### Przejdź do głównego katalogu web2py.
+###### Wpisz komende:
+###### $ python web2py.py
+###### W okienku proszę wpisać jakiekolwiek hasło i nacisnąć Start server.
+###### Po uruchomieniu serwera gra pojawia się w przeglądarce pod adresem http://127.0.0.1:8000

@@ -1,4 +1,5 @@
 #!/bin/bash
 
-scons 1>/dev/null
-./test --log_level=test_suite >> testresult.txt
+echo "Compiling"
+scons 1>/dev/null && echo "Running tests"
+./test --log_level=test_suite > testresult.txt
