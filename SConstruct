@@ -26,7 +26,7 @@ elif(platform.system() == "Windows"):
    env.Append( LIBPATH = [ Dir('C:/Boost/lib'), #tutaj sciezka do bibliotek boost
                            Dir('C:/Python27/libs') ] ) #tutaj sciezki do bibliotek python
 
-   env.Append( CPPFLAGS = ' /EHsc /MD /D "WIN32" /D "_CONSOLE" /W4 ' )
+   env.Append( CPPFLAGS = ' /EHsc /MD /D "WIN32" /D "_CONSOLE" /platform:x64 /W4 ' )
    env.Append( LINKFLAGS = ' /SUBSYSTEM:WINDOWS ' )
 else:
    print platform.system() + " not supported"
