@@ -49,11 +49,11 @@ getOpponentsName = function() {
       success: function( out_data ) {
         out_data = $.parseJSON(out_data);
 
-        if(out_data.x === -1 || out_data.y === -1) }
+        if(out_data.x === -1 || out_data.y === -1) {
           setTimeout(ajaxCall, 2000);
         }
 
-        if( out_data.playerName === "" ) }
+        if( out_data.playerName === "" ) {
           setTimeout(ajaxCall, 2000);
         } else {
           player2.nickname = out_data.playerName;
@@ -65,7 +65,7 @@ getOpponentsName = function() {
           $(".player2Turn").fadeTo(200, 0);
         }
       },
-      error: function() }
+      error: function() {
         setTimeout(ajaxCall, 2000);
       }
     });
@@ -99,7 +99,7 @@ getOpponentsMove = function() {
 
         setStatus( out_data, player2 );
 
-        if( out_data.status === "STILL_PLAYING" ) }
+        if( out_data.status === "STILL_PLAYING" ) {
           turn = player1.sign;
           $(".player1Turn").fadeTo(200, 1);
           $(".player2Turn").fadeTo(200, 0);
@@ -123,11 +123,11 @@ postMove = function(row, col) {
     async: false,
     data: {x: col, y: row, id: player1.id},
     url: urlMove
-  }).done(function( out_data ) }
+  }).done(function( out_data ) {
     out_data = $.parseJSON(out_data);
     output = out_data.status;
 
-    if(out_data.status === "False") }
+    if(out_data.status === "False") {
       return;
     }
     setStatus( out_data, player1);
@@ -161,7 +161,7 @@ getWinnerPoints = function() {
       out_data = $.parseJSON(out_data);
       var tab = [ out_data.x1, out_data.y1, out_data.x2, out_data.y2, out_data.x3, out_data.y3,
                 out_data.x4, out_data.y4, out_data.x5, out_data.y5 ];
-      for( var i = 0; i < 10; i+=2 ) }
+      for( var i = 0; i < 10; i+=2 ) {
         $("#game").children().each(function() {
           if($(this).index() === tab[i+1])
             $(this).children().each(function() {
